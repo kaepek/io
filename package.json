@@ -1,0 +1,16 @@
+{
+  "name": "rbot-controller",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jonathan Kelsey",
+  "license": "ISC",
+  "dependencies": {
+    "dualshock": "^3.1.7",
+    "serialport": "^10.4.0",
+    "typed-struct": "^2.3.0"
+  }
+}
