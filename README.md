@@ -24,7 +24,7 @@ npm link
 
 ```
 npm ls --global
-npm uninstall --global rbot-controller 
+npm uninstall --global rbot-io 
 npm link
 ```
 
