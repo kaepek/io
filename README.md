@@ -1,4 +1,4 @@
-## RBOT-IO
+## KAEPEK-IO
 
 Remote controller. Enabling IO to be piped from various inputs to different devices over network/serial communication ports.
 
@@ -32,11 +32,11 @@ npm link
 
 ### Test dualshock torque-delay-direction profile with console output:
 ```
-rbotio-torque-delay-direction-dualshock-console
+kaepek-torque-delay-direction-dualshock-console
 ```
 
 ### Control dualshock torque-delay-direction profile with serial output (useful for controlling open loop spwm):
 ```
-rbotio-torque-delay-direction-dualshock-serial
+kaepek-torque-delay-direction-dualshock-serial
 ```
 

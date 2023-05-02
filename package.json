@@ -1,5 +1,5 @@
 {
-  "name": "rbot-io",
+  "name": "kaepek-io",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -14,7 +14,7 @@
     "typed-struct": "^2.3.0"
   },
   "bin": {
-    "rbotio-torque-delay-direction-dualshock-serial": "./lib/models/torque-delay-direction/scripts/dualshock-serial.js",
-    "rbotio-torque-delay-direction-dualshock-console": "./lib/models/torque-delay-direction/scripts/dualshock-console.js"
+    "kaepek-torque-delay-direction-dualshock-serial": "./lib/models/torque-delay-direction/scripts/dualshock-serial.js",
+    "kaepek-torque-delay-direction-dualshock-console": "./lib/models/torque-delay-direction/scripts/dualshock-console.js"
   }
 }
