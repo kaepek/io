@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Jonathan Kelsey",
-  "license": "ISC",
+  "license": "AGPL3",
   "dependencies": {
     "dualshock": "github:jk89/dualshock",
     "serialport": "^10.4.0",
