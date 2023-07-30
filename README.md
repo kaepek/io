@@ -24,7 +24,7 @@ npm link
 
 ```
 npm ls --global
-npm uninstall --global rbot-io 
+npm uninstall --global kaepek-io
 npm link
 ```
 
@@ -40,3 +40,14 @@ kaepek-torque-delay-direction-dualshock-console
 kaepek-torque-delay-direction-dualshock-serial
 ```
 
+### Control dualshock torque-phase profile with console output:
+
+```
+kaepek-torque-phase-direction-dualshock-console
+```
+
+### Control dualshock torque-phase profile with serial output:
+
+```
+kaepek-torque-phase-direction-dualshock-serial
+```
