@@ -51,3 +51,12 @@ kaepek-torque-phase-direction-dualshock-console
 ```
 kaepek-torque-phase-direction-dualshock-serial
 ```
+
+### Close loop speed control spwm:
+
+## Console
+kaepek-ThrustU16LEDirectionU8Model-dualshock-console
+
+## Serial
+kaepek-ThrustU16LEDirectionU8Model-dualshock-serial
+
