@@ -24,7 +24,7 @@ print(inputs_dict)
 doc = curdoc()
 figs = []
 for plot in config_json['plots']:
-    fig = figure(title=plot["name"]) # , plot_width=1200, y_range=(0, 200)
+    fig = figure(title=plot["name"], plot_width=2000, output_backend="webgl") # , y_range=(0, 200)
     x_axis = plot["independant_column"]
     for dependant_column in plot["dependant_columns"]:
         y_axis = dependant_column["name"]
@@ -58,6 +58,10 @@ def update():
             relevant_data = 0.0
         stream_obj[input_name] = [relevant_data]
     
+    print("-----")
+    print(stream_obj)
+    print("----")
+    #plot_data.patch(stream_obj)
     plot_data.stream(stream_obj)
 
     doc.add_next_tick_callback(update)
