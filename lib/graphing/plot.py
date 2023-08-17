@@ -62,7 +62,7 @@ def update():
     print(stream_obj)
     print("----")
     #plot_data.patch(stream_obj)
-    plot_data.stream(stream_obj)
+    plot_data.stream(stream_obj, rollover=500)
 
     doc.add_next_tick_callback(update)
 

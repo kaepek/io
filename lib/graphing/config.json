@@ -23,8 +23,7 @@
             "dependant_columns": [
                 {"name":"kalman_displacement", "color": "red"},
                 {"name":"kalman_velocity", "color": "green"},
-                {"name": "kalman_acceleration", "color": "blue"},
-                {"name": "kalman_jerk", "color": "purple"}
+                {"name": "kalman_acceleration", "color": "blue"}
             ]
         },
         {
