@@ -18,22 +18,11 @@
     "buffer_length": 1000,
     "plots": [
         {
-            "name": "kalman",
+            "name": "control",
             "independant_column": "time",
             "dependant_columns": [
-                {"name":"kalman_displacement", "color": "red"},
-                {"name":"kalman_velocity", "color": "green"},
-                {"name": "kalman_acceleration", "color": "blue"}
-            ]
-        },
-        {
-            "name": "eular",
-            "independant_column": "time",
-            "dependant_columns": [
-                {"name":"eular_displacement", "color": "red"},
-                {"name":"eular_velocity", "color": "green"},
-                {"name": "eular_acceleration", "color": "blue"},
-                {"name": "eular_jerk", "color": "purple"}
+                {"name":"com_thrust_percentage", "color": "black"},
+                {"name":"com_direction", "color": "blue"}
             ]
         },
         {
@@ -46,11 +35,21 @@
             ]
         },
         {
-            "name": "control",
+            "name": "kalman",
             "independant_column": "time",
             "dependant_columns": [
-                {"name":"com_thrust_percentage", "color": "black"},
-                {"name":"com_direction", "color": "blue"}
+                {"name":"kalman_velocity", "color": "green"},
+                {"name": "kalman_acceleration", "color": "blue"}
+            ]
+        },
+        {
+            "name": "eular",
+            "independant_column": "time",
+            "dependant_columns": [
+                {"name":"eular_displacement", "color": "red"},
+                {"name":"eular_velocity", "color": "green"},
+                {"name": "eular_acceleration", "color": "blue"},
+                {"name": "eular_jerk", "color": "purple"}
             ]
         }
     ]
