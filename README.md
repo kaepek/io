@@ -63,3 +63,8 @@ kaepek-ThrustU16LEDirectionU8Model-dualshock-console
 ```
 kaepek-ThrustU16LEDirectionU8Model-dualshock-serial
 ```
+
+## Serial with graph
+```
+kaepek-ThrustU16LEDirectionU8Model-dualshock-serial-graph
+```

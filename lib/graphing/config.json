@@ -1,0 +1,58 @@
+{
+    "inputs": [
+        {"name":"com_thrust_percentage", "position": 0},
+        {"name":"com_direction", "position": 1},
+        {"name":"time", "position": 2},
+        {"name":"eular_displacement", "position": 3},
+        {"name":"eular_velocity", "position": 4},
+        {"name": "eular_acceleration", "position": 5},
+        {"name": "eular_jerk", "position": 6},
+        {"name":"kalman_displacement", "position": 7},
+        {"name":"kalman_velocity", "position": 8},
+        {"name": "kalman_acceleration", "position": 9},
+        {"name": "kalman_jerk", "position": 10},
+        {"name":"voltage_phase_a", "position": 11},
+        {"name":"voltage_phase_b", "position": 12},
+        {"name": "voltage_phase_c", "position": 13}
+    ],
+    "buffer_length": 1000,
+    "plots": [
+        {
+            "name": "kalman",
+            "independant_column": "time",
+            "dependant_columns": [
+                {"name":"kalman_displacement", "color": "red"},
+                {"name":"kalman_velocity", "color": "green"},
+                {"name": "kalman_acceleration", "color": "blue"},
+                {"name": "kalman_jerk", "color": "purple"}
+            ]
+        },
+        {
+            "name": "eular",
+            "independant_column": "time",
+            "dependant_columns": [
+                {"name":"eular_displacement", "color": "red"},
+                {"name":"eular_velocity", "color": "green"},
+                {"name": "eular_acceleration", "color": "blue"},
+                {"name": "eular_jerk", "color": "purple"}
+            ]
+        },
+        {
+            "name": "voltages",
+            "independant_column": "time",
+            "dependant_columns": [
+                {"name":"voltage_phase_a", "color": "red"},
+                {"name":"voltage_phase_b", "color": "yellow"},
+                {"name": "voltage_phase_c", "color": "black"}
+            ]
+        },
+        {
+            "name": "control",
+            "independant_column": "time",
+            "dependant_columns": [
+                {"name":"com_thrust_percentage", "color": "black"},
+                {"name":"com_direction", "color": "blue"}
+            ]
+        }
+    ]
+}
