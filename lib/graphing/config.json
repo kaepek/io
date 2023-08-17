@@ -9,13 +9,13 @@
         {"name": "eular_jerk", "position": 6},
         {"name":"kalman_displacement", "position": 7},
         {"name":"kalman_velocity", "position": 8},
-        {"name": "kalman_acceleration", "position": 9},
+        {"name": "kalman_acceleration", "position": 9, "scale": 1.0},
         {"name": "kalman_jerk", "position": 10},
         {"name":"voltage_phase_a", "position": 11},
         {"name":"voltage_phase_b", "position": 12},
         {"name": "voltage_phase_c", "position": 13}
     ],
-    "buffer_length": 1000,
+    "buffer_length": 300,
     "plots": [
         {
             "name": "control",

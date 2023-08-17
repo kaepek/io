@@ -54,7 +54,11 @@ def update():
         input_position = input["position"]
         try:
             relevant_data = float(data_str_split[input_position])
-        except:
+            if "scale" in input:
+                print("scale", input["scale"])
+                relevant_data *= input["scale"]
+        except Exception as error:
+            print(error)
             relevant_data = 0.0
         stream_obj[input_name] = [relevant_data]
     
