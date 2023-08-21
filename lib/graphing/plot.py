@@ -24,6 +24,7 @@ print(inputs_dict)
 doc = curdoc()
 figs = []
 for plot in config_json['plots']:
+    print("building plot", plot["name"])
     fig = figure(title=plot["name"], plot_width=2000, output_backend="webgl") # , y_range=(0, 200)
     x_axis = plot["independant_column"]
     for dependant_column in plot["dependant_columns"]:
