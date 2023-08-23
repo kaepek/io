@@ -3,6 +3,8 @@
 
 namespace kaepek
 {
+#ifndef KAEPEK_SERIAL_INPUT
+#define KAEPEK_SERIAL_INPUT
 
     /**
      * SerialInputCommandWord class typedef enum:
@@ -70,4 +72,5 @@ namespace kaepek
         void read_input();
         void block_until_serial_input();
     };
+#endif
 }
