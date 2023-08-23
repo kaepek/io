@@ -12,7 +12,7 @@
   "license": "AGPL3",
   "dependencies": {
     "dualshock": "github:jk89/dualshock",
-    "rx": "^4.1.0",
+    "rxjs": "^7.8.1",
     "serialport": "^10.4.0",
     "typed-struct": "^2.3.0"
   },
