@@ -28,20 +28,20 @@
             ]
         },
         {
+            "name": "kalman",
+            "independant_column": "time",
+            "dependant_columns": [
+                {"name":"kalman_velocity", "color": "green"},
+                {"name": "kalman_acceleration", "color": "blue"}
+            ]
+        },
+        {
             "name": "voltages",
             "independant_column": "time",
             "dependant_columns": [
                 {"name":"voltage_phase_a", "color": "red"},
                 {"name":"voltage_phase_b", "color": "yellow"},
                 {"name": "voltage_phase_c", "color": "black"}
-            ]
-        },
-        {
-            "name": "kalman",
-            "independant_column": "time",
-            "dependant_columns": [
-                {"name":"kalman_velocity", "color": "green"},
-                {"name": "kalman_acceleration", "color": "blue"}
             ]
         },
         {

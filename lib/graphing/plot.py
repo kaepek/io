@@ -31,6 +31,7 @@ for plot in config_json['plots']:
         y_axis = dependant_column["name"]
         color = dependant_column["color"]
         fig.line(source=plot_data, x=x_axis, y=y_axis, color=color, legend_label=y_axis)
+        fig.scatter(source=plot_data, x=x_axis, y=y_axis, color=color, legend_label=y_axis)
     figs.append(fig)
 
 #https://discourse.bokeh.org/t/interactive-multi-line-graph-with-checkbox-widget-to-show-hide-lines-not-generating-graph-is-there-a-line-limit/8122
@@ -56,16 +57,16 @@ def update():
         try:
             relevant_data = float(data_str_split[input_position])
             if "scale" in input:
-                print("scale", input["scale"])
+                #print("scale", input["scale"])
                 relevant_data *= input["scale"]
         except Exception as error:
-            print(error)
+            #print(error)
             relevant_data = 0.0
         stream_obj[input_name] = [relevant_data]
     
-    print("-----")
-    print(stream_obj)
-    print("----")
+    #print("-----")
+    #print(stream_obj)
+    #print("----")
     #plot_data.patch(stream_obj)
     plot_data.stream(stream_obj, rollover=buffer_length)
 
