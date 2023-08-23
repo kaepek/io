@@ -12,6 +12,7 @@
   "license": "AGPL3",
   "dependencies": {
     "dualshock": "github:jk89/dualshock",
+    "rx": "^4.1.0",
     "serialport": "^10.4.0",
     "typed-struct": "^2.3.0"
   },
@@ -22,7 +23,6 @@
     "kaepek-torque-phase-direction-dualshock-console": "./lib/models/torque-phase/scripts/dualshock-console.js",
     "kaepek-ThrustU16LEDirectionU8Model-dualshock-serial": "./lib/models/thrustU16LE-directionU8/scripts/dualshock-serialport.js",
     "kaepek-ThrustU16LEDirectionU8Model-dualshock-serial-graph": "./lib/models/thrustU16LE-directionU8/scripts/dualshock-serialport-graph.js",
-    
     "kaepek-ThrustU16LEDirectionU8Model-dualshock-console": "./lib/models/thrustU16LE-directionU8/scripts/dualshock-console.js"
   }
 }
