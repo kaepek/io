@@ -39,16 +39,14 @@ namespace kaepek
          * 1: Start - No data
          * 2: Stop - No data
          * 3: Reset - No data
-         * 4: SerialInputFault - No data
-         * 5: SetDirectionUI8 - Unsigned Int 8 bit
-         * 6: SetThrustUI16 - Unsigned Int 16 bit
+         * 4: SetDirectionUI8 - Unsigned Int 8 bit
+         * 5: SetThrustUI16 - Unsigned Int 16 bit
          */
         int serial_input_command_word_buffer_size[] = {
             0, // Null
             0, // Start
             0, // Stop
             0, // Reset
-            0, // SerialInputFault
             1, // SetDirectionUI8
             2, // SetThrustUI16
         };
