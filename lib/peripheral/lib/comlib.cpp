@@ -14,26 +14,38 @@ namespace kaepek
         cli(); // no interrupt.
         while (Serial.available())
         {
-            Serial.println("good morning");
+            // Serial.println("good morning");
             // we have a byte.
             char next_byte = Serial.read();
             if (!control_word_set)
             {
-                Serial.print("a new word!");Serial.println((int) next_byte);
+                // Serial.print("a new word!");
+                // Serial.println((int)next_byte);
                 // next byte is a word.
                 current_control_word = next_byte;
                 control_word_set = true;
+                if (serial_input_command_word_buffer_size[current_control_word] == 0)
+                {
+                    control_word_set = false;
+                    buffer_idx = 0;
+                    device_instance->process_host_control_word(current_control_word, control_word_data_buffer);
+                }
             }
             else
             {
-                Serial.print("adding a byte");Serial.println((int) next_byte); // THIS NEEDS SOME FIXING AS NOT ALL WORDS HAVE DATA!
+                // Serial.print("adding a byte");
+                // Serial.println((int)next_byte); // THIS NEEDS SOME FIXING AS NOT ALL WORDS HAVE DATA!
                 // we are working on a word already, handle the byte
                 control_word_data_buffer[buffer_idx] = next_byte;
                 buffer_idx++;
-                if (buffer_idx > serial_input_command_word_buffer_size[current_control_word])
+                // Serial.println("about to think about if we are engin a word");
+                // Serial.println(buffer_idx);
+                // Serial.println(serial_input_command_word_buffer_size[current_control_word]);
+                if (buffer_idx == serial_input_command_word_buffer_size[current_control_word])
                 {
-                    Serial.print("we got to the end of the word!");
+                    // Serial.print("we got to the end of the word!");
                     control_word_set = false;
+                    buffer_idx = 0;
                     device_instance->process_host_control_word(current_control_word, control_word_data_buffer);
                 }
             }

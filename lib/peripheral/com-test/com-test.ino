@@ -23,8 +23,8 @@ namespace kaepek
     {
       Serial.print("Received control word:");
       Serial.println(control_word);
-      // Serial.print("Received control word buffer:");
-      // Serial.println(data_buffer);
+      Serial.print("Received control word buffer:");
+      Serial.println(data_buffer[0]);
     }
 
     void run()
@@ -39,11 +39,10 @@ kaepek::ComTester device;
 void setup()
 {
         // Delay serial read as too early and it gets junk noise data.
-        while (!Serial.available())
+        /*while (!Serial.available())
         {
-            delay(1000);
-        }
-        Serial.println("hihihi");
+            delay(100);
+        }*/
 }
 
 void loop()
