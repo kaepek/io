@@ -1,8 +1,8 @@
-import {merge} from 'rxjs';
+import {Observable, merge} from 'rxjs';
 
 export class ControlSourceInputRouter {
-    input_source_handlers = [];
-    $ = null;
+    input_source_handlers: Array<any> = [];
+    $: Observable<any> | null = null;
 
     async ready() {
         await Promise.all(this.input_source_handlers.map(handler => handler.ready()));

@@ -1,9 +1,13 @@
+declare module 'dualshock';
 import { ControlInputSourceHandler } from "./model";
 import { ControlInputSources } from "../sources";
 
 export class DualShockControlInputSourceHandler extends ControlInputSourceHandler {
     type = ControlInputSources.DualShock;
-    ds = null;
+    ds: any = null;
+    device: any = null;
+    gamepad: any = null;
+    gamepadArgs: any = null;
 
     input_types = {
         "rStickX": "stick",
@@ -28,13 +32,13 @@ export class DualShockControlInputSourceHandler extends ControlInputSourceHandle
         this.gamepad.onanalog = async (label, value) => this.subject.next({source:this.type, type: this.input_types[label], label, value });
     }
 
-    constructor(args) {
+    constructor(args?) {
         super();
         const gamepadArgs = { smoothAnalog: 10, smoothMotion: 15, joyDeadband: 4, moveDeadband: 4 };
         if (args) {
             if (args.hasOwnProperty && args.hasOwnProperty("smoothAnalog")) gamepadArgs.smoothAnalog = args.smoothAnalog;
-            if (args.hasOwnProperty && args.hasOwnProperty("smoothMotion")) gamepadArgs.smoothMotion = arg.smoothMotion;
-            if (args.hasOwnProperty && args.hasOwnProperty("joyDeadband")) gamepadArgs.joyDeadband = arg.joyDeadband;
+            if (args.hasOwnProperty && args.hasOwnProperty("smoothMotion")) gamepadArgs.smoothMotion = args.smoothMotion;
+            if (args.hasOwnProperty && args.hasOwnProperty("joyDeadband")) gamepadArgs.joyDeadband = args.joyDeadband;
             if (args.hasOwnProperty && args.hasOwnProperty("moveDeadband")) gamepadArgs.moveDeadband = args.moveDeadband;
         }
         this.gamepadArgs = gamepadArgs;

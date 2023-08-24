@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "graph": "bokeh serve --port 8033 --show lib/graphing/plot.py "
@@ -14,6 +13,7 @@
     "dualshock": "github:jk89/dualshock",
     "rxjs": "^7.8.1",
     "serialport": "^10.4.0",
+    "ts-node": "^10.9.1",
     "typed-struct": "^2.3.0"
   },
   "bin": {
@@ -24,5 +24,8 @@
     "kaepek-ThrustU16LEDirectionU8Model-dualshock-serial": "./lib/models/thrustU16LE-directionU8/scripts/dualshock-serialport.js",
     "kaepek-ThrustU16LEDirectionU8Model-dualshock-serial-graph": "./lib/models/thrustU16LE-directionU8/scripts/dualshock-serialport-graph.js",
     "kaepek-ThrustU16LEDirectionU8Model-dualshock-console": "./lib/models/thrustU16LE-directionU8/scripts/dualshock-console.js"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.4"
   }
 }

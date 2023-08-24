@@ -4,7 +4,7 @@ export class DeviceOutputRouter {
     device_output_sink_handlers = [];
 
     async ready() {
-        await Promise.all(this.device_output_sink_handlers.map(handler => handler.ready()));
+        await Promise.all(this.device_output_sink_handlers.map((handler: any) => handler.ready()));
     }
 
     constructor(device_output_sink_handlers) {
@@ -12,6 +12,6 @@ export class DeviceOutputRouter {
     }
 
     bind(processed_device_output$) {
-        this.device_output_sink_handlers.forEach(handler => handler.bind(processed_device_output$));
+        this.device_output_sink_handlers.forEach((handler: any) => handler.bind(processed_device_output$));
     }
 }

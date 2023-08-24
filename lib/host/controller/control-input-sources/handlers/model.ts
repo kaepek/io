@@ -1,7 +1,7 @@
 import { Subject } from "rxjs";
 
 export class ControlInputSourceHandler {
-    type = null;
+    type: string | null = null;
     scale = null;
     subject = new Subject();
     $ = this.subject.asObservable();

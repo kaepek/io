@@ -1,5 +1,5 @@
 export class OutputSinkBase {
-    type = null;
+    type: string | null = null;
     async ready() {
         throw "Not implemented";
     }

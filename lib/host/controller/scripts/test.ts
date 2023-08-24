@@ -28,6 +28,8 @@ const director = new StreamJunctionDirector(inputRouter, controlWordHandlers, in
 async function start() {
     return director.ready();
 }
+
+start().then(console.log).catch(console.error);
 /*
         control_source_input_router,
         control_word_handlers,

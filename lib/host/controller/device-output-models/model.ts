@@ -1,5 +1,5 @@
 export class DeviceOutputBase {
-    type = null;
+    type: string | null = null;
     process_output(output) {
         throw "Not implemented";
     }

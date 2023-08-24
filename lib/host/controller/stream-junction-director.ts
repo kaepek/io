@@ -3,20 +3,20 @@ import { filter, map } from "rxjs/operators";
 
 export class StreamJunctionDirector {
 
-    control_source_input_router = null;
-    control_word_handlers = null;
-    input_output_devices = null;
+    control_source_input_router: any | null = null;
+    control_word_handlers: any | null = null;
+    input_output_devices: any | null = null;
     device_output_model = null;
-    output_sink_router = null;
+    output_sink_router: any | null = null;
     control_source_input_router_subscription = null;
     control_source_input_new_words_subscription = null;
     device_output_subject = new Subject();
     device_output$ = this.device_output_subject.asObservable();
-    control_word_handlers_kept_event$ = null;
+    control_word_handlers_kept_event$: any | null = null;
 
     // deal with input/ouput device output data stream.
-    processed_device_output$ = device_output$.pipe(
-        map(device_output => this.device_output_model.process_output(device_output)) // device_output_model process with the model
+    processed_device_output$ = this.device_output$.pipe(
+        map(device_output => (this.device_output_model as any).process_output(device_output)) // device_output_model process with the model
     );
 
     constructor(
@@ -49,12 +49,12 @@ export class StreamJunctionDirector {
         });
 
         // bind processed_device_output$ to output-sinks
-        this.output_sink_router.bind(processed_device_output$);
+        this.output_sink_router.bind(this.processed_device_output$);
     }
 
     state = {};
 
-    filter_control_word_output_for_state_change(event) {
+    filter_control_word_output_for_state_change(event: any) {
         // we have new control input emitted from one of the control word handlers.
         if (event.hasOwnProperty("value")) {
             // check state
@@ -62,13 +62,13 @@ export class StreamJunctionDirector {
                 const old_state = this.state[event.word.name];
                 // state is new so emit
                 if (old_state !== event.word.value) {
-                    this.state[event.word.name] = word.value;
+                    this.state[event.word.name] = event.word.value;
                     return event;
                 }
             }
             else {
                 // words with no state are new! so emit them
-                this.state[event.word.name] = word.value;
+                this.state[event.word.name] = event.word.value;
                 return event;
             }
         }
@@ -86,7 +86,7 @@ export class StreamJunctionDirector {
 
     async ready() {
         // make sure the input output devices are ready for input/outputting
-        await Promise.all(input_output_devices.map(input_output_device => input_output_device.ready()));
+        await Promise.all(this.input_output_devices.map(input_output_device => input_output_device.ready()));
         // make sure the output router and output sinks are ready
         await this.output_sink_router.ready();
         // make sure the input router and input sources are ready

@@ -20,8 +20,4 @@ class ThrustUI16ControlWordHandler extends ControlWordHandlerBase {
         }
         return false;
     };
-
-    constructor() {
-
-    }
 }
