@@ -4,11 +4,11 @@ export class OutputSinkBase {
         throw "Not implemented";
     }
 
-    output_handler(output) {
+    output_handler(output: any) {
         throw "Not implemented";
     }
 
-    bind(processed_device_output$) {
+    bind(processed_device_output$: any) {
         processed_device_output$.subscribe(this.output_handler);
     }
 }

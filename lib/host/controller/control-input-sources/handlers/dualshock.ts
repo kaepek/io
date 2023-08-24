@@ -30,11 +30,11 @@ export class DualShockControlInputSourceHandler extends ControlInputSourceHandle
         this.device = devices[0];
         this.gamepad = this.ds.open(this.device, this.gamepadArgs);
         this.gamepad.onmotion = true; this.gamepad.onstatus = true;
-        this.gamepad.ondigital = async (label, value) => this.subject.next({source:this.type, type: "button", label, value });
-        this.gamepad.onanalog = async (label, value) => this.subject.next({source:this.type, type: this.input_types[label], label, value });
+        this.gamepad.ondigital = async (label: string, value: any) => this.subject.next({source:this.type, type: "button", label, value });
+        this.gamepad.onanalog = async (label: string, value: any) => this.subject.next({source:this.type, type: (this.input_types as any)[label], label, value });
     }
 
-    constructor(args?) {
+    constructor(args?: any | undefined) {
         super();
         const gamepadArgs = { smoothAnalog: 10, smoothMotion: 15, joyDeadband: 4, moveDeadband: 4 };
         if (args) {

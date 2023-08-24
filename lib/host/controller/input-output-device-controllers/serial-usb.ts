@@ -64,16 +64,16 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
         let bytes = null;
         if (event.hasOwnProperty("value")) {
             // build word with buffer
-            const emitStructure = new Struct(event.word.name).UInt8("word")[event.word.data_type]("buffer").compile();
-            const word_value = ControlWords[event.word.name];
+            const emitStructure = (new Struct(event.word.name) as any).UInt8("word")[event.word.data_type]("buffer").compile();
+            const word_value = (ControlWords as any)[event.word.name];
             emitStructure.word = word_value;
             emitStructure.buffer = event.value;
             bytes = emitStructure.raw;
         }
         else {
             // just build a word without a buffer
-            const emitStructure2 = new Struct(event.word.name).UInt8("word").compile() as any;
-            const word_value = ControlWords[event.word.name];
+            const emitStructure2 = (new Struct(event.word.name) as any).UInt8("word").compile() as any;
+            const word_value = (ControlWords as any)[event.word.name];
             emitStructure2.word = word_value;
             bytes = emitStructure2.raw;
         }
@@ -82,7 +82,7 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
         }
     }
 
-    constructor(serialOptions?) {
+    constructor(serialOptions?: any | undefined) {
         super();
         this.serialOptions = serialOptions || {};
     }

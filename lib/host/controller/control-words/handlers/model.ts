@@ -7,7 +7,7 @@ export class ControlWordHandlerBase {
     data_type: string | null = null;
     subject = new Subject();
     $ = this.subject.asObservable();
-    handle_input(input, state) {
+    handle_input(input: any, state: any) {
         throw "Not implemented";
     };
 }
