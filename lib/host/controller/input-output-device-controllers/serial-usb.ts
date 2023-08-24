@@ -14,7 +14,7 @@ const _Struct = ((Struct as any).default) as any;
 export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
 
     serialOptions: any | null = null;
-    serialport: any = null;
+    serialport: SerialPort | null = null;
     serialparser: any = null;
 
     async ready() {
@@ -52,6 +52,7 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
         this.serialOptions = serialOptions;
 
         // init serial port
+        console.log("SerialPort", SerialPort);
         this.serialport = new SerialPort(this.serialOptions);
 
         // bind events
@@ -108,7 +109,7 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
         console.log("bytes", bytes);
         if (bytes !== null) {
             console.log("wrote bytes!", bytes);
-            this.serialport.write(bytes);
+            (this.serialport as SerialPort).write(bytes);
         }
     }
 

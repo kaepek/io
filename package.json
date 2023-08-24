@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "ts-node ./lib/host/controller/scripts/test.ts",
     "graph": "bokeh serve --port 8033 --show lib/graphing/plot.py "
   },
   "author": "Jonathan Kelsey",
