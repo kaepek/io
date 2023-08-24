@@ -38,9 +38,13 @@ kaepek::ComTester device;
 
 void setup()
 {
+  
 }
 
 void loop()
 {
+  delay(1000);
+  Serial.println("good morning");
   device.run();
+  // Serial.println("hihihi");
 }

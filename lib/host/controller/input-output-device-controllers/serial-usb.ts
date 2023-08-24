@@ -62,6 +62,7 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
 
         this.serialparser = this.serialport.pipe(new ReadlineParser({ delimiter: '\n' }));
         this.serialparser.on("data", (line: string) => {
+            console.log("GOT SERIAL OUT", line);
             (this.device_output_subject as Subject<any>).next(line);
         });
     }
@@ -106,6 +107,7 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
         }
         console.log("bytes", bytes);
         if (bytes !== null) {
+            console.log("wrote bytes!", bytes);
             this.serialport.write(bytes);
         }
     }
