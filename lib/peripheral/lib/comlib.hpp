@@ -42,7 +42,7 @@ namespace kaepek
          * 4: SetDirectionUI8 - Unsigned Int 8 bit
          * 5: SetThrustUI16 - Unsigned Int 16 bit
          */
-        int serial_input_command_word_buffer_size[] = {
+        uint32_t serial_input_command_word_buffer_size[6] = {
             0, // Null
             0, // Start
             0, // Stop

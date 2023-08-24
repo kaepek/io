@@ -23,6 +23,8 @@ namespace kaepek
     {
       Serial.print("Received control word:");
       Serial.println(control_word);
+      // Serial.print("Received control word buffer:");
+      // Serial.println(data_buffer);
     }
 
     void run()
