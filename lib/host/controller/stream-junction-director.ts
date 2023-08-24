@@ -20,11 +20,11 @@ export class StreamJunctionDirector {
     );
 
     constructor(
-        control_source_input_router,
-        control_word_handlers,
-        input_output_devices,
-        device_output_model,
-        output_sink_router
+        control_source_input_router: any,
+        control_word_handlers: any,
+        input_output_devices: any,
+        device_output_model: any,
+        output_sink_router: any
     ) {
         this.control_source_input_router = control_source_input_router;
         this.control_word_handlers = control_word_handlers;
@@ -36,7 +36,7 @@ export class StreamJunctionDirector {
         this.control_source_input_new_words_subscription = control_source_input_router.$.subscribe(this.handle_control_input);
 
         // next merge together the observables from the control handlers so when they emit we perform a state check before emitting.
-        this.control_word_handlers_kept_event$ = merge(...this.control_word_handlers.map((handler) => handler.$)).pipe(
+        this.control_word_handlers_kept_event$ = merge(...this.control_word_handlers.map((handler: any) => handler.$)).pipe(
             map(this.filter_control_word_output_for_state_change),
             filter((event) => event !== null)
         );
@@ -44,7 +44,7 @@ export class StreamJunctionDirector {
         // give the input-output-devices-controllers the device_output_subject so they can call next when they
         // recieve output and also give them the control_word_handlers_kept_event$ so that they accept new
         // control input
-        this.input_output_devices.forEach((input_output_device) => {
+        this.input_output_devices.forEach((input_output_device: any) => {
             input_output_device.bind(this.device_output_subject, this.control_word_handlers_kept_event$);
         });
 
@@ -52,7 +52,7 @@ export class StreamJunctionDirector {
         this.output_sink_router.bind(this.processed_device_output$);
     }
 
-    state = {};
+    state: any = {};
 
     filter_control_word_output_for_state_change(event: any) {
         // we have new control input emitted from one of the control word handlers.
@@ -79,14 +79,14 @@ export class StreamJunctionDirector {
         return null;
     }
 
-    handle_control_input(input) {
+    handle_control_input(input: any) {
         // pipe to control words handlers
-        this.control_word_handlers.forEach(control_word_handler => control_word_handler.handle_input(input, this.state));
+        this.control_word_handlers.forEach((control_word_handler: any) => control_word_handler.handle_input(input, this.state));
     }
 
     async ready() {
         // make sure the input output devices are ready for input/outputting
-        await Promise.all(this.input_output_devices.map(input_output_device => input_output_device.ready()));
+        await Promise.all(this.input_output_devices.map((input_output_device: any) => input_output_device.ready()));
         // make sure the output router and output sinks are ready
         await this.output_sink_router.ready();
         // make sure the input router and input sources are ready
