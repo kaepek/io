@@ -4,6 +4,9 @@ import Struct from "typed-struct";
 import { ControlWords } from "../control-words/words";
 import { Subject } from "rxjs";
 
+// hack Struct
+const _Struct = ((Struct as any).default) as any;
+
 export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
 
     serialOptions: any | null = null;
@@ -60,6 +63,14 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
     }
 
     handle_input_control_word(event: any) {
+
+        console.log(_Struct);
+
+        const a = new _Struct("daasadsads")
+        .UInt16LE("thrust")
+        .UInt8("direction")
+        .compile();
+
         // deal with word event
         let bytes = null;
         if (event.hasOwnProperty("value")) {
