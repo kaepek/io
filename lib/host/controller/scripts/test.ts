@@ -25,19 +25,7 @@ const outputRouter = new DeviceOutputRouter([consoleOutputSink]);
 
 const director = new StreamJunctionDirector(inputRouter, controlWordHandlers, inputOuputDevices, inputOutputDeviceOutputHandler, outputRouter);
 
-async function start() {
-    return director.ready();
-}
-
-start().then(console.log).catch((error) => {
+director.ready().then(console.log).catch((error) => {
     console.log(error);
     process.exit(1);
 });
-/*
-        control_source_input_router,
-        control_word_handlers,
-        input_output_devices,
-        device_output_model,
-        output_sink_router
-
-*/
