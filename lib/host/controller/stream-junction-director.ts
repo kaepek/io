@@ -35,7 +35,7 @@ export class StreamJunctionDirector {
         // deal with control input... pipe to handlers
         this.control_source_input_new_words_subscription = control_source_input_router.$.pipe(
             map((it: any) => {
-                console.log("control_source_input_new_words_subscription", it);
+                // console.log("control_source_input_new_words_subscription", it);
                 return it;
             })
         ).subscribe((input: any)=>this.handle_control_input(input));
@@ -44,7 +44,7 @@ export class StreamJunctionDirector {
         this.control_word_handlers_kept_event$ = merge(...this.control_word_handlers.map((handler: any) => handler.$)).pipe(
             map((kept_event) => this.filter_control_word_output_for_state_change(kept_event)),
             filter((event) => {
-                console.log("event", event, event !== null);
+                // console.log("event", event, event !== null);
                 return event !== null;
             })
         );
@@ -99,5 +99,6 @@ export class StreamJunctionDirector {
         await this.output_sink_router.ready();
         // make sure the input router and input sources are ready
         await this.control_source_input_router.ready();
+        return "Ready!";
     }
 }

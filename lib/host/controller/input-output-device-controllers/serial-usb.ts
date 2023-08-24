@@ -52,7 +52,6 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
         this.serialOptions = serialOptions;
 
         // init serial port
-        console.log("SerialPort", SerialPort);
         this.serialport = new SerialPort(this.serialOptions);
 
         // bind events
@@ -63,7 +62,6 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
 
         this.serialparser = this.serialport.pipe(new ReadlineParser({ delimiter: '\n' }));
         this.serialparser.on("data", (line: string) => {
-            console.log("GOT SERIAL OUT", line);
             (this.device_output_subject as Subject<any>).next(line);
         });
     }
@@ -80,8 +78,6 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
     };
 
     handle_input_control_word(event: any) {
-        console.log("got as far a serial", event);
-
         // deal with word event
         let bytes = null;
         if (event.hasOwnProperty("value")) {
@@ -93,20 +89,16 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
             else {
                 wordStructTemplate = this.get_word_and_data_struct_fragment(event.word.name, event.word.data_type);
             }
-            console.log("ControlWords", ControlWords);
             const wordStruct = new wordStructTemplate();
             wordStruct.word = event.word.name;
             wordStruct.buffer = event.value;
-            console.log("wordStruct", wordStruct);
             bytes = wordStruct.$raw;
         }
         else {
             const wordStruct = new this.SingleWordStruct();
             wordStruct.word = event.word.name; // (ControlWords as any)[event.word.name];
-            console.log("wordStruct", wordStruct);
             bytes = wordStruct.$raw;
         }
-        console.log("bytes", bytes);
         if (bytes !== null) {
             console.log("wrote bytes!", bytes);
             (this.serialport as SerialPort).write(bytes);
