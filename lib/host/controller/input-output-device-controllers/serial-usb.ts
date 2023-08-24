@@ -1,9 +1,13 @@
 import { InputOutputDeviceControllerBase } from "./model";
 import { SerialPort, ReadlineParser } from "serialport";
-import { default as Struct } from "typed-struct";
+// import * as _Struct from "typed-struct";
+import Struct from "typed-struct";
 import { ControlWords } from "../control-words/words";
 import { Subject } from "rxjs";
 
+// _Struct.default
+
+//console.log("Struct", Struct);
 // hack Struct
 const _Struct = ((Struct as any).default) as any;
 
@@ -65,15 +69,17 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
     SingleWordStruct = new _Struct("solo-word").UInt8("word").compile();
 
     handle_input_control_word(event: any) {
+        console.log("got as far a serial", event);
+
         // deal with word event
         let bytes = null;
         if (event.hasOwnProperty("value")) {
             // build word with buffer
-            const emitStructure = (new Struct(event.word.name) as any).UInt8("word")[event.word.data_type]("buffer").compile();
+            /*const emitStructure = (new Struct(event.word.name) as any).UInt8("word")[event.word.data_type]("buffer").compile();
             const word_value = ;
             emitStructure.word = word_value;
             emitStructure.buffer = event.value;
-            bytes = emitStructure.raw;
+            bytes = emitStructure.raw;*/
         }
         else {
             const serialWord = new this.SingleWordStruct();

@@ -32,8 +32,6 @@ export class StreamJunctionDirector {
         this.device_output_model = device_output_model;
         this.output_sink_router = output_sink_router;
 
-        console.log([control_source_input_router,control_word_handlers, input_output_devices, device_output_model, output_sink_router])
-
         // deal with control input... pipe to handlers
         this.control_source_input_new_words_subscription = control_source_input_router.$.pipe(
             map((it: any) => {
@@ -72,13 +70,13 @@ export class StreamJunctionDirector {
                 const old_state = this.state[event.word.name];
                 // state is new so emit
                 if (old_state !== event.word.value) {
-                    this.state[event.word.name] = event.word.value;
+                    this.state[event.word.name] = event.value;
                     return event;
                 }
             }
             else {
                 // words with no state are new! so emit them
-                this.state[event.word.name] = event.word.value;
+                this.state[event.word.name] = event.value;
                 return event;
             }
         }
