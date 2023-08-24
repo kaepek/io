@@ -1,6 +1,8 @@
-declare module 'dualshock';
 import { ControlInputSourceHandler } from "./model";
 import { ControlInputSources } from "../sources";
+
+// @ts-ignore
+import * as dualshock from "dualshock";
 
 export class DualShockControlInputSourceHandler extends ControlInputSourceHandler {
     type = ControlInputSources.DualShock;
@@ -22,7 +24,7 @@ export class DualShockControlInputSourceHandler extends ControlInputSourceHandle
     };
 
     async ready() {
-        this.ds = await import("dualshock");
+        this.ds = dualshock;
         const devices = this.ds.getDevices();
         if (devices.length < 1) throw "Could not find a controller!";
         this.device = devices[0];

@@ -1,12 +1,10 @@
 {
+  "ts-node": { "esm": true, "experimentalSpecifierResolution": "node" },
     "compilerOptions": {
       "target": "ESNext",
       "module": "ESNext",
       "strict": true,
       "esModuleInterop": true,
       "moduleResolution": "node",
-    },
-    "typeRoots": [
-        "./typings",
-      ]
+    }
 }
