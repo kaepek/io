@@ -54,12 +54,12 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
         });
 
         this.serialparser = this.serialport.pipe(new ReadlineParser({ delimiter: '\n' }));
-        this.serialparser.on("data", (line) => {
+        this.serialparser.on("data", (line: string) => {
             (this.device_output_subject as Subject<any>).next(line);
         });
     }
 
-    handle_input_control_word(event) {
+    handle_input_control_word(event: any) {
         // deal with word event
         let bytes = null;
         if (event.hasOwnProperty("value")) {
