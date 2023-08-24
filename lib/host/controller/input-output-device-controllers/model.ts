@@ -19,6 +19,6 @@ export class InputOutputDeviceControllerBase {
 
     bind(output_subject: any, control_source_input_new_words$: any) { // device_output_subject
         this.device_output_subject = output_subject;
-        this.control_source_input_new_words_subscription = control_source_input_new_words$.subscribe(this.handle_input_control_word);
+        this.control_source_input_new_words_subscription = control_source_input_new_words$.subscribe((word: any) => this.handle_input_control_word(word));
     }
 }

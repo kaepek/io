@@ -68,6 +68,15 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
 
     SingleWordStruct = new _Struct("solo-word").UInt8("word").compile();
 
+    get_word_and_data_struct_fragment(name: string | number, data_type: string) {
+        const word_name = name.toString();
+        return new _Struct(word_name).UInt8("word")[data_type]("buffer").compile();
+    }
+
+    wordStructs: any = {
+        SingleWordStruct: this.SingleWordStruct,
+    };
+
     handle_input_control_word(event: any) {
         console.log("got as far a serial", event);
 
@@ -75,17 +84,27 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
         let bytes = null;
         if (event.hasOwnProperty("value")) {
             // build word with buffer
-            /*const emitStructure = (new Struct(event.word.name) as any).UInt8("word")[event.word.data_type]("buffer").compile();
-            const word_value = ;
-            emitStructure.word = word_value;
-            emitStructure.buffer = event.value;
-            bytes = emitStructure.raw;*/
+            let wordStructTemplate = null;
+            if (this.wordStructs.hasOwnProperty(event.word.name)) {
+                wordStructTemplate = this.wordStructs[event.word.name];
+            }
+            else {
+                wordStructTemplate = this.get_word_and_data_struct_fragment(event.word.name, event.word.data_type);
+            }
+            console.log("ControlWords", ControlWords);
+            const wordStruct = new wordStructTemplate();
+            wordStruct.word = event.word.name;
+            wordStruct.buffer = event.value;
+            console.log("wordStruct", wordStruct);
+            bytes = wordStruct.$raw;
         }
         else {
-            const serialWord = new this.SingleWordStruct();
-            serialWord.word = (ControlWords as any)[event.word.name];
-            bytes = serialWord.$raw;
+            const wordStruct = new this.SingleWordStruct();
+            wordStruct.word = event.word.name; // (ControlWords as any)[event.word.name];
+            console.log("wordStruct", wordStruct);
+            bytes = wordStruct.$raw;
         }
+        console.log("bytes", bytes);
         if (bytes !== null) {
             this.serialport.write(bytes);
         }
