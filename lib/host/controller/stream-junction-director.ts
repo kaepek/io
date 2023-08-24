@@ -1,4 +1,4 @@
-import { Subject, merge } from "rxjs";
+import { Subject, merge, pipe } from "rxjs";
 import { filter, map } from "rxjs/operators";
 
 export class StreamJunctionDirector {
@@ -32,13 +32,23 @@ export class StreamJunctionDirector {
         this.device_output_model = device_output_model;
         this.output_sink_router = output_sink_router;
 
+        console.log([control_source_input_router,control_word_handlers, input_output_devices, device_output_model, output_sink_router])
+
         // deal with control input... pipe to handlers
-        this.control_source_input_new_words_subscription = control_source_input_router.$.subscribe(this.handle_control_input);
+        this.control_source_input_new_words_subscription = control_source_input_router.$.pipe(
+            map((it: any) => {
+                console.log("control_source_input_new_words_subscription", it);
+                return it;
+            })
+        ).subscribe((input: any)=>this.handle_control_input(input));
 
         // next merge together the observables from the control handlers so when they emit we perform a state check before emitting.
         this.control_word_handlers_kept_event$ = merge(...this.control_word_handlers.map((handler: any) => handler.$)).pipe(
-            map(this.filter_control_word_output_for_state_change),
-            filter((event) => event !== null)
+            map((kept_event) => this.filter_control_word_output_for_state_change(kept_event)),
+            filter((event) => {
+                console.log("event", event, event !== null);
+                return event !== null;
+            })
         );
 
         // give the input-output-devices-controllers the device_output_subject so they can call next when they
