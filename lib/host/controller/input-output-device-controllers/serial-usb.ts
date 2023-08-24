@@ -1,6 +1,6 @@
 import { InputOutputDeviceControllerBase } from "./model";
 import { SerialPort, ReadlineParser } from "serialport";
-import Struct from "typed-struct";
+import { default as Struct } from "typed-struct";
 import { ControlWords } from "../control-words/words";
 import { Subject } from "rxjs";
 
@@ -62,31 +62,23 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
         });
     }
 
+    SingleWordStruct = new _Struct("solo-word").UInt8("word").compile();
+
     handle_input_control_word(event: any) {
-
-        console.log(_Struct);
-
-        const a = new _Struct("daasadsads")
-        .UInt16LE("thrust")
-        .UInt8("direction")
-        .compile();
-
         // deal with word event
         let bytes = null;
         if (event.hasOwnProperty("value")) {
             // build word with buffer
             const emitStructure = (new Struct(event.word.name) as any).UInt8("word")[event.word.data_type]("buffer").compile();
-            const word_value = (ControlWords as any)[event.word.name];
+            const word_value = ;
             emitStructure.word = word_value;
             emitStructure.buffer = event.value;
             bytes = emitStructure.raw;
         }
         else {
-            // just build a word without a buffer
-            const emitStructure2 = (new Struct(event.word.name) as any).UInt8("word").compile() as any;
-            const word_value = (ControlWords as any)[event.word.name];
-            emitStructure2.word = word_value;
-            bytes = emitStructure2.raw;
+            const serialWord = new this.SingleWordStruct();
+            serialWord.word = (ControlWords as any)[event.word.name];
+            bytes = serialWord.$raw;
         }
         if (bytes !== null) {
             this.serialport.write(bytes);
