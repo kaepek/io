@@ -2,13 +2,16 @@ import { Subject, Subscription, merge, pipe } from "rxjs";
 import { filter, map } from "rxjs/operators";
 import { ControlSourceInputRouter } from "./control-input-sources/router";
 import { DeviceOutputRouter } from "./output-sinks/router";
+import { ControlWordHandlerBase } from "./control-words/handlers/model";
+import { InputOutputDeviceControllerBase } from "./input-output-device-controllers/model";
+import { DeviceOutputModelBase } from "./device-output-models/model";
 
 export class StreamJunctionDirector {
 
     control_source_input_router: ControlSourceInputRouter;
-    control_word_handlers: any | null = null;
-    input_output_devices: any | null = null;
-    device_output_model = null;
+    control_word_handlers: Array<ControlWordHandlerBase>;
+    input_output_devices: Array<InputOutputDeviceControllerBase>;
+    device_output_model: DeviceOutputModelBase;
     output_sink_router: DeviceOutputRouter;
     control_source_input_router_subscription = null;
     control_source_input_new_words_subscription: Subscription;
@@ -18,14 +21,14 @@ export class StreamJunctionDirector {
 
     // deal with input/ouput device output data stream.
     processed_device_output$ = this.device_output$.pipe(
-        map(device_output => (this.device_output_model as any).process_output(device_output)) // device_output_model process with the model
+        map(device_output => this.device_output_model.process_output(device_output)) // device_output_model process with the model
     );
 
     constructor(
         control_source_input_router: ControlSourceInputRouter,
-        control_word_handlers: any,
-        input_output_devices: any,
-        device_output_model: any,
+        control_word_handlers: Array<ControlWordHandlerBase>,
+        input_output_devices: Array<InputOutputDeviceControllerBase>,
+        device_output_model: DeviceOutputModelBase,
         output_sink_router: DeviceOutputRouter
     ) {
         this.control_source_input_router = control_source_input_router;
