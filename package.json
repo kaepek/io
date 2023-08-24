@@ -15,7 +15,7 @@
     "rxjs": "^7.8.1",
     "serialport": "^10.4.0",
     "ts-node": "^10.9.1",
-    "typed-struct": "^2.3.0"
+    "typed-struct": "github:jk89/typed-struct"
   },
   "bin": {
     "kaepek-torque-delay-direction-dualshock-serial": "./lib/models/torque-delay-direction/scripts/dualshock-serial.js",

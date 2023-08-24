@@ -29,7 +29,10 @@ async function start() {
     return director.ready();
 }
 
-start().then(console.log).catch(console.error);
+start().then(console.log).catch((error) => {
+    console.log(error);
+    process.exit(1);
+});
 /*
         control_source_input_router,
         control_word_handlers,
