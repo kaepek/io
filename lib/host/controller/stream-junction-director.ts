@@ -1,15 +1,17 @@
-import { Subject, merge, pipe } from "rxjs";
+import { Subject, Subscription, merge, pipe } from "rxjs";
 import { filter, map } from "rxjs/operators";
+import { ControlSourceInputRouter } from "./control-input-sources/router";
+import { DeviceOutputRouter } from "./output-sinks/router";
 
 export class StreamJunctionDirector {
 
-    control_source_input_router: any | null = null;
+    control_source_input_router: ControlSourceInputRouter;
     control_word_handlers: any | null = null;
     input_output_devices: any | null = null;
     device_output_model = null;
-    output_sink_router: any | null = null;
+    output_sink_router: DeviceOutputRouter;
     control_source_input_router_subscription = null;
-    control_source_input_new_words_subscription = null;
+    control_source_input_new_words_subscription: Subscription;
     device_output_subject = new Subject();
     device_output$ = this.device_output_subject.asObservable();
     control_word_handlers_kept_event$: any | null = null;
@@ -20,11 +22,11 @@ export class StreamJunctionDirector {
     );
 
     constructor(
-        control_source_input_router: any,
+        control_source_input_router: ControlSourceInputRouter,
         control_word_handlers: any,
         input_output_devices: any,
         device_output_model: any,
-        output_sink_router: any
+        output_sink_router: DeviceOutputRouter
     ) {
         this.control_source_input_router = control_source_input_router;
         this.control_word_handlers = control_word_handlers;

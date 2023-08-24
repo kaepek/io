@@ -2,7 +2,7 @@ import {Observable, merge} from 'rxjs';
 
 export class ControlSourceInputRouter {
     input_source_handlers: Array<any> = [];
-    $: Observable<any> | null = null;
+    $: Observable<any>;
 
     async ready() {
         await Promise.all(this.input_source_handlers.map(handler => handler.ready()));
