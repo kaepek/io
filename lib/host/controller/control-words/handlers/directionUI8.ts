@@ -1,9 +1,9 @@
 import { ControlInputSources } from "../../control-input-sources/sources";
-import { ControlWordDataTypes, ControlWords } from "../words";
+import { ControlWordDataTypes, ControlWordsUI8 } from "../words";
 import { ControlWordHandlerBase } from "./model";
 
 export class DirectionUI8ControlWordHandler extends ControlWordHandlerBase {
-    name = ControlWords.SetDirectionUI8;
+    name = ControlWordsUI8.SetDirectionUI8;
     scale = 1.0;
     data_type = ControlWordDataTypes.UInt8;
     handle_input(input: any, state: any) {

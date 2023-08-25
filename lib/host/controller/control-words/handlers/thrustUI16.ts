@@ -1,9 +1,9 @@
 import { ControlInputSources } from "../../control-input-sources/sources";
-import { ControlWordDataTypes, ControlWords } from "../words";
+import { ControlWordDataTypes, ControlWordsUI8 } from "../words";
 import { ControlWordHandlerBase } from "./model";
 
 export class ThrustUI16ControlWordHandler extends ControlWordHandlerBase {
-    name = ControlWords.SetThrustUI16;
+    name = ControlWordsUI8.SetThrustUI16;
     state_alias = "thrust";
     scale = 1.0;
     data_type = ControlWordDataTypes.UInt16LE;

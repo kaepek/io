@@ -1,9 +1,9 @@
 import { ControlInputSources } from "../../control-input-sources/sources";
-import { ControlWords } from "../words";
+import { ControlWordsUI8 } from "../words";
 import { ControlWordHandlerBase } from "./model";
 
 export class StartControlWordHandler extends ControlWordHandlerBase {
-    name = ControlWords.Start;
+    name = ControlWordsUI8.Start;
     handle_input(input: any, state: any) {
         if (input.source == ControlInputSources.DualShock) {
             if (input.type === "button" && input.label === "start" && input.value === false) 

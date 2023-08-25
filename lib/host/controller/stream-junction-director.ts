@@ -41,7 +41,7 @@ export class StreamJunctionDirector {
         // create control_word_handlers_map
         this.control_word_handlers_map = this.control_word_handlers.reduce((acc: { [wordName: string | number]: ControlWordHandlerBase }, word_handler) => {
             const word_name = word_handler.state_alias || word_handler.name || "";
-            if (acc.hasOwnProperty(word_name)) throw `Duplicate wordName ${word_name}`;
+            if (acc.hasOwnProperty(word_name)) throw `Duplicate word name [${word_name}]`;
             if (word_name !== "") acc[word_name] = word_handler;
             return acc;
         }, {});
@@ -57,10 +57,7 @@ export class StreamJunctionDirector {
         // next merge together the observables from the control handlers so when they emit we perform a state check before emitting.
         this.control_word_handlers_kept_event$ = merge(...this.control_word_handlers.map((handler: any) => handler.$)).pipe(
             map((kept_event) => this.filter_control_word_output_for_state_change(kept_event)),
-            filter((event) => {
-                // console.log("event", event, event !== null);
-                return event !== null;
-            })
+            filter((event) => event !== null)
         );
 
         // give the input-output-devices-controllers the device_output_subject so they can call next when they
