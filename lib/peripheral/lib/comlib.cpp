@@ -14,16 +14,14 @@ namespace kaepek
         cli(); // no interrupt.
         while (Serial.available())
         {
-            // Serial.println("good morning");
             // we have a byte.
             char next_byte = Serial.read();
             if (!control_word_set)
             {
-                // Serial.print("a new word!");
-                // Serial.println((int)next_byte);
                 // next byte is a word.
                 current_control_word = next_byte;
                 control_word_set = true;
+                // if the word has no data then we are done with this word.
                 if (serial_input_command_word_buffer_size[current_control_word] == 0)
                 {
                     control_word_set = false;
@@ -33,17 +31,12 @@ namespace kaepek
             }
             else
             {
-                // Serial.print("adding a byte");
-                // Serial.println((int)next_byte); // THIS NEEDS SOME FIXING AS NOT ALL WORDS HAVE DATA!
-                // we are working on a word already, handle the byte
+                // we are working on a word already, handle the bytes of data
                 control_word_data_buffer[buffer_idx] = next_byte;
                 buffer_idx++;
-                // Serial.println("about to think about if we are engin a word");
-                // Serial.println(buffer_idx);
-                // Serial.println(serial_input_command_word_buffer_size[current_control_word]);
+                // if the word buffer is complete then we are done with this word
                 if (buffer_idx == serial_input_command_word_buffer_size[current_control_word])
                 {
-                    // Serial.print("we got to the end of the word!");
                     control_word_set = false;
                     buffer_idx = 0;
                     device_instance->process_host_control_word(current_control_word, control_word_data_buffer);
