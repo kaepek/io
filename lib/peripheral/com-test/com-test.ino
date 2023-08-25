@@ -64,11 +64,6 @@ kaepek::ComTester device;
 
 void setup()
 {
-  // Delay serial read as too early and it gets junk noise data.
-  /*while (!Serial.available())
-  {
-      delay(100);
-  }*/
 }
 
 void loop()
