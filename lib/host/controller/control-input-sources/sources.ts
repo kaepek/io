@@ -1,6 +1,7 @@
 const ControlInputSources = {
     DualShock: "DualShock",
-    UPD: "UPD"
+    UPD: "UPD",
+    Keyboard: "Keyboard"
 }
 
 export { ControlInputSources }

@@ -1,4 +1,5 @@
 import { DualShockControlInputSourceHandler } from "../control-input-sources/handlers/dualshock";
+import { KeyboardInputSourceHandler } from "../control-input-sources/handlers/keyboard";
 import { ControlSourceInputRouter } from "../control-input-sources/router";
 import { DirectionUI8ControlWordHandler } from "../control-words/handlers/directionUI8";
 import { NullControlWordHandler } from "../control-words/handlers/null";
@@ -16,7 +17,8 @@ import { StreamJunctionDirector } from "../stream-junction-director";
 
 
 const dualshock = new DualShockControlInputSourceHandler();
-const input_router = new ControlSourceInputRouter([dualshock]);
+const keyboard = new KeyboardInputSourceHandler();
+const input_router = new ControlSourceInputRouter([dualshock, keyboard]);
 
 const directionUI8_word_control_handler = new DirectionUI8ControlWordHandler();
 const null_control_word_handler = new NullControlWordHandler();
