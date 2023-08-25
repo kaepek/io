@@ -4,12 +4,14 @@ import readline from "readline";
 import { Subject, interval } from "rxjs";
 import { takeUntil, buffer, filter, debounceTime, distinctUntilChanged } from "rxjs/operators";
 
+export const keyboard_debounce_time = 500;
+
 export class KeyboardInputSourceHandler extends ControlInputSourceHandler {
     type = ControlInputSources.Keyboard;
     key_subject = new Subject();
     key$ = this.key_subject.asObservable();
     key_state: any = {};
-    interval: number = 500;
+    interval: number = keyboard_debounce_time;
 
     key_debounce: any = {}
 
@@ -23,24 +25,24 @@ export class KeyboardInputSourceHandler extends ControlInputSourceHandler {
         // so we get lots of events if the key is held down... use this to know 
         process.stdin.on('keypress', (_, key) => {
             if (key) {
-                if (key.ctrl && key.name === "c") process.exit(0);
                 const key_name = key.name;
+                const key_event_data = {
+                    source: this.type,
+                    type: "button",
+                    label: key_name,
+                    ...key,
+                };
+                if (key.ctrl && key.name === "c") process.exit(0);
                 if (!this.key_state[key_name]) {
                     this.key_state[key_name] = true;
                     this.key_subject.next({
-                        source: this.type,
-                        type: "button",
-                        ...key,
-                        key_name,
+                        ...key_event_data,
                         value: true
                     });
                     this.key_debounce[key_name] = setTimeout(()=>{
                         this.key_state[key_name] = false;
                         this.key_subject.next({
-                            source: this.type,
-                            type: "button",
-                            ...key,
-                            key_name,
+                            ...key_event_data,
                             value: false
                         });
                     }, this.interval);
@@ -50,10 +52,7 @@ export class KeyboardInputSourceHandler extends ControlInputSourceHandler {
                     this.key_debounce[key_name] = setTimeout(()=>{
                         this.key_state[key_name] = false;
                         this.key_subject.next({
-                            source: this.type,
-                            type: "button",
-                            ...key,
-                            key_name,
+                            ...key_event_data,
                             value: false
                         });
                     }, 100);
