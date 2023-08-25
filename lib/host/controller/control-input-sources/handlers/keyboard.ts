@@ -9,12 +9,9 @@ export class KeyboardInputSourceHandler extends ControlInputSourceHandler {
     key_subject = new Subject();
     key$ = this.key_subject.asObservable();
     key_state: any = {};
-    interval: number = 550;
+    interval: number = 500;
 
-    key_debounce: any = {
-
-    }
-
+    key_debounce: any = {}
 
     async ready() {
         readline.emitKeypressEvents(process.stdin);
@@ -24,9 +21,7 @@ export class KeyboardInputSourceHandler extends ControlInputSourceHandler {
         }
 
         // so we get lots of events if the key is held down... use this to know 
-
         process.stdin.on('keypress', (_, key) => {
-            // console.log("keypress", key);
             if (key) {
                 if (key.ctrl && key.name === "c") process.exit(0);
                 const key_name = key.name;
@@ -61,7 +56,7 @@ export class KeyboardInputSourceHandler extends ControlInputSourceHandler {
                             key_name,
                             value: false
                         });
-                    }, this.interval);
+                    }, 100);
                 }
             }
         });
@@ -72,9 +67,6 @@ export class KeyboardInputSourceHandler extends ControlInputSourceHandler {
         });
 
         // value: false should mean up! // true should mean pressed
-
-        // value: false should mean up! // true should mean pressed
-
     }
 
     constructor() {
