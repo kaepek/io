@@ -1,6 +1,7 @@
 import { DualShockControlInputSourceHandler } from "../control-input-sources/handlers/dualshock";
 import { ControlSourceInputRouter } from "../control-input-sources/router";
 import { DirectionUI8ControlWordHandler } from "../control-words/handlers/directionUI8";
+import { NullControlWordHandler } from "../control-words/handlers/null";
 import { DelimitedASCIILine } from "../device-output-models/delimited-ascii-line";
 import { SerialUSBDeviceController } from "../input-output-device-controllers/serial-usb";
 import { ConsoleOutputSink } from "../output-sinks/console";
@@ -9,21 +10,23 @@ import { StreamJunctionDirector } from "../stream-junction-director";
 
 
 const dualshock = new DualShockControlInputSourceHandler();
-const inputRouter = new ControlSourceInputRouter([dualshock]);
+const input_router = new ControlSourceInputRouter([dualshock]);
 
-const directionWordControlHandler = new DirectionUI8ControlWordHandler();
-const controlWordHandlers = [directionWordControlHandler];
+const direction_word_control_handler = new DirectionUI8ControlWordHandler();
+const null_control_word_handler = new NullControlWordHandler();
 
-const inputOutputDevice = new SerialUSBDeviceController();
-const inputOuputDevices = [inputOutputDevice];
+const control_word_handlers = [direction_word_control_handler];
 
-const inputOutputDeviceOutputHandler = new DelimitedASCIILine();
+const input_output_device = new SerialUSBDeviceController();
+const inputOuputDevices = [input_output_device];
 
-const consoleOutputSink = new ConsoleOutputSink();
+const peripheral_device_output_model = new DelimitedASCIILine();
 
-const outputRouter = new DeviceOutputRouter([consoleOutputSink]);
+const console_output_sink = new ConsoleOutputSink();
 
-const director = new StreamJunctionDirector(inputRouter, controlWordHandlers, inputOuputDevices, inputOutputDeviceOutputHandler, outputRouter);
+const output_router = new DeviceOutputRouter([console_output_sink]);
+
+const director = new StreamJunctionDirector(input_router, control_word_handlers, inputOuputDevices, peripheral_device_output_model, output_router);
 
 director.ready().then(console.log).catch((error) => {
     console.log(error);
