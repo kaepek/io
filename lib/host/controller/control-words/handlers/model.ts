@@ -1,7 +1,7 @@
 import { Subject } from "rxjs";
 
 export class ControlWordHandlerBase {
-    name: number | null = null;
+    name: number = 0;
     state_alias: string | null = null;
     data_type: string | null = null;
     subject = new Subject();
@@ -10,4 +10,9 @@ export class ControlWordHandlerBase {
     handle_input(input: any, state: any) {
         throw "Not implemented";
     };
+}
+
+export interface ControlWordEvent {
+    word: ControlWordHandlerBase;
+    value?: any;
 }

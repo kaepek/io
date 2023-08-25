@@ -7,6 +7,7 @@ import { StartControlWordHandler } from "../control-words/handlers/start";
 import { StopControlWordHandler } from "../control-words/handlers/stop";
 import { ThrustUI16ControlWordHandler } from "../control-words/handlers/thrustUI16";
 import { DelimitedASCIILine } from "../device-output-models/delimited-ascii-line";
+import { ConsoleDeviceController } from "../input-output-device-controllers/console";
 import { SerialUSBDeviceController } from "../input-output-device-controllers/serial-usb";
 import { ConsoleOutputSink } from "../output-sinks/console";
 import { DeviceOutputRouter } from "../output-sinks/router";
@@ -26,7 +27,8 @@ const thrustUI16_word_control_handler = new ThrustUI16ControlWordHandler();
 const control_word_handlers = [directionUI8_word_control_handler, start_control_word_handler, stop_control_word_handler, reset_control_word_handler, thrustUI16_word_control_handler];
 
 const input_output_device = new SerialUSBDeviceController();
-const peripheral_devices = [input_output_device];
+const console_output_device = new ConsoleDeviceController();
+const peripheral_devices = [input_output_device, console_output_device];
 
 const peripheral_device_output_model = new DelimitedASCIILine();
 
