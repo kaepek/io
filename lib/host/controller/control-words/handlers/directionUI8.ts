@@ -5,7 +5,6 @@ import { ControlWordHandlerBase } from "./model";
 export class DirectionUI8ControlWordHandler extends ControlWordHandlerBase {
     name = ControlWords.SetDirectionUI8;
     scale = 1.0;
-    word_data_length = 1;
     data_type = ControlWordDataTypes.UInt8;
     handle_input(input: any, state: any) {
         if (input.source == ControlInputSources.DualShock) {
