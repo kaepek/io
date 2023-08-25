@@ -11,6 +11,9 @@ export class StartControlWordHandler extends ControlWordHandlerBase {
                 this.subject.next({word:this});
             }
         }
+        else if (input.source === ControlInputSources.Keyboard && input.label === "space" && input.value === "pressed") {
+            this.subject.next({word:this});
+        }
         else if (input.source == ControlInputSources.UPD) {
             // todo
         }

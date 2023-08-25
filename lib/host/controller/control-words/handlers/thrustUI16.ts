@@ -21,7 +21,7 @@ export class ThrustUI16ControlWordHandler extends ControlWordHandlerBase {
             }
         }
         else if (input.source === ControlInputSources.Keyboard) {
-            if (input.label === "w") {
+            if (input.label === "up" || input.label === "w") {
                 if (input.value === "pressed") {
                     this.value_magnitude[input.label] = 1;
                     let new_state_value = (this.state + 1);
@@ -43,7 +43,7 @@ export class ThrustUI16ControlWordHandler extends ControlWordHandlerBase {
                     }
                 }
             }
-            if (input.label === "s") {
+            if (input.label === "down" || input.label === "s") {
                if (input.value === "pressed") {
                     this.value_magnitude[input.label] = -1;
                     let new_state_value = this.state - 1;
