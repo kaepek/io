@@ -40,7 +40,7 @@ export class StreamJunctionDirector {
 
         // create control_word_handlers_map
         this.control_word_handlers_map = this.control_word_handlers.reduce((acc: { [wordName: string | number]: ControlWordHandlerBase }, word_handler) => {
-            const word_name = word_handler.state_alias || word_handler.name || "";
+            const word_name = word_handler.name || "";
             if (acc.hasOwnProperty(word_name)) throw `Duplicate word name [${word_name}]`;
             if (word_name !== "") acc[word_name] = word_handler;
             return acc;
@@ -76,20 +76,21 @@ export class StreamJunctionDirector {
     filter_control_word_output_for_state_change(event: any) {
         if (!event.hasOwnProperty("value")) return event; // we always emit control words without values as these are simply commands.
         // we have new control input emitted from one of the control word handlers.
-        const word_name = event.word.state_alias || event.word.name;
-        console.log("filter control word output state change....", word_name);
+        const word_name_alias = event.word.state_alias || event.word.name;
+        const word_name = event.word.name;
+        console.log("filter control word output state change....", word_name_alias);
         // check state
-        if (!this.state.hasOwnProperty(word_name)) {
+        if (!this.state.hasOwnProperty(word_name_alias)) {
             // words with no state are new! so emit them
-            this.state[word_name] = event.value;
+            this.state[word_name_alias] = event.value;
             this.control_word_handlers_map[word_name].state = event.value;
             return event;
         }
         // we have a word with state
-        const old_state = this.state[word_name];
+        const old_state = this.state[word_name_alias];
         if (old_state !== event.word.value) {
             // state has changed so emit
-            this.state[word_name] = event.value;
+            this.state[word_name_alias] = event.value;
             this.control_word_handlers_map[word_name].state = event.value;
             return event;
         }
