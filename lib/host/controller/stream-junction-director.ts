@@ -10,6 +10,7 @@ export class StreamJunctionDirector {
 
     control_source_input_router: ControlSourceInputRouter;
     control_word_handlers: Array<ControlWordHandlerBase>;
+    control_word_handlers_map: {[wordName: string | number]: ControlWordHandlerBase} = {};
     input_output_devices: Array<InputOutputDeviceControllerBase>;
     device_output_model: DeviceOutputModelBase;
     output_sink_router: DeviceOutputRouter;
@@ -36,6 +37,12 @@ export class StreamJunctionDirector {
         this.input_output_devices = input_output_devices;
         this.device_output_model = device_output_model;
         this.output_sink_router = output_sink_router;
+
+        // create control_word_handlers_map
+        this.control_word_handlers_map = this.control_word_handlers.reduce((acc: {[wordName: string | number]: ControlWordHandlerBase}, word_handler) => {
+            if (word_handler.name) acc[word_handler.name] = word_handler;
+            return acc;
+        }, {});
 
         // deal with control input... pipe to handlers
         this.control_source_input_new_words_subscription = control_source_input_router.$.pipe(
@@ -76,12 +83,14 @@ export class StreamJunctionDirector {
                 // state is new so emit
                 if (old_state !== event.word.value) {
                     this.state[event.word.name] = event.value;
+                    this.control_word_handlers_map[event.word.name].state = event.value;
                     return event;
                 }
             }
             else {
                 // words with no state are new! so emit them
                 this.state[event.word.name] = event.value;
+                this.control_word_handlers_map[event.word.name].state = event.value;
                 return event;
             }
         }
