@@ -23,6 +23,8 @@ export class KeyboardInputSourceHandler extends ControlInputSourceHandler {
         }
 
         // so we get lots of events if the key is held down... use this to know 
+        // value: false should mean up! // true should mean pressed
+
         process.stdin.on('keypress', (_, key) => {
             if (key) {
                 const key_name = key.name;
@@ -39,7 +41,7 @@ export class KeyboardInputSourceHandler extends ControlInputSourceHandler {
                         ...key_event_data,
                         value: true
                     });
-                    this.key_debounce[key_name] = setTimeout(()=>{
+                    this.key_debounce[key_name] = setTimeout(() => {
                         this.key_state[key_name] = false;
                         this.key_subject.next({
                             ...key_event_data,
@@ -49,7 +51,7 @@ export class KeyboardInputSourceHandler extends ControlInputSourceHandler {
                 }
                 else {
                     clearTimeout(this.key_debounce[key_name]);
-                    this.key_debounce[key_name] = setTimeout(()=>{
+                    this.key_debounce[key_name] = setTimeout(() => {
                         this.key_state[key_name] = false;
                         this.key_subject.next({
                             ...key_event_data,
@@ -62,10 +64,9 @@ export class KeyboardInputSourceHandler extends ControlInputSourceHandler {
 
 
         this.key$.subscribe(data => {
-            console.log("press", data);
+            this.subject.next(data);
+            // console.log("press", data);
         });
-
-        // value: false should mean up! // true should mean pressed
     }
 
     constructor() {
