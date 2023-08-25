@@ -49,7 +49,7 @@ export class StreamJunctionDirector {
         // deal with control input... pipe to handlers
         this.control_source_input_new_words_subscription = control_source_input_router.$.pipe(
             map((it: any) => {
-                console.log("control_source_input_new_words_subscription", it);
+                // console.log("control_source_input_new_words_subscription", it);
                 return it;
             })
         ).subscribe((input: any) => this.handle_control_input(input));
@@ -78,7 +78,6 @@ export class StreamJunctionDirector {
         // we have new control input emitted from one of the control word handlers.
         const word_name_alias = event.word.state_alias || event.word.name;
         const word_name = event.word.name;
-        console.log("filter control word output state change....", word_name_alias);
         // check state
         if (!this.state.hasOwnProperty(word_name_alias)) {
             // words with no state are new! so emit them

@@ -11,7 +11,10 @@ export class DirectionUI8ControlWordHandler extends ControlWordHandlerBase {
             // triangle up... we have a direction to reverse... only if thrust is zero otherwise risk breaking the hardware
             if (input.type === "button" && input.label === "triangle" && input.value === false ) {
 
-                if (state.hasOwnProperty("thrust") && state["thrust"] !== 0) return;
+                if (state.hasOwnProperty("thrust") && state["thrust"] !== 0) {
+                    console.log("BLOCKING DIRECTION CHANGE AS HAS THRUST");
+                    return;
+                };
 
                 if (state.hasOwnProperty(this.name)) {
                     this.subject.next({word:this, value: !state[this.name]}); // NOTE SHOULD BE CALLING NEXT!
