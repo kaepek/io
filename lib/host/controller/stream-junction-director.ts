@@ -49,7 +49,7 @@ export class StreamJunctionDirector {
         // deal with control input... pipe to handlers
         this.control_source_input_new_words_subscription = control_source_input_router.$.pipe(
             map((it: any) => {
-                console.log("control_source_input_new_words_subscription", it);
+                // console.log("control_source_input_new_words_subscription", it);
                 return it;
             })
         ).subscribe((input: any) => this.handle_control_input(input));
