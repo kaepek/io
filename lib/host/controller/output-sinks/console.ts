@@ -5,6 +5,6 @@ export class ConsoleOutputSink extends OutputSinkBase {
     type = DeviceOutputSinks.Console;
     async ready() {}
     output_handler(output: any) {
-        console.log("Console output sink", output);
+        console.log("Console output sink: ", output);
     }
 }

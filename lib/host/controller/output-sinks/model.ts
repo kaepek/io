@@ -9,6 +9,6 @@ export class OutputSinkBase {
     }
 
     bind(processed_device_output$: any) {
-        processed_device_output$.subscribe(this.output_handler);
+        processed_device_output$.subscribe((output: any) => this.output_handler(output));
     }
 }

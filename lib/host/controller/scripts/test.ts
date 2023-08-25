@@ -11,6 +11,7 @@ import { ConsoleDeviceController } from "../input-output-device-controllers/cons
 import { SerialUSBDeviceController } from "../input-output-device-controllers/serial-usb";
 import { ConsoleOutputSink } from "../output-sinks/console";
 import { DeviceOutputRouter } from "../output-sinks/router";
+import { UDPOutputSink } from "../output-sinks/udp";
 import { StreamJunctionDirector } from "../stream-junction-director";
 
 
@@ -33,8 +34,9 @@ const peripheral_devices = [input_output_device, console_output_device];
 const peripheral_device_output_model = new DelimitedASCIILine();
 
 const console_output_sink = new ConsoleOutputSink();
+const udp_output_sink = new UDPOutputSink({host: "127.0.0.1", port: 5001});
 
-const output_router = new DeviceOutputRouter([console_output_sink]);
+const output_router = new DeviceOutputRouter([console_output_sink, udp_output_sink]);
 
 const director = new StreamJunctionDirector(input_router, control_word_handlers, peripheral_devices, peripheral_device_output_model, output_router);
 

@@ -100,7 +100,7 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
             bytes = wordStruct.$raw;
         }
         if (bytes !== null) {
-            console.log("wrote bytes!", bytes);
+            // console.log("wrote bytes!", bytes);
             (this.serialport as SerialPort).write(bytes);
         }
     }
