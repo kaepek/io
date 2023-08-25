@@ -1,8 +1,7 @@
 import { ControlInputSourceHandler } from "./model";
 import { ControlInputSources } from "../sources";
 import readline from "readline";
-import { Subject, interval } from "rxjs";
-import { takeUntil, buffer, filter, debounceTime, distinctUntilChanged } from "rxjs/operators";
+import { Subject } from "rxjs";
 
 export const keyboard_debounce_time = 500;
 
@@ -14,6 +13,7 @@ export class KeyboardInputSourceHandler extends ControlInputSourceHandler {
     interval: number = keyboard_debounce_time;
 
     key_debounce: any = {}
+    key_depressed: any = {};
 
     async ready() {
         readline.emitKeypressEvents(process.stdin);
@@ -39,23 +39,32 @@ export class KeyboardInputSourceHandler extends ControlInputSourceHandler {
                     this.key_state[key_name] = true;
                     this.key_subject.next({
                         ...key_event_data,
-                        value: true
+                        value: "pressed"
                     });
                     this.key_debounce[key_name] = setTimeout(() => {
                         this.key_state[key_name] = false;
+                        this.key_depressed[key_name] = false;
                         this.key_subject.next({
                             ...key_event_data,
-                            value: false
+                            value: "released"
                         });
                     }, this.interval);
                 }
                 else {
                     clearTimeout(this.key_debounce[key_name]);
-                    this.key_debounce[key_name] = setTimeout(() => {
-                        this.key_state[key_name] = false;
+                    if (!this.key_depressed[key_name]) {
+                        this.key_depressed[key_name] = true;
                         this.key_subject.next({
                             ...key_event_data,
-                            value: false
+                            value: "depressed"
+                        });
+                    }
+                    this.key_debounce[key_name] = setTimeout(() => {
+                        this.key_state[key_name] = false;
+                        this.key_depressed[key_name] = false;
+                        this.key_subject.next({
+                            ...key_event_data,
+                            value: "released"
                         });
                     }, 100);
                 }
