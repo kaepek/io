@@ -11,7 +11,7 @@ export class ThrustUI16ControlWordHandler extends ControlWordHandlerBase {
     handle_input(input: any) {
         if (input.source == ControlInputSources.DualShock) {
             if (input.type === "trigger" && input.label === "r2") {
-                this.subject.next({word:this, value: input.value});
+                this.subject.next({word:this, value: input.value * 257}); // 257 maps 255 -> 65,536
             }
         }
         else if (input.source == ControlInputSources.UPD) {
