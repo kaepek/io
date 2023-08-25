@@ -6,7 +6,7 @@ export class NullControlWordHandler extends ControlWordHandlerBase {
     name = ControlWords.Null;
     handle_input(input: any) {
         if (input.source == ControlInputSources.DualShock) {
-            if (input.type === "button" && input.label === "square" && input.value === false) 
+            if (input.type === "button" && input.label === "pad" && input.value === false) 
             {
                 this.subject.next({word:this});
             }
