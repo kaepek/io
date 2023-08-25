@@ -2,7 +2,7 @@ import { Subject } from "rxjs";
 
 export class ControlWordHandlerBase {
     name: number | null = null;
-    state_name: string | null = null;
+    state_alias: string | null = null;
     data_type: string | null = null;
     subject = new Subject();
     state: any = null;

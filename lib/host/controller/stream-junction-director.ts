@@ -10,7 +10,7 @@ export class StreamJunctionDirector {
 
     control_source_input_router: ControlSourceInputRouter;
     control_word_handlers: Array<ControlWordHandlerBase>;
-    control_word_handlers_map: {[wordName: string | number]: ControlWordHandlerBase} = {};
+    control_word_handlers_map: { [wordName: string | number]: ControlWordHandlerBase } = {};
     input_output_devices: Array<InputOutputDeviceControllerBase>;
     device_output_model: DeviceOutputModelBase;
     output_sink_router: DeviceOutputRouter;
@@ -39,7 +39,7 @@ export class StreamJunctionDirector {
         this.output_sink_router = output_sink_router;
 
         // create control_word_handlers_map
-        this.control_word_handlers_map = this.control_word_handlers.reduce((acc: {[wordName: string | number]: ControlWordHandlerBase}, word_handler) => {
+        this.control_word_handlers_map = this.control_word_handlers.reduce((acc: { [wordName: string | number]: ControlWordHandlerBase }, word_handler) => {
             if (word_handler.name) acc[word_handler.name] = word_handler;
             return acc;
         }, {});
@@ -50,7 +50,7 @@ export class StreamJunctionDirector {
                 console.log("control_source_input_new_words_subscription", it);
                 return it;
             })
-        ).subscribe((input: any)=>this.handle_control_input(input));
+        ).subscribe((input: any) => this.handle_control_input(input));
 
         // next merge together the observables from the control handlers so when they emit we perform a state check before emitting.
         this.control_word_handlers_kept_event$ = merge(...this.control_word_handlers.map((handler: any) => handler.$)).pipe(
@@ -75,27 +75,23 @@ export class StreamJunctionDirector {
     state: any = {};
 
     filter_control_word_output_for_state_change(event: any) {
+        if (!event.hasOwnProperty("value")) return event; // we always emit control words without values as these are simply commands.
         // we have new control input emitted from one of the control word handlers.
-        if (event.hasOwnProperty("value")) {
-            // check state
-            if (this.state.hasOwnProperty(event.word.name)) {
-                const old_state = this.state[event.word.name];
-                // state is new so emit
-                if (old_state !== event.word.value) {
-                    this.state[event.word.name] = event.value;
-                    this.control_word_handlers_map[event.word.name].state = event.value;
-                    return event;
-                }
-            }
-            else {
-                // words with no state are new! so emit them
-                this.state[event.word.name] = event.value;
-                this.control_word_handlers_map[event.word.name].state = event.value;
-                return event;
-            }
+        const word_name = event.word.state_alias || event.word.name;
+        console.log("filter control word output state change....", word_name);
+        // check state
+        if (!this.state.hasOwnProperty(word_name)) {
+            // words with no state are new! so emit them
+            this.state[word_name] = event.value;
+            this.control_word_handlers_map[word_name].state = event.value;
+            return event;
         }
-        else {
-            // we always emit control words without values.
+        // we have a word with state
+        const old_state = this.state[word_name];
+        if (old_state !== event.word.value) {
+            // state has changed so emit
+            this.state[word_name] = event.value;
+            this.control_word_handlers_map[word_name].state = event.value;
             return event;
         }
         return null;

@@ -4,7 +4,7 @@ import { ControlWordHandlerBase } from "./model";
 
 export class ThrustUI16ControlWordHandler extends ControlWordHandlerBase {
     name = ControlWords.SetThrustUI16;
-    state_name = "thrust";
+    state_alias = "thrust";
     scale = 1.0;
     data_type = ControlWordDataTypes.UInt16LE;
 
