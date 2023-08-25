@@ -4,16 +4,15 @@ import { ControlWordHandlerBase } from "./model";
 
 export class NullControlWordHandler extends ControlWordHandlerBase {
     name = ControlWords.Null;
-    handle_input(input) {
+    handle_input(input: any) {
         if (input.source == ControlInputSources.DualShock) {
             if (input.type === "button" && input.label === "square" && input.value === false) 
             {
-                return this.subject.next({word:this});
+                this.subject.next({word:this});
             }
         }
         else if (input.source == ControlInputSources.UPD) {
-            return this.subject.next({word:this});
+            // todo
         }
-        return false;
     };
 }

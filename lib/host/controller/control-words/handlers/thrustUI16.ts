@@ -1,23 +1,22 @@
 import { ControlInputSources } from "../../control-input-sources/sources";
-import { ControlWords } from "../words";
+import { ControlWordDataTypes, ControlWords } from "../words";
 import { ControlWordHandlerBase } from "./model";
 
-class ThrustUI16ControlWordHandler extends ControlWordHandlerBase {
+export class ThrustUI16ControlWordHandler extends ControlWordHandlerBase {
     name = ControlWords.SetThrustUI16;
     state_name = "thrust";
     scale = 1.0;
     word_data_length = 2;
-    data_type = "UInt16LE";
+    data_type = ControlWordDataTypes.UInt16LE;
 
-    handle_input(input) {
+    handle_input(input: any) {
         if (input.source == ControlInputSources.DualShock) {
             if (input.type === "trigger" && input.label === "r2") {
                 this.subject.next({word:this, value: input.value});
             }
         }
         else if (input.source == ControlInputSources.UPD) {
-            return this.subject.next({word:this, value: input.value});
+            // todo
         }
-        return false;
     };
 }
