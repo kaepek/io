@@ -40,7 +40,9 @@ export class StreamJunctionDirector {
 
         // create control_word_handlers_map
         this.control_word_handlers_map = this.control_word_handlers.reduce((acc: { [wordName: string | number]: ControlWordHandlerBase }, word_handler) => {
-            if (word_handler.name) acc[word_handler.name] = word_handler;
+            const word_name = word_handler.state_alias || word_handler.name || "";
+            if (acc.hasOwnProperty(word_name)) throw `Duplicate wordName ${word_name}`;
+            if (word_name !== "") acc[word_name] = word_handler;
             return acc;
         }, {});
 
