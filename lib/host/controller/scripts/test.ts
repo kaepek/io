@@ -46,6 +46,6 @@ const output_router = new DeviceOutputRouter([console_output_sink, net_device_ou
 const director = new StreamJunctionDirector(input_router, control_word_handlers, peripheral_devices, peripheral_device_output_model, output_router);
 
 director.ready().then(console.log).catch((error) => {
-    console.log(error);
+    console.error(error);
     process.exit(1);
 });
