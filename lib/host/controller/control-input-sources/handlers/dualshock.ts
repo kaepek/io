@@ -26,12 +26,17 @@ export class DualShockControlInputSourceHandler extends ControlInputSourceHandle
     async ready() {
         this.ds = dualshock;
         const devices = this.ds.getDevices();
-        if (devices.length < 1) throw "Could not find a controller!";
-        this.device = devices[0];
-        this.gamepad = this.ds.open(this.device, this.gamepadArgs);
-        this.gamepad.onmotion = true; this.gamepad.onstatus = true;
-        this.gamepad.ondigital = async (label: string, value: any) => this.subject.next({source:this.type, type: "button", label, value });
-        this.gamepad.onanalog = async (label: string, value: any) => this.subject.next({source:this.type, type: (this.input_types as any)[label], label, value });
+        if (devices.length < 1) {
+            console.warn("WARNING could not find a controller! Not input will come from this source.");
+        }
+        else {
+            this.device = devices[0];
+            this.gamepad = this.ds.open(this.device, this.gamepadArgs);
+            this.gamepad.onmotion = true; this.gamepad.onstatus = true;
+            this.gamepad.ondigital = async (label: string, value: any) => this.subject.next({ source: this.type, type: "button", label, value });
+            this.gamepad.onanalog = async (label: string, value: any) => this.subject.next({ source: this.type, type: (this.input_types as any)[label], label, value });
+
+        }
     }
 
     constructor(args?: any | undefined) {
