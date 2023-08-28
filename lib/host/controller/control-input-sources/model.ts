@@ -11,4 +11,6 @@ export class ControlInputSourceHandler {
     async ready() {
         throw "Not implemented";
     }
+
+    constructor() {}
 }

@@ -48,7 +48,7 @@ export class NetworkControlWordSourceHandler extends ControlInputSourceHandler {
     }
 
     constructor(address: string,
-        port: number,
+        port: number | string,
         protocol: "udp" | "tcp") {
         super();
         if (
@@ -59,6 +59,7 @@ export class NetworkControlWordSourceHandler extends ControlInputSourceHandler {
         ) {
             console.error(`WARNING Error bad NetworkControlWordSourceHandlerOptions parameters ${JSON.stringify(arguments)}. No input will come from this source.`);
         }
+        port = parseFloat(port as string);
         this.options = {address, port, protocol};
         if (this.options.protocol === "udp") {
             this.server = UDP.createSocket("udp4");

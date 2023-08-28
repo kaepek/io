@@ -28,7 +28,7 @@ export class NetworkOutputSink extends OutputSinkBase {
     }
 
     constructor(host: string,
-        port: number,
+        port: number|string,
         protocol: "udp" | "tcp") {
         super();
         if (
@@ -39,6 +39,7 @@ export class NetworkOutputSink extends OutputSinkBase {
         ) {
             console.warn(`WARNING bad NetworkControlWordSinkOptions parameters ${JSON.stringify(arguments)}. No control words will be outputted to this sink.`);
         }
+        port = parseFloat(port as string);
         this.options = {host, port, protocol};
         if (this.options.protocol === "udp") {
             this.client = UDP.createSocket("udp4");

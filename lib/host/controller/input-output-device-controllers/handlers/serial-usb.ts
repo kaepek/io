@@ -105,10 +105,10 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
         }
     }
 
-    constructor(baud_rate?: number, path?: string) {
+    constructor(baud_rate?: number|string, path?: string) {
         super();
         this.serialOptions = {};
-        if (baud_rate) this.serialOptions.baud_rate = baud_rate;
+        if (baud_rate) this.serialOptions.baud_rate = parseFloat(baud_rate as string);
         if (path) this.serialOptions.path = path;
     }
 

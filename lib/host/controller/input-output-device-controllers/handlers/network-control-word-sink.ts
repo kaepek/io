@@ -39,7 +39,7 @@ export class NetworkControlWordSink extends InputOutputDeviceControllerBase {
     }
 
     constructor(host: string,
-        port: number,
+        port: number | string,
         protocol: "udp" | "tcp") {
         super();
         if (
@@ -50,6 +50,7 @@ export class NetworkControlWordSink extends InputOutputDeviceControllerBase {
         ) {
             console.warn(`WARNING bad NetworkControlWordSinkOptions parameters ${JSON.stringify(arguments)}. No control words will be outputted to this sink.`);
         }
+        port = parseFloat(port as string);
         this.options = {
             host, port, protocol
         };

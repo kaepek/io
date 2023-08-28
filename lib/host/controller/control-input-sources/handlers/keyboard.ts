@@ -79,8 +79,4 @@ export class KeyboardInputSourceHandler extends ControlInputSourceHandler {
 
         console.info("INFO KeyboardInputSourceHandler ready.");
     }
-
-    constructor() {
-        super();
-    }
 }
