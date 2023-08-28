@@ -4,6 +4,7 @@ import { SerialPort, ReadlineParser } from "serialport";
 import Struct from "typed-struct";
 import { ControlWordsUI8 } from "../control-words/words";
 import { Subject } from "rxjs";
+import { ControlWordEvent } from "../control-words/handlers/model";
 
 // _Struct.default
 
@@ -77,7 +78,7 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
         SingleWordStruct: this.SingleWordStruct,
     };
 
-    handle_input_control_word(event: any) {
+    handle_input_control_word(event: ControlWordEvent) {
         // deal with word event
         let bytes = null;
         if (event.hasOwnProperty("value")) {

@@ -32,7 +32,7 @@ export class NetworkControlWordSource extends ControlInputSourceHandler {
                 const message_split = message_str.split("|");
                 if (!message_split) return console.warn("WARNING NetworkControlWordSource falsy message recieved");
                 const word = message_split[0];
-                if (!ControlWordsUI8Inverted[word]) return console.warn(`WARNING network source control word not recognised recieved word value: ${word}`);
+                if (!ControlWordsUI8Inverted[word]) return console.warn(`WARNING NetworkControlWordSource word not recognised recieved word value: ${word}`);
                 if (message_split.length === 1) {
                     this.subject.next({source: this.type, word });
                 }
@@ -41,7 +41,7 @@ export class NetworkControlWordSource extends ControlInputSourceHandler {
                     this.subject.next({source: this.type, word, value });
                 }
                 else {
-                    return console.warn(`WARNING network source control word had more than one provided value`);
+                    return console.warn(`WARNING NetworkControlWordSource word had more than one provided value`);
                 }
             });
             server.bind({ port: this.options?.port, address: this.options?.address });
@@ -68,7 +68,7 @@ export class NetworkControlWordSource extends ControlInputSourceHandler {
             this.server = TCP.createServer();
         }
         else {
-            console.error(`WARNING Unknown network protocol: ${options.protocol}, expected "upd" or "tcp". No input will come from this source."`);
+            console.error(`WARNING NetworkControlWordSourceOptions unknown network protocol: ${options.protocol}, expected "upd" or "tcp". No input will come from this source."`);
         }
     }
 }

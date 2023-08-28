@@ -1,4 +1,5 @@
 import { Subject } from "rxjs";
+import { ControlWordEvent } from "../control-words/handlers/model";
 
 export class InputOutputDeviceControllerBase {
 
@@ -6,7 +7,7 @@ export class InputOutputDeviceControllerBase {
         throw "Not implemented";
     }
 
-    handle_input_control_word(word: any) {
+    handle_input_control_word(event: ControlWordEvent) {
         throw "Not implemented";
     }
 
