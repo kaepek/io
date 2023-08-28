@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "type": "module",
+  "node_version": "v18.12.1",
   "scripts": {
     "test": "ts-node ./lib/host/controller/scripts/test.ts",
     "build": "tsc --project tsconfig.build.json",
