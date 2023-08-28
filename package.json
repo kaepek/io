@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "ts-node ./lib/host/controller/scripts/test.ts",
+    "cli": "ts-node ./lib/host/controller/scripts/cli.ts",
     "graph": "bokeh serve --port 8033 --show lib/graphing/plot.py "
   },
   "author": "Jonathan Kelsey",

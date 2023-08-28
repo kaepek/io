@@ -12,7 +12,7 @@ import { ConsoleDeviceController } from "../input-output-device-controllers/hand
 import { SerialUSBDeviceController } from "../input-output-device-controllers/handlers/serial-usb";
 import { ConsoleOutputSink } from "../output-sinks/handlers/console";
 import { DeviceOutputRouter } from "../output-sinks/router";
-import { NetworkDeviceOutputSink } from "../output-sinks/handlers/network";
+import { NetworkOutputSink } from "../output-sinks/handlers/network";
 import { StreamJunctionDirector } from "../stream-junction-director";
 import { NetworkControlWordSink } from "../input-output-device-controllers/handlers/network-control-word-sink";
 
@@ -39,7 +39,7 @@ const peripheral_devices = [input_output_device, console_output_device, network_
 const peripheral_device_output_model = new DelimitedASCIILine();
 
 const console_output_sink = new ConsoleOutputSink();
-const net_device_output_sink = new NetworkDeviceOutputSink({host: "127.0.0.1", port: 5001, protocol:"udp"});
+const net_device_output_sink = new NetworkOutputSink({host: "127.0.0.1", port: 5001, protocol:"udp"});
 
 const output_router = new DeviceOutputRouter([console_output_sink, net_device_output_sink]);
 

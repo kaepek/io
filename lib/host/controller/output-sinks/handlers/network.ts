@@ -8,7 +8,7 @@ interface NetworkOptions {
     protocol: "udp" | "tcp"
 }
 
-export class NetworkDeviceOutputSink extends OutputSinkBase {
+export class NetworkOutputSink extends OutputSinkBase {
     type = DeviceOutputSinks.Network;
     options: NetworkOptions;
     client: UDP.Socket | undefined;
@@ -22,7 +22,7 @@ export class NetworkDeviceOutputSink extends OutputSinkBase {
             const packet = Buffer.from(output.toString());
             const client = this.client as UDP.Socket;
             client.send(packet, this.options.port, this.options.host, (err) => {
-                if (err) console.error('Failed to send UPD packet in NetworkDeviceOutputSink: ', err);
+                if (err) console.error('Failed to send UPD packet in NetworkOutputSink: ', err);
             });
         }
     }
