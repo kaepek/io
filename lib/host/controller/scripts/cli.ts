@@ -77,7 +77,7 @@ async function start_cli() {
         // parse source handlers
         const sources = parse_concept<ControlInputSourceHandler>(parsed_args.values["source"], "source", ControlInputSources);
         // parse control words
-        const words =  parse_concept<ControlWordHandlerBase>(parsed_args.values["control_word"], "control_word", ControlWords);
+        const words = parse_concept<ControlWordHandlerBase>(parsed_args.values["control_word"], "control_word", ControlWords);
         // parse io devices
         const devices = parse_concept<InputOutputDeviceControllerBase>(parsed_args.values["peripheral"], "peripheral", InputOutputDevices);
         // parse sinks

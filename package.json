@@ -6,14 +6,18 @@
   "type": "module",
   "scripts": {
     "test": "ts-node ./lib/host/controller/scripts/test.ts",
-    "build": "tsc --project tsconfig.json",
-    "cli": "ts-node lib/host/controller/scripts/cli.ts -i network=localhost,9090,udp -i keyboard -c start -c null -c stop -p serial-usb -p console -o console",
+    "build": "tsc --project tsconfig.build.json",
+    "cli": "node --loader ts-node/esm ./dist/host/controller/scripts/cli.js",
+    "cli2": "NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 node --experimental-loader=extensionless ./dist/host/controller/scripts/cli.js",
+    "cli-test": "ts-node lib/host/controller/scripts/cli.ts -i network=localhost,9090,udp -i keyboard -c start -c null -c stop -p serial-usb -p console -o console",
     "graph": "bokeh serve --port 8033 --show lib/graphing/plot.py "
   },
   "author": "Jonathan Kelsey",
   "license": "AGPL3",
   "dependencies": {
+    "cross-env": "^7.0.3",
     "dualshock": "github:jk89/dualshock",
+    "extensionless": "^1.4.5",
     "readline": "^1.3.0",
     "rxjs": "^7.8.1",
     "serialport": "^10.4.0",
