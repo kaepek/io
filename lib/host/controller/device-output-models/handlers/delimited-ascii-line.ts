@@ -1,5 +1,5 @@
-import { DeviceOutputModelBase } from "./model";
-import { DeviceOutputs } from "./outputs";
+import { DeviceOutputModelBase } from "../model";
+import { DeviceOutputs } from "../outputs";
 
 export class DelimitedASCIILine extends DeviceOutputModelBase {
     type = DeviceOutputs.DelimitedASCIILine;

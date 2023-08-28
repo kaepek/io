@@ -1,8 +1,8 @@
-import { InputOutputDeviceControllerBase } from "./model";
+import { InputOutputDeviceControllerBase } from "../model";
 import UDP from "dgram";
 import TCP from "net";
-import { ControlWordEvent } from "../control-words/handlers/model";
-import { ControlWordDataTypes } from "../control-words/words";
+import { ControlWordEvent } from "../../control-words/model";
+import { ControlWordDataTypes } from "../../control-words/words";
 interface NetworkControlWordSinkOptions {
     host: string,
     port: number,

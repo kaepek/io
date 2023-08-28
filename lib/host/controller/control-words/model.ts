@@ -1,6 +1,6 @@
 import { Subject } from "rxjs";
-import { ControlWordDataTypes } from "../words";
-import { ControlInputSources } from "../../control-input-sources/sources";
+import { ControlWordDataTypes } from "./words";
+import { ControlInputSources } from "../control-input-sources/sources";
 
 export class ControlWordHandlerBase {
     name: number = 0;

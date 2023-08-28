@@ -1,10 +1,9 @@
-import { InputOutputDeviceControllerBase } from "./model";
+import { InputOutputDeviceControllerBase } from "../model";
 import { SerialPort, ReadlineParser } from "serialport";
 // import * as _Struct from "typed-struct";
 import Struct from "typed-struct";
-import { ControlWordsUI8 } from "../control-words/words";
 import { Subject } from "rxjs";
-import { ControlWordEvent } from "../control-words/handlers/model";
+import { ControlWordEvent } from "../../control-words/model";
 
 // _Struct.default
 
@@ -97,7 +96,7 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
         }
         else {
             const wordStruct = new this.SingleWordStruct();
-            wordStruct.word = event.word.name; // (ControlWordsUI8 as any)[event.word.name];
+            wordStruct.word = event.word.name; // (ControlWords as any)[event.word.name];
             bytes = wordStruct.$raw;
         }
         if (bytes !== null) {

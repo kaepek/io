@@ -1,4 +1,4 @@
-import { ControlInputSourceHandler } from "./model";
+import { ControlInputSourceHandler } from "../model";
 import { ControlInputSources } from "../sources";
 
 // @ts-ignore

@@ -1,9 +1,9 @@
 import { ControlInputSources } from "../../control-input-sources/sources";
-import { ControlWordsUI8 } from "../words";
-import { ControlWordHandlerBase } from "./model";
+import { ControlWords } from "../words";
+import { ControlWordHandlerBase } from "../model";
 
 export class StartControlWordHandler extends ControlWordHandlerBase {
-    name = ControlWordsUI8.Start;
+    name = ControlWords.Start;
     handle_input(input: any) {
         super.handle_input(input); // deal with NetworkControlWord sources automatically.
         if (input.source == ControlInputSources.DualShock) {

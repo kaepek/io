@@ -1,4 +1,4 @@
-enum ControlWordsUI8 {
+enum ControlWords {
     Null = 0,
     Start = 1,
     Stop = 2,
@@ -25,4 +25,4 @@ enum ControlWordDataTypes {
     Float64BE = "Float64BE",
 }
 
-export { ControlWordsUI8, ControlWordDataTypes }
+export { ControlWords, ControlWordDataTypes }

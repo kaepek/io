@@ -2,7 +2,7 @@ import { Subject, Subscription, merge, pipe } from "rxjs";
 import { filter, map } from "rxjs/operators";
 import { ControlSourceInputRouter } from "./control-input-sources/router";
 import { DeviceOutputRouter } from "./output-sinks/router";
-import { ControlWordHandlerBase } from "./control-words/handlers/model";
+import { ControlWordHandlerBase } from "./control-words/model";
 import { InputOutputDeviceControllerBase } from "./input-output-device-controllers/model";
 import { DeviceOutputModelBase } from "./device-output-models/model";
 

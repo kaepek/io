@@ -1,5 +1,5 @@
-import { OutputSinkBase } from "./model";
-import { DeviceOutputSinks } from "./sinks";
+import { OutputSinkBase } from "../model";
+import { DeviceOutputSinks } from "../sinks";
 import UDP from "dgram";
 
 interface NetworkOptions {

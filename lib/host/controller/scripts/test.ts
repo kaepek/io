@@ -7,14 +7,14 @@ import { ResetControlWordHandler } from "../control-words/handlers/reset";
 import { StartControlWordHandler } from "../control-words/handlers/start";
 import { StopControlWordHandler } from "../control-words/handlers/stop";
 import { ThrustUI16ControlWordHandler } from "../control-words/handlers/thrustUI16";
-import { DelimitedASCIILine } from "../device-output-models/delimited-ascii-line";
-import { ConsoleDeviceController } from "../input-output-device-controllers/console";
-import { SerialUSBDeviceController } from "../input-output-device-controllers/serial-usb";
-import { ConsoleOutputSink } from "../output-sinks/console";
+import { DelimitedASCIILine } from "../device-output-models/handlers/delimited-ascii-line";
+import { ConsoleDeviceController } from "../input-output-device-controllers/handlers/console";
+import { SerialUSBDeviceController } from "../input-output-device-controllers/handlers/serial-usb";
+import { ConsoleOutputSink } from "../output-sinks/handlers/console";
 import { DeviceOutputRouter } from "../output-sinks/router";
-import { NetworkDeviceOutputSink } from "../output-sinks/network";
+import { NetworkDeviceOutputSink } from "../output-sinks/handlers/network";
 import { StreamJunctionDirector } from "../stream-junction-director";
-import { NetworkControlWordSink } from "../input-output-device-controllers/network-control-word-sink";
+import { NetworkControlWordSink } from "../input-output-device-controllers/handlers/network-control-word-sink";
 
 
 const dualshock = new DualShockControlInputSourceHandler();

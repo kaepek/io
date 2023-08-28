@@ -1,4 +1,4 @@
-import { ControlInputSourceHandler } from "./model";
+import { ControlInputSourceHandler } from "../model";
 import { ControlInputSources } from "../sources";
 import readline from "readline";
 import { Subject } from "rxjs";

@@ -1,10 +1,10 @@
 import { ControlInputSources } from "../../control-input-sources/sources";
 import { nmod } from "../../utils/mod";
-import { ControlWordDataTypes, ControlWordsUI8 } from "../words";
-import { ControlWordHandlerBase } from "./model";
+import { ControlWordDataTypes, ControlWords } from "../words";
+import { ControlWordHandlerBase } from "../model";
 
 export class ThrustUI16ControlWordHandler extends ControlWordHandlerBase {
-    name = ControlWordsUI8.SetThrustUI16;
+    name = ControlWords.SetThrustUI16;
     state_alias = "thrust";
     scale = 1.0;
     data_type = ControlWordDataTypes.UInt16LE;
