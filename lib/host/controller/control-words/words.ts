@@ -19,6 +19,7 @@ const ControlWordsUI8Inverted = Object.keys(ControlWordsUI8).reduce((acc: {[word
 }, {});
 
 const ControlWordDataTypes = {
+    None: "None",
     Int8: "Int8",
     UInt8: "UInt8",
     Int16LE: "Int16LE",

@@ -34,7 +34,7 @@ export class DirectionUI8ControlWordHandler extends ControlWordHandlerBase {
                 this.subject.next({word:this, value: false});
             }
         }
-        else if (input.source == ControlInputSources.UPD) {
+        else if (input.source == ControlInputSources.NetworkControlWord) {
             // todo
         }
     };

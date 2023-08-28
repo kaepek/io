@@ -66,7 +66,7 @@ export class ThrustUI16ControlWordHandler extends ControlWordHandlerBase {
                 }
             }
         }
-        else if (input.source === ControlInputSources.UPD) {
+        else if (input.source === ControlInputSources.NetworkControlWord) {
             // todo
         }
     };

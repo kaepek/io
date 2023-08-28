@@ -14,7 +14,7 @@ export class StopControlWordHandler extends ControlWordHandlerBase {
         else if (input.source === ControlInputSources.Keyboard && input.label === "x" && input.value === "pressed") {
             this.subject.next({word:this});
         }
-        else if (input.source == ControlInputSources.UPD) {
+        else if (input.source == ControlInputSources.NetworkControlWord) {
             // todo
         }
     };

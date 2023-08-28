@@ -14,7 +14,7 @@ export class ResetControlWordHandler extends ControlWordHandlerBase {
         else if (input.source === ControlInputSources.Keyboard && input.label === "r" && input.value === "pressed") {
             this.subject.next({word:this});
         }
-        else if (input.source == ControlInputSources.UPD) {
+        else if (input.source == ControlInputSources.NetworkControlWord) {
             // todo
         }
     };

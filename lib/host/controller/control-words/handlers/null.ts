@@ -11,7 +11,7 @@ export class NullControlWordHandler extends ControlWordHandlerBase {
                 this.subject.next({word:this});
             }
         }
-        else if (input.source == ControlInputSources.UPD) {
+        else if (input.source == ControlInputSources.NetworkControlWord) {
             // todo
         }
     };
