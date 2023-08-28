@@ -27,29 +27,28 @@ export class NetworkOutputSink extends OutputSinkBase {
         }
     }
 
-    constructor(options: NetworkOptions) {
+    constructor(host: string,
+        port: number,
+        protocol: "udp" | "tcp") {
         super();
-        this.options = options;
         if (
-            !options ||
-            !options.hasOwnProperty ||
-            !options.hasOwnProperty("host") ||
-            !options.hasOwnProperty("port") ||
-            !options.hasOwnProperty("protocol") ||
-            !["udp", "tcp"].includes(options.protocol)
+            !host ||
+            !port ||
+            !protocol ||
+            !["udp", "tcp"].includes(protocol)
         ) {
-            console.warn(`WARNING bad NetworkControlWordSinkOptions parameters ${JSON.stringify(options)}. No control words will be outputted to this sink.`);
+            console.warn(`WARNING bad NetworkControlWordSinkOptions parameters ${JSON.stringify(arguments)}. No control words will be outputted to this sink.`);
         }
-        this.options = options;
-        if (options.protocol === "udp") {
+        this.options = {host, port, protocol};
+        if (this.options.protocol === "udp") {
             this.client = UDP.createSocket("udp4");
         }
-        else if (options.protocol === "tcp") {
+        else if (this.options.protocol === "tcp") {
             // this.server = TCP.createServer();
             console.warn("WARNING unsupported protocol tcp: NOT IMPLEMENTED YET");
         }
         else {
-            console.warn(`WARNING NetworkControlWordSinkOptions unknown network protocol: ${options.protocol}, expected "upd" or "tcp". No control words will be outputted to this sink."`);
+            console.warn(`WARNING NetworkControlWordSinkOptions unknown network protocol: ${this.options.protocol}, expected "upd" or "tcp". No control words will be outputted to this sink."`);
         }
     }
 

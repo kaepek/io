@@ -47,27 +47,28 @@ export class NetworkControlWordSourceHandler extends ControlInputSourceHandler {
         }
     }
 
-    constructor(options: NetworkControlWordSourceHandlerOptions) {
+    constructor(address: string,
+        port: number,
+        protocol: "udp" | "tcp") {
         super();
         if (
-            !options ||
-            !options.hasOwnProperty ||
-            !options.hasOwnProperty("address") ||
-            !options.hasOwnProperty("port") ||
-            !options.hasOwnProperty("protocol") ||
-            !["udp", "tcp"].includes(options.protocol)
+            !address ||
+            !port ||
+            protocol === undefined ||
+            !["udp", "tcp"].includes(protocol)
         ) {
-            console.error(`WARNING Error bad NetworkControlWordSourceHandlerOptions parameters ${JSON.stringify(options)}. No input will come from this source.`);
+            console.error(`WARNING Error bad NetworkControlWordSourceHandlerOptions parameters ${JSON.stringify(arguments)}. No input will come from this source.`);
         }
-        this.options = options;
-        if (options.protocol === "udp") {
+        this.options = {address, port, protocol};
+        if (this.options.protocol === "udp") {
             this.server = UDP.createSocket("udp4");
         }
-        else if (options.protocol === "tcp") {
-            this.server = TCP.createServer();
+        else if (this.options.protocol === "tcp") {
+            console.error(`WARNING NetworkControlWordSourceHandlerOptions unsupported network protocol: ${this.options.protocol}, expected "upd" or "tcp". No input will come from this source."`);
+            // this.server = TCP.createServer(); // todo
         }
         else {
-            console.error(`WARNING NetworkControlWordSourceHandlerOptions unknown network protocol: ${options.protocol}, expected "upd" or "tcp". No input will come from this source."`);
+            console.error(`WARNING NetworkControlWordSourceHandlerOptions unknown network protocol: ${this.options.protocol}, expected "upd" or "tcp". No input will come from this source."`);
         }
     }
 }

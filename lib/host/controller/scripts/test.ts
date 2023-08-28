@@ -32,14 +32,14 @@ const control_word_handlers = [directionUI8_word_control_handler, start_control_
 
 const input_output_device = new SerialUSBDeviceController();
 const console_output_device = new ConsoleDeviceController();
-const network_control_word_sink_output_device = new NetworkControlWordSink({host: "127.0.0.1", port: 5002, protocol:"udp"});
+const network_control_word_sink_output_device = new NetworkControlWordSink("localhost", 5002, "udp");
 
 const peripheral_devices = [input_output_device, console_output_device, network_control_word_sink_output_device];
 
 const peripheral_device_output_model = new DelimitedASCIILine();
 
 const console_output_sink = new ConsoleOutputSink();
-const net_device_output_sink = new NetworkOutputSink({host: "127.0.0.1", port: 5001, protocol:"udp"});
+const net_device_output_sink = new NetworkOutputSink("127.0.0.1",5001,"udp");
 
 const output_router = new DeviceOutputRouter([console_output_sink, net_device_output_sink]);
 
