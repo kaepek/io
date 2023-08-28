@@ -1,7 +1,7 @@
 import { ControlInputSourceHandler } from "./model";
 import UDP from "dgram";
 import TCP from "net";
-import { ControlWordsUI8Inverted } from "../../control-words/words";
+import { ControlWordsUI8 } from "../../control-words/words";
 import { ControlInputSources } from "../sources";
 
 interface NetworkControlWordSourceOptions {
@@ -31,14 +31,14 @@ export class NetworkControlWordSource extends ControlInputSourceHandler {
                 const message_str = message.toString();
                 const message_split = message_str.split("|");
                 if (!message_split) return console.warn("WARNING NetworkControlWordSource falsy message recieved");
-                const word = message_split[0];
-                if (!ControlWordsUI8Inverted[word]) return console.warn(`WARNING NetworkControlWordSource word not recognised recieved word value: ${word}`);
+                const word = message_split[0] as any as number;
+                if (!ControlWordsUI8[word]) return console.warn(`WARNING NetworkControlWordSource word not recognised recieved word value: ${word}`);
                 if (message_split.length === 1) {
-                    this.subject.next({source: this.type, word });
+                    this.subject.next({ source: this.type, word });
                 }
                 else if (message_split.length === 2) {
                     const value = message_split[1];
-                    this.subject.next({source: this.type, word, value });
+                    this.subject.next({ source: this.type, word, value });
                 }
                 else {
                     return console.warn(`WARNING NetworkControlWordSource word had more than one provided value`);

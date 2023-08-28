@@ -5,7 +5,7 @@ import { ControlInputSources } from "../../control-input-sources/sources";
 export class ControlWordHandlerBase {
     name: number = 0;
     state_alias: string | null = null;
-    data_type: string = ControlWordDataTypes.None;
+    data_type: ControlWordDataTypes = ControlWordDataTypes.None;
     subject = new Subject();
     state: any = null;
     $ = this.subject.asObservable();
