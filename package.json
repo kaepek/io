@@ -9,6 +9,7 @@
     "build": "tsc --project tsconfig.build.json",
     "cli": "node --loader ts-node/esm ./dist/host/controller/scripts/cli.js",
     "cli2": "NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 node --experimental-loader=extensionless ./dist/host/controller/scripts/cli.js",
+    "cli3": "npm run cli2 -- -i network=localhost,9090,udp -i keyboard -c start -c null -c stop -p serial-usb -p console -o console",
     "cli-test": "ts-node lib/host/controller/scripts/cli.ts -i network=localhost,9090,udp -i keyboard -c start -c null -c stop -p serial-usb -p console -o console",
     "graph": "bokeh serve --port 8033 --show lib/graphing/plot.py "
   },
