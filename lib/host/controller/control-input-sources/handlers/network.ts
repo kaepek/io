@@ -15,7 +15,6 @@ export class NetworkControlWordSource extends ControlInputSourceHandler {
     type = ControlInputSources.NetworkControlWord;
     async ready() {
         if (this.options?.protocol === "tcp") {
-
         }
         else if (this.options?.protocol === "udp") {
             const server = this.server as UDP.Socket;

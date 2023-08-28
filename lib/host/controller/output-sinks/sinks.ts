@@ -1,5 +1,5 @@
 export const DeviceOutputSinks = {
-    UPD: "UPD",
+    Network: "Network",
     TCP: "TCP",
     File: "File",
     Console: "Console"

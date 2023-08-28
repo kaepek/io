@@ -12,8 +12,9 @@ import { ConsoleDeviceController } from "../input-output-device-controllers/cons
 import { SerialUSBDeviceController } from "../input-output-device-controllers/serial-usb";
 import { ConsoleOutputSink } from "../output-sinks/console";
 import { DeviceOutputRouter } from "../output-sinks/router";
-import { UDPOutputSink } from "../output-sinks/udp";
+import { NetworkDeviceOutputSink } from "../output-sinks/network";
 import { StreamJunctionDirector } from "../stream-junction-director";
+import { NetworkControlWordSink } from "../input-output-device-controllers/network-control-word-sink";
 
 
 const dualshock = new DualShockControlInputSourceHandler();
@@ -31,14 +32,16 @@ const control_word_handlers = [directionUI8_word_control_handler, start_control_
 
 const input_output_device = new SerialUSBDeviceController();
 const console_output_device = new ConsoleDeviceController();
-const peripheral_devices = [input_output_device, console_output_device];
+const network_control_word_sink_output_device = new NetworkControlWordSink({host: "127.0.0.1", port: 5002, protocol:"udp"});
+
+const peripheral_devices = [input_output_device, console_output_device, network_control_word_sink_output_device];
 
 const peripheral_device_output_model = new DelimitedASCIILine();
 
 const console_output_sink = new ConsoleOutputSink();
-const udp_output_sink = new UDPOutputSink({host: "127.0.0.1", port: 5001});
+const net_device_output_sink = new NetworkDeviceOutputSink({host: "127.0.0.1", port: 5001, protocol:"udp"});
 
-const output_router = new DeviceOutputRouter([console_output_sink, udp_output_sink]);
+const output_router = new DeviceOutputRouter([console_output_sink, net_device_output_sink]);
 
 const director = new StreamJunctionDirector(input_router, control_word_handlers, peripheral_devices, peripheral_device_output_model, output_router);
 
