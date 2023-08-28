@@ -14,37 +14,42 @@ export class NetworkControlWordSourceHandler extends ControlInputSourceHandler {
     options: NetworkControlWordSourceHandlerOptions | null = null;
     type = ControlInputSources.NetworkControlWord;
     async ready() {
-        if (this.options?.protocol === "tcp") {
-        }
-        else if (this.options?.protocol === "udp") {
-            const server = this.server as UDP.Socket;
-            server.on("listening", () => {
-                console.log(`INFO NetworkControlWordSourceHandler ready. Listening to Address: ${this.options?.address} Port: ${this.options?.port}`);
-            });
-            server.on("error", (err) => {
-                console.error(`WARNING ${this.options?.protocol} server error: ${JSON.stringify(err)}, ${JSON.stringify(err.stack)}. No input will come from this source.`);
-                server.close();
-            });
-            server.on("message", (message, info) => {
-                // messages are like word|value
-                const message_str = message.toString();
-                const message_split = message_str.split("|");
-                if (!message_split) return console.warn("WARNING NetworkControlWordSourceHandler falsy message recieved");
-                const word = message_split[0] as any as number;
-                if (!ControlWords[word]) return console.warn(`WARNING NetworkControlWordSourceHandler word not recognised recieved word value: ${word}`);
-                if (message_split.length === 1) {
-                    this.subject.next({ source: this.type, word });
-                }
-                else if (message_split.length === 2) {
-                    const value = message_split[1];
-                    this.subject.next({ source: this.type, word, value });
-                }
-                else {
-                    return console.warn(`WARNING NetworkControlWordSourceHandler word had more than one provided value`);
-                }
-            });
-            server.bind({ port: this.options?.port, address: this.options?.address });
-        }
+        return new Promise<void>((resolve, reject) => {
+            if (this.options?.protocol === "tcp") {
+            }
+            else if (this.options?.protocol === "udp") {
+                const server = this.server as UDP.Socket;
+                server.on("listening", () => {
+                    console.log(`INFO NetworkControlWordSourceHandler ready. Listening to Address: ${this.options?.address} Port: ${this.options?.port}`);
+                    resolve();
+                });
+                server.on("error", (err) => {
+                    console.error(`WARNING ${this.options?.protocol} server error: ${JSON.stringify(err)}, ${JSON.stringify(err.stack)}. No input will come from this source.`);
+                    server.close();
+                });
+                server.on("message", (message, info) => {
+                    // messages are like word|value
+                    const message_str = message.toString();
+                    const message_split = message_str.split("|");
+                    if (!message_split) return console.warn("WARNING NetworkControlWordSourceHandler falsy message recieved");
+                    const word = message_split[0] as any as number;
+                    if (!ControlWords[word]) return console.warn(`WARNING NetworkControlWordSourceHandler word not recognised recieved word value: ${word}`);
+                    if (message_split.length === 1) {
+                        this.subject.next({ source: this.type, word });
+                    }
+                    else if (message_split.length === 2) {
+                        const value = message_split[1];
+                        this.subject.next({ source: this.type, word, value });
+                    }
+                    else {
+                        return console.warn(`WARNING NetworkControlWordSourceHandler word had more than one provided value`);
+                    }
+                });
+                server.bind({ port: this.options?.port, address: this.options?.address });
+            }
+        });
+
+
     }
 
     constructor(address: string,

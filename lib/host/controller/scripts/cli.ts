@@ -11,7 +11,6 @@ import { DeviceOutputRouter } from "../output-sinks/router";
 import { parseArgs } from "node:util";
 import { StreamJunctionDirector } from "../stream-junction-director";
 import { DelimitedASCIILine } from "../device-output-models/handlers/delimited-ascii-line";
-import { DeviceOutputModelBase } from "../device-output-models/model";
 
 function parse_concept<T>(parsed_args_concept_values: Array<string>, concept_name: string, concept_index: any) {
     // parse control words
@@ -102,8 +101,6 @@ async function start_cli() {
     else {
         throw "Not enough arguments: " + JSON.stringify(parsed_args);
     }
-
-    console.log("parsed_args", parsed_args, Object.keys(parsed_args.values).length);
 }
 
 start_cli().then(console.log).catch((err) => {
