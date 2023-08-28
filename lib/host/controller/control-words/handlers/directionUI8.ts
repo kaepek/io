@@ -7,6 +7,7 @@ export class DirectionUI8ControlWordHandler extends ControlWordHandlerBase {
     scale = 1.0;
     data_type = ControlWordDataTypes.UInt8;
     handle_input(input: any, state: any) {
+        super.handle_input(input); // deal with NetworkControlWord sources automatically.
         if (input.source == ControlInputSources.DualShock) {
             // triangle up... we have a direction to reverse... only if thrust is zero otherwise risk breaking the hardware
             if (input.type === "button" && input.label === "triangle" && input.value === false ) {
@@ -33,9 +34,6 @@ export class DirectionUI8ControlWordHandler extends ControlWordHandlerBase {
             else {
                 this.subject.next({word:this, value: false});
             }
-        }
-        else if (input.source == ControlInputSources.NetworkControlWord) {
-            // todo
         }
     };
 }

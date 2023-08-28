@@ -4,7 +4,8 @@ import { ControlWordHandlerBase } from "./model";
 
 export class StartControlWordHandler extends ControlWordHandlerBase {
     name = ControlWordsUI8.Start;
-    handle_input(input: any, state: any) {
+    handle_input(input: any) {
+        super.handle_input(input); // deal with NetworkControlWord sources automatically.
         if (input.source == ControlInputSources.DualShock) {
             if (input.type === "button" && input.label === "start" && input.value === false) 
             {
@@ -13,9 +14,6 @@ export class StartControlWordHandler extends ControlWordHandlerBase {
         }
         else if (input.source === ControlInputSources.Keyboard && input.label === "space" && input.value === "pressed") {
             this.subject.next({word:this});
-        }
-        else if (input.source == ControlInputSources.NetworkControlWord) {
-            // todo
         }
     };
 }

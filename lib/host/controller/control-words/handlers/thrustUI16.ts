@@ -15,6 +15,7 @@ export class ThrustUI16ControlWordHandler extends ControlWordHandlerBase {
     default_change_increment = 10;
 
     handle_input(input: any) {
+        super.handle_input(input); // deal with NetworkControlWord sources automatically.
         if (input.source === ControlInputSources.DualShock) {
             if (input.type === "trigger" && input.label === "r2") {
                 this.subject.next({word:this, value: input.value * 257}); // 257 maps 255 -> 65,536
@@ -65,9 +66,6 @@ export class ThrustUI16ControlWordHandler extends ControlWordHandlerBase {
                     }
                 }
             }
-        }
-        else if (input.source === ControlInputSources.NetworkControlWord) {
-            // todo
         }
     };
 }

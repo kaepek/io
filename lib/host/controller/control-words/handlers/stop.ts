@@ -4,7 +4,8 @@ import { ControlWordHandlerBase } from "./model";
 
 export class StopControlWordHandler extends ControlWordHandlerBase {
     name = ControlWordsUI8.Stop;
-    handle_input(input: any, state: any) {
+    handle_input(input: any) {
+        super.handle_input(input); // deal with NetworkControlWord sources automatically.
         if (input.source == ControlInputSources.DualShock) {
             if (input.type === "button" && input.label === "select" && input.value === false) 
             {
@@ -13,9 +14,6 @@ export class StopControlWordHandler extends ControlWordHandlerBase {
         }
         else if (input.source === ControlInputSources.Keyboard && input.label === "x" && input.value === "pressed") {
             this.subject.next({word:this});
-        }
-        else if (input.source == ControlInputSources.NetworkControlWord) {
-            // todo
         }
     };
 }

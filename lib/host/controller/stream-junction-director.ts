@@ -108,6 +108,6 @@ export class StreamJunctionDirector {
         await this.output_sink_router.ready();
         // make sure the input router and input sources are ready
         await this.control_source_input_router.ready();
-        return "Ready!";
+        return "INFO Director ready! You can now start sending words via one of the configured input control sources.";
     }
 }
