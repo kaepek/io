@@ -1,6 +1,8 @@
 {
   "ts-node": { "esm": true, "experimentalSpecifierResolution": "node" },
     "compilerOptions": {
+      "outDir": "./dist",            // Output directory for compiled JavaScript
+      "rootDir": "./lib",            // Source directory containing TypeScript files
       "target": "ESNext",
       "module": "ESNext",
       "strict": true,
