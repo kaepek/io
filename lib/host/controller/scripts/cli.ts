@@ -91,7 +91,6 @@ function custom_parse_args() {
 
     const args = process.argv;
     args.splice(0,2);
-    console.log("got my args", args);
     const command_words_short: {[name: string]: any} = {};
     const command_words_long: {[name: string]: any} = {};
 
@@ -106,11 +105,7 @@ function custom_parse_args() {
         });
     };
 
-    const parsed_args: {values: {[key:string]: Array<string>}} = {values:{}};
-
-    console.log("parsing custom args", command_words_long, command_words_short);
-    
-
+    const parsed_args: {values: {[key:string]: Array<string>}} = {values:{}};    
     let current_arg_name: string | null = null;
 
     args.forEach((arg_str_segment) => {
@@ -128,7 +123,6 @@ function custom_parse_args() {
         }
     });
 
-    console.log(parsed_args);
     return parsed_args;
 }
 
@@ -157,12 +151,12 @@ async function start_cli() {
         const outputRouter = new DeviceOutputRouter(sinks);
         const director_instance = new StreamJunctionDirector(inputSourceRouter, words, devices, model, outputRouter);
 
-        console.log("sources", sources);
+        /*console.log("sources", sources);
         console.log("words", words);
         console.log("devices", devices);
         console.log("sinks", sinks);
         console.log("model", model);
-        console.log(director_instance);
+        console.log(director_instance);*/
 
         return director_instance.ready();
     }

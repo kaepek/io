@@ -5,6 +5,7 @@ import { DeviceOutputRouter } from "./output-sinks/router";
 import { ControlWordHandlerBase } from "./control-words/model";
 import { InputOutputDeviceControllerBase } from "./input-output-device-controllers/model";
 import { DeviceOutputModelBase } from "./device-output-models/model";
+import { ControlWords } from "./control-words/words";
 
 export class StreamJunctionDirector {
 
@@ -108,6 +109,10 @@ export class StreamJunctionDirector {
         await this.output_sink_router.ready();
         // make sure the input router and input sources are ready
         await this.control_source_input_router.ready();
+        // print ready status for configured words
+        this.control_word_handlers.forEach((word) => {
+            console.log(`INFO Control word: ${ControlWords[word.name]} attached.`);
+        });
         return "INFO Director ready! You can now start sending words via one of the configured input control sources.";
     }
 }
