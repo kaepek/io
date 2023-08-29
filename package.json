@@ -7,7 +7,7 @@
   "node_version": "v18.12.1",
   "scripts": {
     "test": "ts-node ./lib/host/controller/scripts/test.ts",
-    "build": "tsc --project tsconfig.build.json",
+    "build": "tsc --project tsconfig.json",
     "cli": "node --loader ts-node/esm ./dist/host/controller/scripts/cli.js",
     "cli2": "NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 node --experimental-loader=extensionless ./dist/host/controller/scripts/cli.js",
     "cli3": "npm run cli2 -- -i network=localhost,9090,udp -i keyboard -c start -c null -c stop -p serial-usb -p console -o console",

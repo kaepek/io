@@ -42,6 +42,9 @@ function parse_concept<T>(parsed_args_concept_values: Array<string>, concept_nam
 
 
 async function start_cli() {
+    console.log("process.argv", process.argv);
+
+    
     const parsed_args = parseArgs({
         options: {
             source: {
