@@ -69,7 +69,7 @@ const word_short_name = values.word as string; // ControlWords[]
 const possibleWordHandler = ControlWordsIndex[word_short_name];
 
 if (!possibleWordHandler) {
-    console.log(`NetSendWord: No word handler found for '${word_short_name}', possible values are: ${Object.keys(ControlWordsIndex)}`);
+    console.log(`NetSendWord: No word handler found for '${word_short_name}', possible values are: ${Object.keys(ControlWordsIndex)}. Aborting.`);
     process.exit(1);
 }
 
@@ -79,21 +79,39 @@ const wordHandlerInstance = new possibleWordHandler();
 
 if (wordHandlerInstance.data_type === ControlWordDataTypes.None) {
     if (values["data"]) {
-        console.error("NetSendWord: --data or -d argument provided but this control word validates that there is no data for this command.");
+        console.error("NetSendWord: --data or -d argument provided but this control word validates that there is no data for this command. Aborting.");
         process.exit(1);
     }
 }
 else {
     if (!values["data"]) {
-        console.error("NetSendWord: --data or -d required argument missing.");
+        console.error("NetSendWord: --data or -d required argument missing. Aborting.");
         process.exit(1);
+    }
+    else {
+        // we have data validate it
+        const data_number = parseFloat(values["data"] as string) as number;
+        const max_value = wordHandlerInstance.max_value;
+        const min_value = wordHandlerInstance.min_value;
+        if (max_value === null || min_value === null) {
+            console.error(`WordHandler for ${word_short_name} does not specify a min_value or a max_value cannot safely validate this control word. Aborting.`);
+            process.exit(1);
+        }
+        if (data_number > max_value) {
+            console.error(`Word handler validation for word ${word_short_name} with value ${data_number} exceeded max_value ${max_value}. Aborting.`);
+            process.exit(1);
+        }
+        else if (data_number < min_value) {
+            console.error(`Word handler validation for word ${word_short_name} with value ${data_number} was below min_value ${max_value}. Aborting.`);
+            process.exit(1);
+        }
     }
 }
 
 const data = parseFloat(values.data as string);
 
 if (Number.isNaN(data)) {
-    console.error(`NetSendWord: --data or -d bad argument value.`);
+    console.error(`NetSendWord: --data or -d bad argument value. Aborting.`);
     process.exit(1);
 }
 
@@ -118,6 +136,6 @@ if (values.protocol === "udp") {
     });
 }
 else {
-    console.error(`NetSendWord Unsupported protocol: ${parsed_options.values["protocol"]}`);
+    console.error(`NetSendWord Unsupported protocol: ${parsed_options.values["protocol"]}. Aborting.`);
     process.exit(1);
 }

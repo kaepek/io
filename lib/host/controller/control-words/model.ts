@@ -8,6 +8,8 @@ export class ControlWordHandlerBase {
     data_type: ControlWordDataTypes = ControlWordDataTypes.None;
     subject = new Subject();
     state: any = null;
+    min_value: number | null = null;
+    max_value: number | null = null;
     $ = this.subject.asObservable();
     handle_input(input: any, state?: any) {
         // handler the network word input here.

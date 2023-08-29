@@ -10,6 +10,8 @@ export class ThrustUI16ControlWordHandler extends ControlWordHandlerBase {
     data_type = ControlWordDataTypes.UInt16LE;
     keyboard_key_held_timeout: {[key_name: string] :any} = {};
     value_magnitude: {[key_name: string]: any} = {};
+
+    min_value = 0;
     max_value = 65536 - 1;
     increment_speed_milliseconds = 55;
     default_change_increment = 10;

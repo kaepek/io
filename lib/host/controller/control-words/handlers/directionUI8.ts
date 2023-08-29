@@ -6,6 +6,8 @@ export class DirectionUI8ControlWordHandler extends ControlWordHandlerBase {
     name = ControlWords.SetDirectionUI8;
     scale = 1.0;
     data_type = ControlWordDataTypes.UInt8;
+    min_value = 0;
+    max_value = 1;
     handle_input(input: any, state: any) {
         // deal with NetworkControlWord sources manually within this class.
         if (input.source == ControlInputSources.DualShock) {
