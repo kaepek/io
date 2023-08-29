@@ -11,9 +11,6 @@ import os
 parser=argparse.ArgumentParser()
 cwd = os.getcwd()
 current_dir_path = str(Path(__file__).parent.resolve())
-
-print("inside graph server", current_dir_path, cwd)
-
 parser.add_argument("--address", "-a", help="Listen address")
 parser.add_argument("--port", "-p", help="UDP listen port")
 parser.add_argument("--config", "-c", help="JSON config file. See example in kaepek-io/lib/host/graphing/config.json")
@@ -28,7 +25,6 @@ if args["config"] == None:
     print("NetGraph: missing argument --config or -c e.g. /home/user/kaepek-io/lib/host/graphing/config.json")
 if (args["port"] == None or args["address"] == None or args["config"] == None):
     exit(1)
-
 
 listen_address = args["address"]
 listen_port = None
@@ -54,7 +50,6 @@ plot_data = ColumnDataSource(inputs_dict)
 
 buffer_length = config_json["buffer_length"]
 
-print(inputs_dict)
 doc = curdoc()
 figs = []
 for plot in config_json['plots']:
@@ -80,8 +75,6 @@ try:
 except Exception as error:
     print("NetGraph: failed to bind address and port combination, address: " + listen_address + ", port: " + str(listen_port))
     exit(1)
-
-
 
 def update():
     data_bytes, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
