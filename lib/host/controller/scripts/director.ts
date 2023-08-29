@@ -1,3 +1,5 @@
+#!/bin/sh 
+":" //# https://sambal.org/?p=1014; NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 exec /usr/bin/env node --experimental-loader=extensionless "$0" "$@"
 import ControlInputSources from "../control-input-sources/index";
 import { ControlInputSourceHandler } from "../control-input-sources/model";
 import { ControlSourceInputRouter } from "../control-input-sources/router";
