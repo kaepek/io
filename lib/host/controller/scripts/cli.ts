@@ -8,9 +8,34 @@ import { InputOutputDeviceControllerBase } from "../input-output-device-controll
 import DeviceOuputSinks from "../output-sinks/index"
 import { OutputSinkBase } from "../output-sinks/model";
 import { DeviceOutputRouter } from "../output-sinks/router";
-import { parseArgs } from "node:util";
+import { ParseArgsConfig, parseArgs } from "node:util";
 import { StreamJunctionDirector } from "../stream-junction-director";
 import { DelimitedASCIILine } from "../device-output-models/handlers/delimited-ascii-line";
+
+const parse_options: ParseArgsConfig = {
+    options: {
+        source: {
+            type: "string",
+            short: "i",
+            multiple: true
+        },
+        control_word: {
+            type: "string",
+            short: "c",
+            multiple: true
+        },
+        peripheral: {
+            type: "string",
+            short: "p",
+            multiple: true
+        },
+        sink: {
+            type: "string",
+            short: "o",
+            multiple: true
+        }
+    }
+};
 
 function parse_concept<T>(parsed_args_concept_values: Array<string>, concept_name: string, concept_index: any) {
     // parse control words
@@ -21,13 +46,16 @@ function parse_concept<T>(parsed_args_concept_values: Array<string>, concept_nam
         if (source_str_split.length > 2) {
             throw `Too many '=' key value delimiters for ${concept_name}: ${JSON.stringify(parsed_args_concept_values)}`;
         }
-        let word_name = source_str_split[0];
+        let concept_handler_name = source_str_split[0];
         let args: Array<string> = [];
         if (source_str_split.length == 2) { // has arguments
             args = source_str_split[1].split(",");
         }
-        const ConceptHandler = concept_index[word_name];
-        console.log("ConceptHandler", concept_index, ConceptHandler, word_name);
+        const ConceptHandler = concept_index[concept_handler_name];
+
+        if (!ConceptHandler) {
+            throw `ConceptHandler for concept ${concept_name} with name ${concept_handler_name} is missing. Options are ${Object.keys(concept_index)}`;
+        }
         let wordHandlerInstance = null;
         if (args.length) {
             wordHandlerInstance = new (ConceptHandler as new (...args: any[]) => T)(...args);
@@ -40,36 +68,73 @@ function parse_concept<T>(parsed_args_concept_values: Array<string>, concept_nam
     return concept_items;
 }
 
+function custom_parse_args() {
+    const eg = [
+        '/usr/local/bin/node',
+        '/home/jonathan/code/kaepek/io/dist/host/controller/scripts/cli.js',
+        '-i',
+        'network=localhost,9090,udp',
+        'keyboard',
+        '-c',
+        'start',
+        '-c',
+        'null',
+        '-c',
+        'stop',
+        '-p',
+        'serial-usb',
+        '-p',
+        'console',
+        '-o',
+        'console'
+    ];
 
-async function start_cli() {
-    console.log("process.argv", process.argv);
+    const args = process.argv;
+    args.splice(0,2);
+    console.log("got my args", args);
+    const command_words_short: {[name: string]: any} = {};
+    const command_words_long: {[name: string]: any} = {};
 
-    
-    const parsed_args = parseArgs({
-        options: {
-            source: {
-                type: "string",
-                short: "i",
-                multiple: true
-            },
-            control_word: {
-                type: "string",
-                short: "c",
-                multiple: true
-            },
-            peripheral: {
-                type: "string",
-                short: "p",
-                multiple: true
-            },
-            sink: {
-                type: "string",
-                short: "o",
-                multiple: true
+    if (parse_options.options) {
+        const options = parse_options.options as any;
+        Object.keys(options).forEach((option_name) => {
+            command_words_long[`--${option_name}`] = {...options[option_name], option_name};
+            if (options[option_name].short)
+            {
+                command_words_short[`-${options[option_name].short}`] = {...options[option_name], option_name};
             }
+        });
+    };
 
+    const parsed_args: {values: {[key:string]: Array<string>}} = {values:{}};
+
+    console.log("parsing custom args", command_words_long, command_words_short);
+    
+
+    let current_arg_name: string | null = null;
+
+    args.forEach((arg_str_segment) => {
+        const possible_arg = command_words_short[arg_str_segment] || command_words_long[arg_str_segment];
+        if (possible_arg) {
+            const arg_name = possible_arg.option_name; 
+            if (!parsed_args.values.hasOwnProperty(arg_name)) {
+                parsed_args.values[arg_name] = [];
+            }
+            current_arg_name = arg_name;
+        }
+        else {
+            // we are already handling the word collect values
+            parsed_args.values[current_arg_name as string].push(arg_str_segment);
         }
     });
+
+    console.log(parsed_args);
+    return parsed_args;
+}
+
+
+async function start_cli() {
+    const parsed_args = custom_parse_args(); // parseArgs(parse_options) as any;
     // we need atleast a source, one control word and an IO device.
     // most we want is many sources, words, IOdevices and sinks. aka 4
     if (
