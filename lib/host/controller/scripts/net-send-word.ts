@@ -1,5 +1,5 @@
 #!/bin/bash
-":" //# https://sambal.org/?p=1014; NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 exec /usr/bin/env node --experimental-loader=$(which extensionless.js) "$0" "$@"
+":" //# https://sambal.org/?p=1014; NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 exec /usr/bin/env node --experimental-loader=$(which kaepek-io-INTERNALS-extensionless.js) "$0" "$@"
 ;
 import { ParseArgsConfig, parseArgs } from "node:util";
 import UDP from "dgram";
