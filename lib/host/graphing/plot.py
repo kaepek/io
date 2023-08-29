@@ -22,7 +22,7 @@ if args["address"] == None:
 if args["port"] == None:
     print("NetGraph: missing argument --port or -p e.g. --port=5001")
 if args["config"] == None:
-    print("NetGraph: missing argument --config or -c e.g. /home/user/kaepek-io/lib/host/graphing/config.json")
+    print("NetGraph: missing argument --config or -c e.g. --config=./kaepek-io/lib/host/graphing/config.json")
 if (args["port"] == None or args["address"] == None or args["config"] == None):
     exit(1)
 
