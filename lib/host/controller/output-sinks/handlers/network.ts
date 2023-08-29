@@ -22,7 +22,9 @@ export class NetworkOutputSink extends OutputSinkBase {
             const packet = Buffer.from(output.toString());
             const client = this.client as UDP.Socket;
             client.send(packet, this.options.port, this.options.host, (err) => {
-                if (err) console.error('Failed to send UPD packet in NetworkOutputSink: ', err);
+                
+                if (err) return console.error('Failed to send UPD packet in NetworkOutputSink: ', err);
+                console.log("sent packet");
             });
         }
     }

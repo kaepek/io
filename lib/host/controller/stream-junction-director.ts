@@ -103,6 +103,7 @@ export class StreamJunctionDirector {
     }
 
     async ready() {
+        console.log("INFO Director is starting up...");
         // make sure the input output devices are ready for input/outputting
         await Promise.all(this.input_output_devices.map((input_output_device: any) => input_output_device.ready()));
         // make sure the output router and output sinks are ready
