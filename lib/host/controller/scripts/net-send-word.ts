@@ -1,5 +1,6 @@
 #!/bin/sh 
 ":" //# https://sambal.org/?p=1014; NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 exec /usr/bin/env node --experimental-loader=extensionless "$0" "$@"
+;
 import { ParseArgsConfig, parseArgs } from "node:util";
 import UDP from "dgram";
 import { ControlWordDataTypes, ControlWords } from "../control-words/words";
