@@ -65,7 +65,7 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
             (this.device_output_subject as Subject<any>).next(line);
         });
 
-        console.info("INFO SerialUSBDeviceController ready.");
+        console.info("INFO InputOutputDeviceController: SerialUSBDeviceController ready.");
     }
 
     SingleWordStruct = new _Struct("solo-word").UInt8("word").compile();

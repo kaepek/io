@@ -14,7 +14,7 @@ export class NetworkControlWordSink extends InputOutputDeviceControllerBase {
     client: UDP.Socket | undefined;
 
     async ready(): Promise<void> {
-        console.info("INFO NetworkControlWordSink ready.");
+        console.info("INFO InputOutputDeviceController: NetworkControlWordSink ready.");
     }
 
     handle_input_control_word(event: ControlWordEvent): void {

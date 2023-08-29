@@ -14,7 +14,7 @@ export class NetworkOutputSink extends OutputSinkBase {
     client: UDP.Socket | undefined;
 
     async ready() {
-        console.info("INFO NetworkOutputSink ready.");
+        console.info("INFO OutputSink: NetworkOutputSink ready.");
     }
 
     output_handler(output: any) {

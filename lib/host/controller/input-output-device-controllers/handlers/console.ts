@@ -5,7 +5,7 @@ import { InputOutputDeviceControllerBase } from "../model";
 export class ConsoleDeviceController extends InputOutputDeviceControllerBase {
 
     async ready() {
-        console.info("INFO ConsoleDeviceController ready.");
+        console.info("INFO InputOutputDeviceController: ConsoleDeviceController ready.");
     }
 
     handle_input_control_word(event: ControlWordEvent) {

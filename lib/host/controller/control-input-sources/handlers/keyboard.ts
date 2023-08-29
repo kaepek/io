@@ -77,6 +77,6 @@ export class KeyboardInputSourceHandler extends ControlInputSourceHandler {
             // console.log("press", data);
         });
 
-        console.info("INFO KeyboardInputSourceHandler ready.");
+        console.info("INFO ControlInputSourceHandler: KeyboardInputSourceHandler ready.");
     }
 }

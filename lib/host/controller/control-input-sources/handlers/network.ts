@@ -20,7 +20,7 @@ export class NetworkControlWordSourceHandler extends ControlInputSourceHandler {
             else if (this.options?.protocol === "udp") {
                 const server = this.server as UDP.Socket;
                 server.on("listening", () => {
-                    console.log(`INFO NetworkControlWordSourceHandler ready. Listening to Address: ${this.options?.address} Port: ${this.options?.port}`);
+                    console.log(`INFO ControlInputSourceHandler: NetworkControlWordSourceHandler ready. Listening to Address: ${this.options?.address} Port: ${this.options?.port}`);
                     resolve();
                 });
                 server.on("error", (err) => {
