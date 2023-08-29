@@ -33,7 +33,8 @@
   "bin": {
     "kaepek-io-director": "./dist/host/controller/scripts/director.js",
     "kaepek-io-netsend": "./dist/host/controller/scripts/net-send-word.js",
-    "kaepek-io-graph": "./lib/host/controller/scripts/graph.sh"
+    "kaepek-io-graph": "./lib/host/controller/scripts/graph.sh",
+    "extensionless": "./node_modules/extensionless/src/index.js"
   },
   "devDependencies": {
     "@types/node": "^20.5.4"
