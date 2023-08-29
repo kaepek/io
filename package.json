@@ -6,6 +6,7 @@
   "type": "module",
   "node_version": "v18.12.1",
   "scripts": {
+    "relink": "npm uninstall --global kaepek-io && npm link",
     "test": "ts-node ./lib/host/controller/scripts/test.ts",
     "build": "tsc --project tsconfig.json",
     "cli": "node --loader ts-node/esm ./dist/host/controller/scripts/director.js",
@@ -29,14 +30,7 @@
   },
   "bin": {
     "kaepek-io-director": "./dist/host/controller/scripts/director.js",
-    "kaepek-io-director2": "NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 node --experimental-loader=extensionless ./dist/host/controller/scripts/director.js",
-    "kaepek-torque-delay-direction-dualshock-serial": "./lib/models/torque-delay-direction/scripts/dualshock-serial.js",
-    "kaepek-torque-delay-direction-dualshock-console": "./lib/models/torque-delay-direction/scripts/dualshock-console.js",
-    "kaepek-torque-phase-direction-dualshock-serial": "./lib/models/torque-phase/scripts/dualshock-serial.js",
-    "kaepek-torque-phase-direction-dualshock-console": "./lib/models/torque-phase/scripts/dualshock-console.js",
-    "kaepek-ThrustU16LEDirectionU8Model-dualshock-serial": "./lib/models/thrustU16LE-directionU8/scripts/dualshock-serialport.js",
-    "kaepek-ThrustU16LEDirectionU8Model-dualshock-serial-graph": "./lib/models/thrustU16LE-directionU8/scripts/dualshock-serialport-graph.js",
-    "kaepek-ThrustU16LEDirectionU8Model-dualshock-console": "./lib/models/thrustU16LE-directionU8/scripts/dualshock-console.js"
+    "kaepek-io-net-send-word": "./dist/host/controller/scripts/net-send-word.js"
   },
   "devDependencies": {
     "@types/node": "^20.5.4"
