@@ -4,13 +4,47 @@ from bokeh.plotting import curdoc, figure
 import json
 import socket
 from pathlib import Path
+import sys
+import argparse
+import os
 
+parser=argparse.ArgumentParser()
+cwd = os.getcwd()
 current_dir_path = str(Path(__file__).parent.resolve())
 
-myIp = "127.0.0.1"
-myPort = 5001
+print("inside graph server", current_dir_path, cwd)
 
-config_file = open(current_dir_path + "/config.json", "r")
+parser.add_argument("--address", "-a", help="Listen address")
+parser.add_argument("--port", "-p", help="UDP listen port")
+parser.add_argument("--config", "-c", help="JSON config file. See example in kaepek-io/lib/host/graphing/config.json")
+
+args = vars(parser.parse_args())
+
+if args["address"] == None:
+    print("NetGraph: missing argument --address or -a e.g. --address=localhost")
+if args["port"] == None:
+    print("NetGraph: missing argument --port or -p e.g. --port=5001")
+if args["config"] == None:
+    print("NetGraph: missing argument --config or -c e.g. /home/user/kaepek-io/lib/host/graphing/config.json")
+if (args["port"] == None or args["address"] == None or args["config"] == None):
+    exit(1)
+
+
+listen_address = args["address"]
+listen_port = None
+
+try:
+    listen_port = int(args["port"])   
+except Exception as error:
+    print("NetGraph: bad argument --port or -p did not parse as an integer")
+    exit(1)
+
+full_config_path = cwd + "/" + args["config"]
+try:
+    config_file = open(full_config_path, "r")
+except Exception as error:
+    print("NetGraph: bad config path --config or -c: " + full_config_path)
+    exit(1)
 config_json = json.load(config_file)
 
 inputs_dict = dict()
@@ -39,17 +73,20 @@ for plot in config_json['plots']:
 doc = curdoc()
 doc.add_root(column(*figs))
 
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) 
-sock.bind((myIp, myPort))
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+try:
+    sock.bind((listen_address, listen_port)) 
+except Exception as error:
+    print("NetGraph: failed to bind address and port combination, address: " + listen_address + ", port: " + str(listen_port))
+    exit(1)
+
 
 
 def update():
     data_bytes, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
     data_str = data_bytes.decode('utf-8')
-    #print(data_str)
-    # split by delimeter
     data_str_split = data_str.split(",")
-
     stream_obj = {}
     for input in config_json["inputs"]:
         input_name = input["name"]
@@ -57,19 +94,11 @@ def update():
         try:
             relevant_data = float(data_str_split[input_position])
             if "scale" in input:
-                #print("scale", input["scale"])
                 relevant_data *= input["scale"]
         except Exception as error:
-            #print(error)
             relevant_data = 0.0
         stream_obj[input_name] = [relevant_data]
-    
-    #print("-----")
-    #print(stream_obj)
-    #print("----")
-    #plot_data.patch(stream_obj)
     plot_data.stream(stream_obj, rollover=buffer_length)
-
     doc.add_next_tick_callback(update)
 
 # add callback for first tick

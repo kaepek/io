@@ -14,7 +14,9 @@
     "cli3": "npm run cli2 -- -i network=localhost,9090,udp -i keyboard -c start -c null -c stop -p serial-usb -p console -o console",
     "cli-test": "ts-node lib/host/controller/scripts/cli.ts -i network=localhost,9090,udp -i keyboard -c start -c null -c stop -p serial-usb -p console -o console",
     "graph": "bokeh serve --port 8033 --show lib/graphing/plot.py ",
-    "bin-director": "kaepek-io-director -i network=localhost,9090,udp keyboard -c start null stop -p serial-usb console -o console"
+    "bin-netsend-word": "kaepek-io-netsend-word -h localhost -p 2002 -n udp -w thrustui16 -d 2",
+    "bin-director": "kaepek-io-director -i network=localhost,9090,udp keyboard -c start null stop -p serial-usb console -o console",
+    "bin-graph": "kaepek-io-graph --address localhost --port 9001 --config ./lib/host/graphing/config.json"
   },
   "author": "Jonathan Kelsey",
   "license": "AGPL3",
@@ -30,7 +32,8 @@
   },
   "bin": {
     "kaepek-io-director": "./dist/host/controller/scripts/director.js",
-    "kaepek-io-net-send-word": "./dist/host/controller/scripts/net-send-word.js"
+    "kaepek-io-netsend": "./dist/host/controller/scripts/net-send-word.js",
+    "kaepek-io-graph": "./lib/host/controller/scripts/graph.sh"
   },
   "devDependencies": {
     "@types/node": "^20.5.4"
