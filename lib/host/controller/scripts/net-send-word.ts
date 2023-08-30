@@ -1,6 +1,6 @@
 #!/bin/bash
 ":" //# https://sambal.org/?p=1014; NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 exec /usr/bin/env node --experimental-loader=$(which kaepek-io-INTERNALS-extensionless.js) "$0" "$@"
-;
+    ;
 import { ParseArgsConfig, parseArgs } from "node:util";
 import UDP from "dgram";
 import { ControlWordDataTypes, ControlWords } from "../control-words/words";
@@ -61,7 +61,6 @@ if (missing_options.length !== 0) {
     }).join(", ")}`);
     process.exit(1);
 }
-
 // we have some correct args now.
 const values = parsed_options.values;
 
@@ -79,7 +78,6 @@ if (!possibleWordHandler) {
 const wordHandlerInstance = new possibleWordHandler();
 
 // validate whether or not we need the data argument
-
 if (wordHandlerInstance.data_type === ControlWordDataTypes.None) {
     if (values["data"]) {
         console.error("NetSendWord: --data or -d argument provided but this control word validates that there is no data for this command. Aborting.");
@@ -111,16 +109,16 @@ else {
     }
 }
 
-const data = parseFloat(values.data as string);
-
-if (Number.isNaN(data)) {
-    console.error(`NetSendWord: --data or -d bad argument value. Aborting.`);
-    process.exit(1);
-}
-
 let packet_str = `${wordHandlerInstance.name}`;
 
 if (wordHandlerInstance.data_type !== ControlWordDataTypes.None) {
+    const data = parseFloat(values.data as string);
+
+    if (Number.isNaN(data)) {
+        console.error(`NetSendWord: --data or -d bad argument value. Aborting.`);
+        process.exit(1);
+    }
+
     packet_str = `${wordHandlerInstance.name}|${data}`
 }
 

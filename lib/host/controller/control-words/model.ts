@@ -13,7 +13,7 @@ export class ControlWordHandlerBase {
     $ = this.subject.asObservable();
     handle_input(input: any, state?: any) {
         // handler the network word input here.
-        if (input.source === ControlInputSources.NetworkControlWord && this.name === input.name) {
+        if (input.source === ControlInputSources.NetworkControlWord && this.name === input.word) {
             if (this.data_type === ControlWordDataTypes.None) {
                 // should have not data
                 if (input.hasOwnProperty("value")) {

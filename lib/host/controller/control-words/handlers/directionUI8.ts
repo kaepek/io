@@ -14,7 +14,7 @@ export class DirectionUI8ControlWordHandler extends ControlWordHandlerBase {
             // triangle up... we have a direction to reverse... only if thrust is zero otherwise risk breaking the hardware
             if (input.type === "button" && input.label === "triangle" && input.value === false ) {
                 if (state.hasOwnProperty("thrust") && state["thrust"] !== 0) {
-                    console.log("BLOCKING DIRECTION CHANGE AS HAS THRUST");
+                    console.log("BLOCKING direction1 change as thrust1 is non zero.");
                     return;
                 };
                 if (state.hasOwnProperty(this.name)) {
@@ -27,7 +27,7 @@ export class DirectionUI8ControlWordHandler extends ControlWordHandlerBase {
         }
         else if (input.source === ControlInputSources.Keyboard && input.label === "q" && input.value === "pressed") {
             if (state.hasOwnProperty("thrust") && state["thrust"] !== 0) {
-                console.log("BLOCKING DIRECTION CHANGE AS HAS THRUST");
+                console.log("BLOCKING direction1 change as thrust1 is non zero.");
                 return;
             };
             if (state.hasOwnProperty(this.name)) {
@@ -37,9 +37,9 @@ export class DirectionUI8ControlWordHandler extends ControlWordHandlerBase {
                 this.subject.next({word:this, value: false});
             }
         }
-        else if (input.source === ControlInputSources.NetworkControlWord && this.name === input.name) {
+        else if (input.source === ControlInputSources.NetworkControlWord && this.name === input.word) {
             if (state.hasOwnProperty("thrust") && state["thrust"] !== 0) {
-                console.log("BLOCKING DIRECTION CHANGE AS HAS THRUST");
+                console.log("BLOCKING direction1 change as thrust1 is non zero.");
                 return;
             }
             if (this.data_type === ControlWordDataTypes.None) {

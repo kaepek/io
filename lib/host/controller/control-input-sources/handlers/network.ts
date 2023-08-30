@@ -32,13 +32,13 @@ export class NetworkControlWordSourceHandler extends ControlInputSourceHandler {
                     const message_str = message.toString();
                     const message_split = message_str.split("|");
                     if (!message_split) return console.warn("WARNING NetworkControlWordSourceHandler falsy message recieved");
-                    const word = message_split[0] as any as number;
+                    const word = parseFloat(message_split[0]);
                     if (!ControlWords[word]) return console.warn(`WARNING NetworkControlWordSourceHandler word not recognised recieved word value: ${word}`);
                     if (message_split.length === 1) {
                         this.subject.next({ source: this.type, word });
                     }
                     else if (message_split.length === 2) {
-                        const value = message_split[1];
+                        const value = parseFloat(message_split[1]);
                         this.subject.next({ source: this.type, word, value });
                     }
                     else {
