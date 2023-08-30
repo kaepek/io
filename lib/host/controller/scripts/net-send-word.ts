@@ -103,7 +103,7 @@ else {
             process.exit(1);
         }
         else if (data_number < min_value) {
-            console.error(`Word handler validation for word ${word_short_name} with value ${data_number} was below min_value ${max_value}. Aborting.`);
+            console.error(`Word handler validation for word ${word_short_name} with value ${data_number} was below min_value ${min_value}. Aborting.`);
             process.exit(1);
         }
     }
