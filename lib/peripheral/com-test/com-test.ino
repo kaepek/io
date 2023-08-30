@@ -37,13 +37,13 @@ namespace kaepek
       case SerialInputCommandWord::Reset:
         Serial.println("Recieved word Reset");
         break;
-      case SerialInputCommandWord::SetThrustUI16:
-        Serial.println("Recieved word SetThrustUI16");
+      case SerialInputCommandWord::Thrust1UI16:
+        Serial.println("Recieved word Thrust1UI16");
         com_torque_value = (data_buffer[1] << 8) | data_buffer[0];
         Serial.print("Word value: ");Serial.println(com_torque_value);
         break;
-      case SerialInputCommandWord::SetDirectionUI8:
-        Serial.println("Recieved word SetDirectionUI8");
+      case SerialInputCommandWord::Direction1UI8:
+        Serial.println("Recieved word Direction1UI8");
         Serial.print("Word value: ");Serial.println(data_buffer[0]);
         break;
       default:

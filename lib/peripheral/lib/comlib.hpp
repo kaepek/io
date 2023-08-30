@@ -12,8 +12,8 @@ namespace kaepek
      * 1: Start - starts the device
      * 2: Stop - stops the device
      * 3: Reset - resets the device after a fault
-     * 4: SetDirectionUI8 - set the device direction
-     * 5: SetThrustUI16 - sets the thrust level
+     * 4: Direction1UI8 - set the device direction
+     * 5: Thrust1UI16 - sets the thrust level
      */
     class SerialInputCommandWord
     {
@@ -24,8 +24,8 @@ namespace kaepek
             Start = 1,
             Stop = 2,
             Reset = 3,
-            SetDirectionUI8 = 4,
-            SetThrustUI16 = 5
+            Direction1UI8 = 4,
+            Thrust1UI16 = 5
         } Type;
     };
 
@@ -39,16 +39,16 @@ namespace kaepek
          * 1: Start - No data
          * 2: Stop - No data
          * 3: Reset - No data
-         * 4: SetDirectionUI8 - Unsigned Int 8 bit
-         * 5: SetThrustUI16 - Unsigned Int 16 bit
+         * 4: Direction1UI8 - Unsigned Int 8 bit
+         * 5: Thrust1UI16 - Unsigned Int 16 bit
          */
         uint32_t serial_input_command_word_buffer_size[6] = {
             0, // Null
             0, // Start
             0, // Stop
             0, // Reset
-            1, // SetDirectionUI8
-            2, // SetThrustUI16
+            1, // Direction1UI8
+            2, // Thrust1UI16
         };
         // The current data buffer's index.
         uint32_t buffer_idx = 0;

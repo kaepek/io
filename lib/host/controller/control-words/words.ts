@@ -3,8 +3,8 @@ enum ControlWords {
     Start = 1,
     Stop = 2,
     Reset = 3,
-    SetDirectionUI8 = 4,
-    SetThrustUI16 = 5
+    Direction1UI8 = 4,
+    Thrust1UI16 = 5
 };
 
 enum ControlWordDataTypes {

@@ -3,7 +3,7 @@ import { ControlWordDataTypes, ControlWords } from "../words";
 import { ControlWordHandlerBase } from "../model";
 
 export class DirectionUI8ControlWordHandler extends ControlWordHandlerBase {
-    name = ControlWords.SetDirectionUI8;
+    name = ControlWords.Direction1UI8;
     scale = 1.0;
     data_type = ControlWordDataTypes.UInt8;
     min_value = 0;
