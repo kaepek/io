@@ -5,7 +5,7 @@ import { InputOutputDeviceControllerBase } from "./model"
 
 const exports: {[key: string]: typeof InputOutputDeviceControllerBase | typeof NetworkControlWordSink } = {
     "console": ConsoleDeviceController,
-    "serial-usb": SerialUSBDeviceController,
+    "serial": SerialUSBDeviceController,
     "network": NetworkControlWordSink
 };
 

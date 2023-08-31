@@ -39,13 +39,13 @@ export class DualShockControlInputSourceHandler extends ControlInputSourceHandle
         }
     }
 
-    constructor(smoothAnalog?: number|string, smoothMotion?: number|string, joyDeadband?: number|string, moveDeadband?: number|string) {
+    constructor(smooth_analog?: number|string, smooth_motion?: number|string, joy_deadband?: number|string, move_deadband?: number|string) {
         super();
         const gamepadArgs = { smoothAnalog: 10, smoothMotion: 15, joyDeadband: 4, moveDeadband: 4 };
-        if (smoothAnalog !== undefined) gamepadArgs.smoothAnalog = parseFloat(smoothAnalog as string);
-        if (smoothMotion !== undefined) gamepadArgs.smoothMotion = parseFloat(smoothMotion as string);
-        if (joyDeadband !== undefined) gamepadArgs.joyDeadband = parseFloat(joyDeadband as string);
-        if (moveDeadband !== undefined) gamepadArgs.moveDeadband = parseFloat(moveDeadband as string);
+        if (smooth_analog !== undefined) gamepadArgs.smoothAnalog = parseFloat(smooth_analog as string);
+        if (smooth_motion !== undefined) gamepadArgs.smoothMotion = parseFloat(smooth_motion as string);
+        if (joy_deadband !== undefined) gamepadArgs.joyDeadband = parseFloat(joy_deadband as string);
+        if (move_deadband !== undefined) gamepadArgs.moveDeadband = parseFloat(move_deadband as string);
         this.gamepadArgs = gamepadArgs;
     }
 }

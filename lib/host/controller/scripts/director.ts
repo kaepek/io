@@ -1,6 +1,6 @@
 #!/bin/bash
 ":" //# https://sambal.org/?p=1014; NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 exec /usr/bin/env node --experimental-loader=$(which kaepek-io-INTERNALS-extensionless.js) "$0" "$@"
-;
+    ;
 import ControlInputSources from "../control-input-sources/index";
 import { ControlInputSourceHandler } from "../control-input-sources/model";
 import { ControlSourceInputRouter } from "../control-input-sources/router";
@@ -72,26 +72,6 @@ function parse_concept<T>(parsed_args_concept_values: Array<string>, concept_nam
 }
 
 function custom_parse_args() {
-    const eg = [
-        '/usr/local/bin/node',
-        '/home/jonathan/code/kaepek/io/dist/host/controller/scripts/cli.js',
-        '-i',
-        'network=localhost,9090,udp',
-        'keyboard',
-        '-c',
-        'start',
-        '-c',
-        'null',
-        '-c',
-        'stop',
-        '-p',
-        'serial-usb',
-        '-p',
-        'console',
-        '-o',
-        'console'
-    ];
-
     const args = process.argv;
     args.splice(0, 2);
     const command_words_short: { [name: string]: any } = {};
@@ -120,8 +100,23 @@ function custom_parse_args() {
             current_arg_name = arg_name;
         }
         else {
-            // we are already handling the word collect values
-            parsed_args.values[current_arg_name as string].push(arg_str_segment);
+            if (parsed_args.values.hasOwnProperty(current_arg_name as string)) {
+                // we are already handling the word collect values
+                parsed_args.values[current_arg_name as string].push(arg_str_segment);
+            }
+            else {
+                const missing_options: Array<string> = [];
+                Object.keys(parse_options.options as any).forEach((option_name) => {
+                    if (!parsed_args.values[option_name] && option_name !== "sink") {
+                        missing_options.push(option_name);
+                    }
+                });
+                throw `Director error: Unrecognised argument ${arg_str_segment}. Need the following ${missing_options.map(option_str => {
+                    const option = (parse_options.options as any)[option_str];
+                    return `--${option_str} or -${option.short}`
+                }).join(", ")}. --sink or -o argument is optional. No other arguments are expected.`;
+            }
+
         }
     });
 
