@@ -24,7 +24,7 @@ export class NetworkOutputSink extends OutputSinkBase {
             client.send(packet, this.options.port, this.options.host, (err) => {
                 
                 if (err) return console.error('Failed to send UPD packet in NetworkOutputSink: ', err);
-                console.log("sent packet");
+                // console.log("sent packet");
             });
         }
     }
