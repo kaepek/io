@@ -1,17 +1,19 @@
-# KAEPEK-IO
+# KAEPEK-IO V2.0.0
 
 Remote controller. Enabling IO to be piped from various inputs to different devices over network/serial communication ports.
 
-# Install commands:
+## Install:
 
 ```
 npm install
+npm run build
 npm link
 ```
 
-# Relink commands (if package.json bin property has changed):
+## Relink (if package.json bin property has changed):
 
 ```
+npm run build
 npm ls --global
 npm uninstall --global kaepek-io
 npm link
@@ -21,44 +23,44 @@ or
 
 
 ```
+npm run build
 npm run relink
 ```
 
-# Configuration
+# Commands:
 
-## Inputs sources:
+## kaepek-io-director command
 
-- dualshock
-- keyboard (optional configuration: <smooth_analog?>,<smooth_motion?>,<joy_deadband?>,<move_deadband?>)
-- network (configuration: <host>,<port>,<protocol>)
+CLI to enable directing various input / output streams.
 
-## Control words:
+### Configuration:
 
-- null
-- start
-- stop
-- reset
-- thrustui16
-- directionui8
+- Inputs sources (```-i``` or ```--source```):
+    - dualshock
+    - keyboard (optional configuration: `<smooth_analog?>`,`<smooth_motion?>`,`<joy_deadband?>`,`<move_deadband?>`)
+    - network (configuration: `<host>`,`<port>`,`<protocol:'tcp'|'upd'>`)
+- Control words (```-c``` or ```--control_word```):
+    - null
+    - start
+    - stop
+    - reset
+    - thrustui16
+    - directionui8
+- Peripheral devices (```-p``` or ```--peripheral```):
+    - console
+    - network (configuration `<host>`,`<port>`,`<protocol:'tcp'|'upd'>`)
+    - serial (optional configuration `<baud_rate?>`,`<path?>` defaults to baud_rate=5000000 and path=/dev/ttyACMX [where X is the lowest found device index])
+- Outputs sinks (```-o``` or ```--sink```):
+    - console
+    - network (configuration `<host>`,`<port>`,`<protocol:'tcp'|'upd'>`)
 
-# Peripheral devices
-
-- console
-- network (configuration <host>,<port>,<protocol>)
-- serial (optional configuration <baud_rate?>,<path?> defaults to baud_rate=5000000 and path=/dev/ttyACMX [where X is the lowest found device index])
-
-## Outputs sinks:
-
-- console
-- network (configuration <host>,<port>,<protocol>)
-
-# Commands
-
-## Director
+### Example use:
 
 ```
 kaepek-io-director -i keyboard -c stop start null -p console serial -o network=localhost,9000,udp console
 ```
+
+This command example will setup a keyboard input source, it will moderate the stop, start and null control words, it will pipe the control words to both a serial device as well as logging the control words to console, finally it will redirect the output of the serial device to a network sink localhost:9000 via the udp protocol and it will also pipe the serial device output to the console.
 
 ### Combining arguments:
 
@@ -111,49 +113,43 @@ or
 --sink network=localhost,9000,udp --sink console
 ```
 
-### Input source examples
+## kaepek-io-netsend command
 
-- keyboard ```-i keyboard``` or ```--source=keyboard```
-- dualshock ```-i dualshock``` or ```--source=dualshock```
-- network ```-i network=<host>,<port>,<protocol>``` or ```--source network=<host>,<port>,<protocol>```
+### Configuration:
 
-## Use commands:
+- host ```-h``` or ```--host``` e.g. ```-h localhost```
+- port ```-p``` or ```--port``` e.g. ```-p 9000```
+- protocol ```-n``` or ```--protocol``` e.g. ```-n upd```
+- word ```-w``` or ```---word``` e.g. ```thrustui16```
+- data (optional only for words which require data) ```-d``` or ```--data``` e.g. ```-d 2```
 
-### Test dualshock torque-delay-direction profile with console output:
-```
-kaepek-torque-delay-direction-dualshock-console
-```
-
-### Control dualshock torque-delay-direction profile with serial output (useful for controlling open loop spwm):
-```
-kaepek-torque-delay-direction-dualshock-serial
-```
-
-### Control dualshock torque-phase profile with console output:
+### Example usage
 
 ```
-kaepek-torque-phase-direction-dualshock-console
+kaepek-io-netsend -h localhost -p 8002 -n udp -w thrustui16 -d 2
 ```
 
-### Control dualshock torque-phase profile with serial output:
+This command will send the `thrustui16` control word with a thrust level of `2` via upd port `8002` to the host `localhost`. Note
+for this command to do anything the director must be run with a input source of ```kaepek-io-director -i network=localhost,8002,udp ...(other configs)``` which will capture and process the send word.
+
+## kaepek-io-graph command
+
+### Install
+
+In order to use this command you must install bokeh globally via `pip install bokeh==2.4.3`.
+
+### Configuration:
+
+- address ```-a``` or ```--address``` e.g. ```-a localhost```
+- port ```-p``` or ```--port``` e.g. ```-p 9008```
+- config ```-c``` or ```--config``` e.g. ```-c ./lib/host/graphing/config.json```
+
+### Example usage
 
 ```
-kaepek-torque-phase-direction-dualshock-serial
+kaepek-io-graph --address localhost --port 9008 --config ./lib/host/graphing/config.json
 ```
 
-### Closed loop spwm speed control:
+This command will open the bokeh graph server, the server will listen on address `localhost`, port `9008` via a `udp` socket. Incoming network ASCII data row is delimited by `,` for each data column. The graph server then parses the data using the provided config.json via the `"inputs"` config attribute which unpacks the line and finally it plots the data based on the `"plots"` config attribute. [Config example.](./lib/host/graphing/config.json)
 
-## Console
-```
-kaepek-ThrustU16LEDirectionU8Model-dualshock-console
-```
-
-## Serial
-```
-kaepek-ThrustU16LEDirectionU8Model-dualshock-serial
-```
-
-## Serial with graph
-```
-kaepek-ThrustU16LEDirectionU8Model-dualshock-serial-graph
-```
+Note that in order for this graph server to recieve any data then the director must have an network output sink to redirect peripheral output to the server. For the above example the following output sink should be added ```kaepek-io-director -o network=localhost,9008,udp ...(other configs)```
