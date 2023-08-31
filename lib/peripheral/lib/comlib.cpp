@@ -2,14 +2,19 @@
 
 namespace kaepek
 {
-    template <typename T, std::size_t MAX_BUFFER_SIZE>
-    SerialInputControl<T, MAX_BUFFER_SIZE>::SerialInputControl(T *device_instance)
-        : device_instance(device_instance)
+    /*template <std::size_t MAX_BUFFER_SIZE>
+    SerialInputControl< MAX_BUFFER_SIZE>::SerialInputControl(T *_device_instance)
+    {
+        // this->device_instance = _device_instance;
+    }*/
+
+    template <std::size_t MAX_BUFFER_SIZE>
+    SerialInputControl< MAX_BUFFER_SIZE>::SerialInputControl()
     {
     }
 
-    template <typename T, std::size_t MAX_BUFFER_SIZE>
-    void SerialInputControl<T, MAX_BUFFER_SIZE>::read_input()
+    template <std::size_t MAX_BUFFER_SIZE>
+    void SerialInputControl< MAX_BUFFER_SIZE>::read_input()
     {
         cli(); // no interrupt.
         while (Serial.available())
@@ -26,7 +31,7 @@ namespace kaepek
                 {
                     control_word_set = false;
                     buffer_idx = 0;
-                    device_instance->process_host_control_word(current_control_word, control_word_data_buffer);
+                    process_host_control_word(current_control_word, control_word_data_buffer);
                 }
             }
             else
@@ -39,15 +44,15 @@ namespace kaepek
                 {
                     control_word_set = false;
                     buffer_idx = 0;
-                    device_instance->process_host_control_word(current_control_word, control_word_data_buffer);
+                    process_host_control_word(current_control_word, control_word_data_buffer);
                 }
             }
         }
         sei(); // enable interrupt.
     }
 
-    template <typename T, std::size_t MAX_BUFFER_SIZE>
-    void SerialInputControl<T, MAX_BUFFER_SIZE>::block_until_serial_input()
+    template <std::size_t MAX_BUFFER_SIZE>
+    void SerialInputControl< MAX_BUFFER_SIZE>::block_until_serial_input()
     {
         // Delay serial read as too early and it gets junk noise data.
         while (!Serial.available())

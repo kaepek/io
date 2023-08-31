@@ -29,7 +29,7 @@ namespace kaepek
         } Type;
     };
 
-    template <typename T, std::size_t MAX_BUFFER_SIZE>
+    template <std::size_t MAX_BUFFER_SIZE>
     class SerialInputControl
     {
     private:
@@ -55,7 +55,7 @@ namespace kaepek
         // Variable to store if the current word is set or are we waiting for a new word.
         bool control_word_set = false;
         // Pointer to the instance of our device class.
-        T *device_instance;
+        // T *device_instance;
 
     protected:
         // The current word.
@@ -66,9 +66,11 @@ namespace kaepek
         uint32_t current_buffer_size = 0;
 
     public:
-        SerialInputControl(T *device_instance);
+        // SerialInputControl(T *_device_instance);
+        SerialInputControl();
         void read_input();
         void block_until_serial_input();
+        virtual void process_host_control_word(uint32_t control_word, uint32_t *data_buffer);
     };
 #endif
 }
