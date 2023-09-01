@@ -78,10 +78,12 @@ namespace kaepek
 // Create instance.
 kaepek::ComTester device;
 
+// Setup logic.
 void setup()
 {
 }
 
+// Loop logic.
 void loop()
 {
   device.run();
