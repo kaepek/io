@@ -21,7 +21,7 @@ export class DirectionUI8ControlWordHandler extends ControlWordHandlerBase {
                     this.subject.next({word:this, value: !state[this.name]}); // NOTE SHOULD BE CALLING NEXT!
                 }
                 else {
-                    this.subject.next({word:this, value: false});
+                    this.subject.next({word:this, value: true});
                 }
             }
         }
@@ -34,7 +34,7 @@ export class DirectionUI8ControlWordHandler extends ControlWordHandlerBase {
                 this.subject.next({word:this, value: !state[this.name]}); // NOTE SHOULD BE CALLING NEXT!
             }
             else {
-                this.subject.next({word:this, value: false});
+                this.subject.next({word:this, value: true});
             }
         }
         else if (input.source === ControlInputSources.NetworkControlWord && this.name === input.word) {
