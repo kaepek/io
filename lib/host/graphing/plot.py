@@ -61,10 +61,19 @@ for plot in config_json['plots']:
     fig = figure(title=plot["name"], plot_width=2000, output_backend="webgl") # , y_range=(0, 200)
     x_axis = plot["independant_column"]
     for dependant_column in plot["dependant_columns"]:
+        # do we want a line or a scatter?
+        scatter = True
+        line = True
+        if "line" in dependant_column:
+            line = dependant_column["line"]
+        if "scatter" in dependant_column:
+            scatter = dependant_column["scatter"]
         y_axis = dependant_column["name"]
         color = dependant_column["color"]
-        fig.line(source=plot_data, x=x_axis, y=y_axis, color=color, legend_label=y_axis)
-        fig.scatter(source=plot_data, x=x_axis, y=y_axis, color=color, legend_label=y_axis)
+        if line:
+            fig.line(source=plot_data, x=x_axis, y=y_axis, color=color, legend_label=y_axis)
+        if scatter:
+            fig.scatter(source=plot_data, x=x_axis, y=y_axis, color=color, legend_label=y_axis)
     figs.append(fig)
 
 # todo enable disable plots via ui checkboxs
