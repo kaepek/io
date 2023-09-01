@@ -153,3 +153,9 @@ kaepek-io-graph --address localhost --port 9008 --config ./lib/host/graphing/con
 This command will open the bokeh graph server, the server will listen on address `localhost`, port `9008` via a `udp` socket. Incoming network ASCII data row is delimited by `,` for each data column. The graph server then parses the data using the provided config.json via the `"inputs"` config attribute which unpacks the line and finally it plots the data based on the `"plots"` config attribute. [Config example.](./lib/host/graphing/config.json)
 
 Note that in order for this graph server to recieve any data then the director must have a network output sink to redirect peripheral output to the server. For the above example the following output sink should be added ```kaepek-io-director -o network=localhost,9008,udp <...other configs>```
+
+# c++ lib
+
+```
+
+```
