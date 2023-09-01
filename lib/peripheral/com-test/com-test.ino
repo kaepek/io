@@ -8,15 +8,11 @@ namespace kaepek
     BaseTester() {}
   };
 
-  class ComTester : public BaseTester
+  class ComTester : public BaseTester, public SerialInputControl<2>
   {
-  private:
-    SerialInputControl<ComTester, 2> serialInputControl;
-
   public:
     ComTester()
-        : BaseTester(),
-          serialInputControl(this)
+        : BaseTester(), SerialInputControl<2>()
     {
     }
 
@@ -55,7 +51,7 @@ namespace kaepek
 
     void run()
     {
-      serialInputControl.read_input();
+      read_input();
     }
   };
 }
