@@ -71,6 +71,7 @@ print("config_json", config_json)
 # create column data structure
 inputs_dict = dict()
 for input in config_json["inputs"]:
+    print("input", input)
     inputs_dict[input["name"]] = []
 plot_data = ColumnDataSource(inputs_dict)
 
