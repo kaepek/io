@@ -41,7 +41,7 @@ if args["address"] != None or args["port"] != None:
 
 # both args[port] and args[address] are both None make sure we have an input_data_file
 
-if args["input_data_file"] == None and args["address"] == None or args["port"] == None:
+if args["input_data_file"] == None and (args["address"] == None or args["port"] == None):
     print("NetGraph: provided input_data_file or address / port arguments. Need to choose either --input_data_file (-i) or --address (-a) and --port (-p).")
     exit_flag = True
 
