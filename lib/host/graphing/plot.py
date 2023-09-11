@@ -87,6 +87,7 @@ figs = []
 for plot in config_json['plots']:
     print("Building plot", plot["name"])
     fig = figure(title=plot["name"], plot_width=2000, output_backend="webgl") # , y_range=(0, 200)
+    fig.extra_y_ranges = {}
     x_axis = plot["independant_column"]
     for dependant_column in plot["dependant_columns"]:
         # do we want a line or a scatter?
@@ -99,7 +100,7 @@ for plot in config_json['plots']:
         y_axis = dependant_column["name"]
         color = dependant_column["color"]
         if "axis" in dependant_column:
-            fig.extra_y_ranges = {}
+            
             fig.extra_y_ranges[y_axis] = Range1d(start=float(dependant_column["axis"]["min"]), end=float(dependant_column["axis"]["max"]))
             fig.add_layout(LinearAxis(y_range_name=y_axis, axis_label=y_axis), dependant_column["axis"]["location"])
             if line:
