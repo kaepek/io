@@ -4,7 +4,10 @@ enum ControlWords {
     Stop = 2,
     Reset = 3,
     Direction1UI8 = 4,
-    Thrust1UI16 = 5
+    Thrust1UI16 = 5,
+    ProportionalF32 = 6,
+    IntegralF32 = 7,
+    DerivativeF32 = 8,
 };
 
 enum ControlWordDataTypes {

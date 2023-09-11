@@ -25,7 +25,10 @@ namespace kaepek
             Stop = 2,
             Reset = 3,
             Direction1UI8 = 4,
-            Thrust1UI16 = 5
+            Thrust1UI16 = 5,
+            ProportionalF32 = 6,
+            IntegralF32 = 7,
+            DerivativeF32 = 8,
         } Type;
     };
 
@@ -42,13 +45,16 @@ namespace kaepek
          * 4: Direction1UI8 - Unsigned Int 8 bit
          * 5: Thrust1UI16 - Unsigned Int 16 bit
          */
-        uint32_t serial_input_command_word_buffer_size[6] = {
+        uint32_t serial_input_command_word_buffer_size[9] = {
             0, // Null
             0, // Start
             0, // Stop
             0, // Reset
             1, // Direction1UI8
             2, // Thrust1UI16
+            4, // ProportionalF32
+            4, // IntegralF32
+            4, // DerivativeF32
         };
         // The current data buffer's index.
         uint32_t buffer_idx = 0;
