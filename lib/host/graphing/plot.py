@@ -111,7 +111,8 @@ for plot in config_json['plots']:
                 fig.line(source=plot_data, x=x_axis, y=y_axis, color=color, legend_label=y_axis)
             if scatter:
                 fig.scatter(source=plot_data, x=x_axis, y=y_axis, color=color, legend_label=y_axis)
-        ## y_range_name="angle"
+        ##p.xaxis.axis_label = 'Time'
+    fig.xaxis.axis_label = x_axis
     figs.append(fig)
 
 # todo enable disable plots via ui checkboxs
