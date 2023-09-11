@@ -175,7 +175,7 @@ namespace kaepek
   /**
    * ComTester a class to demonstrate the use of SerialInputControl
    */
-  class ComTester : public BaseTester, public SerialInputControl<2>
+  class ComTester : public BaseTester, public SerialInputControl<4>
   {
   private:
     /**
@@ -222,7 +222,7 @@ namespace kaepek
      * ComTester constructor, demostrates multiple inheritance
      */
     ComTester()
-        : BaseTester(), SerialInputControl<2>()
+        : BaseTester(), SerialInputControl<4>()
     {
     }
 
