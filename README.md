@@ -186,6 +186,7 @@ namespace kaepek
     void process_host_control_word(uint32_t control_word, uint32_t *data_buffer)
     {
       uint16_t com_torque_value = 0;
+      float float_value = 0;
       switch (control_word)
       {
       case SerialInputCommandWord::Null:
@@ -211,12 +212,85 @@ namespace kaepek
         Serial.print("Word value: ");
         Serial.println(data_buffer[0]);
         break;
+      case SerialInputCommandWord::ProportionalF32:
+        Serial.println("Recieved word ProportionalF32");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
+      case SerialInputCommandWord::IntegralF32:
+        Serial.println("Recieved word IntegralF32");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
+      case SerialInputCommandWord::DerivativeF32:
+        Serial.println("Recieved word DerivativeF32");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
+      case SerialInputCommandWord::Phase1F32:
+        Serial.println("Recieved word Phase1F32");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
+      case SerialInputCommandWord::Phase2F32:
+        Serial.println("Recieved word Phase2F32");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
+      case SerialInputCommandWord::Offset1F32:
+        Serial.println("Recieved word Offset1F32");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
+      case SerialInputCommandWord::Offset2F32:
+        Serial.println("Recieved word Offset2F32");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
+      case SerialInputCommandWord::SetPointF32:
+        Serial.println("Recieved word SetPointF32");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
       default:
         Serial.print("Recieved unknown word: ");
         Serial.println(control_word);
         break;
       }
     }
+
   public:
     /**
      * ComTester constructor, demostrates multiple inheritance
