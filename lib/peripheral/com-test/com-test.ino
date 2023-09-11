@@ -114,6 +114,15 @@ namespace kaepek
         Serial.print("Word value: ");
         Serial.println(float_value);
         break;
+      case SerialInputCommandWord::SetPointF32:
+        Serial.println("Recieved word SetPointF32");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
       default:
         Serial.print("Recieved unknown word: ");
         Serial.println(control_word);

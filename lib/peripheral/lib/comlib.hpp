@@ -32,7 +32,8 @@ namespace kaepek
             Phase1F32 = 9,
             Phase2F32 = 10,
             Offset1F32 = 11,
-            Offset2F32 = 12
+            Offset2F32 = 12,
+            SetPointF32 = 13,
         } Type;
     };
 
@@ -55,8 +56,9 @@ namespace kaepek
          * 10: Phase2F32 - Float32
          * 11: Offset1F32 - Float32
          * 12: Offset2F32 - Float32
+         * 13: SetPointF32 - Float32
          */
-        uint32_t serial_input_command_word_buffer_size[13] = {
+        uint32_t serial_input_command_word_buffer_size[14] = {
             0, // Null
             0, // Start
             0, // Stop
@@ -70,6 +72,7 @@ namespace kaepek
             4, // Phase2F32
             4, // Offset1F32
             4, // Offset2F32
+            4, // SetPointF32
         };
         // The current data buffer's index.
         uint32_t buffer_idx = 0;

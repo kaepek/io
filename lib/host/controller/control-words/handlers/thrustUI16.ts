@@ -3,9 +3,9 @@ import { nmod } from "../../utils/mod";
 import { ControlWordDataTypes, ControlWords } from "../words";
 import { ControlWordHandlerBase } from "../model";
 
-export class ThrustUI16ControlWordHandler extends ControlWordHandlerBase {
+export class Thrust1UI16ControlWordHandler extends ControlWordHandlerBase {
     name = ControlWords.Thrust1UI16;
-    state_alias = "thrust";
+    state_alias = "thrust1";
     scale = 1.0;
     data_type = ControlWordDataTypes.UInt16LE;
     keyboard_key_held_timeout: {[key_name: string] :any} = {};

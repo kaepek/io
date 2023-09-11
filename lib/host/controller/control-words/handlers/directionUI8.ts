@@ -2,7 +2,7 @@ import { ControlInputSources } from "../../control-input-sources/sources";
 import { ControlWordDataTypes, ControlWords } from "../words";
 import { ControlWordHandlerBase } from "../model";
 
-export class DirectionUI8ControlWordHandler extends ControlWordHandlerBase {
+export class Direction1UI8ControlWordHandler extends ControlWordHandlerBase {
     name = ControlWords.Direction1UI8;
     scale = 1.0;
     data_type = ControlWordDataTypes.UInt8;
@@ -13,7 +13,7 @@ export class DirectionUI8ControlWordHandler extends ControlWordHandlerBase {
         if (input.source == ControlInputSources.DualShock) {
             // triangle up... we have a direction to reverse... only if thrust is zero otherwise risk breaking the hardware
             if (input.type === "button" && input.label === "triangle" && input.value === false ) {
-                if (state.hasOwnProperty("thrust") && state["thrust"] !== 0) {
+                if (state.hasOwnProperty("thrust1") && state["thrust1"] !== 0) {
                     console.log("BLOCKING direction1 change as thrust1 is non zero.");
                     return;
                 };
@@ -26,7 +26,7 @@ export class DirectionUI8ControlWordHandler extends ControlWordHandlerBase {
             }
         }
         else if (input.source === ControlInputSources.Keyboard && input.label === "q" && input.value === "pressed") {
-            if (state.hasOwnProperty("thrust") && state["thrust"] !== 0) {
+            if (state.hasOwnProperty("thrust1") && state["thrust1"] !== 0) {
                 console.log("BLOCKING direction1 change as thrust1 is non zero.");
                 return;
             };
@@ -38,7 +38,7 @@ export class DirectionUI8ControlWordHandler extends ControlWordHandlerBase {
             }
         }
         else if (input.source === ControlInputSources.NetworkControlWord && this.name === input.word) {
-            if (state.hasOwnProperty("thrust") && state["thrust"] !== 0) {
+            if (state.hasOwnProperty("thrust1") && state["thrust1"] !== 0) {
                 console.log("BLOCKING direction1 change as thrust1 is non zero.");
                 return;
             }
