@@ -14,6 +14,7 @@ import { DeviceOutputRouter } from "../output-sinks/router";
 import { ParseArgsConfig, parseArgs } from "node:util";
 import { StreamJunctionDirector } from "../stream-junction-director";
 import { DelimitedASCIILine } from "../device-output-models/handlers/delimited-ascii-line";
+import { console2 } from "../utils/log";
 
 const parse_options: ParseArgsConfig = {
     options: {
@@ -148,13 +149,6 @@ async function start_cli() {
         const outputRouter = new DeviceOutputRouter(sinks);
         const director_instance = new StreamJunctionDirector(inputSourceRouter, words, devices, model, outputRouter);
 
-        /*console.log("sources", sources);
-        console.log("words", words);
-        console.log("devices", devices);
-        console.log("sinks", sinks);
-        console.log("model", model);
-        console.log(director_instance);*/
-
         return director_instance.ready();
     }
     else {
@@ -172,8 +166,8 @@ async function start_cli() {
     }
 }
 
-start_cli().then(console.log).catch((err) => {
-    console.error(err);
+start_cli().then(console2.success).catch((err) => {
+    console2.error(err);
     process.exit(1);
 });
 

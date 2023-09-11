@@ -1,3 +1,4 @@
+import { console2 } from "../../utils/log";
 import { ControlInputSourceHandler } from "../model";
 import { ControlInputSources } from "../sources";
 import readline from "readline";
@@ -74,9 +75,8 @@ export class KeyboardInputSourceHandler extends ControlInputSourceHandler {
 
         this.key$.subscribe(data => {
             this.subject.next(data);
-            // console.log("press", data);
         });
 
-        console.info("INFO ControlInputSourceHandler: KeyboardInputSourceHandler ready.");
+        console2.success("INFO ControlInputSourceHandler: KeyboardInputSourceHandler ready.");
     }
 }

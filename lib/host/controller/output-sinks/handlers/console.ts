@@ -1,12 +1,13 @@
+import { console2 } from "../../utils/log";
 import { OutputSinkBase } from "../model";
 import { DeviceOutputSinks } from "../sinks";
 
 export class ConsoleOutputSink extends OutputSinkBase {
     type = DeviceOutputSinks.Console;
     async ready() {
-        console.info("INFO OutputSink: ConsoleOutputSink ready.");
+        console2.success("INFO OutputSink: ConsoleOutputSink ready.");
     }
     output_handler(output: any) {
-        console.log("Console output sink: ", output);
+        console2.log("Console output sink: ", output);
     }
 }

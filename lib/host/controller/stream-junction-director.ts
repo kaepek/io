@@ -6,6 +6,7 @@ import { ControlWordHandlerBase } from "./control-words/model";
 import { InputOutputDeviceControllerBase } from "./input-output-device-controllers/model";
 import { DeviceOutputModelBase } from "./device-output-models/model";
 import { ControlWords } from "./control-words/words";
+import { console2 } from "./utils/log";
 
 export class StreamJunctionDirector {
 
@@ -50,7 +51,7 @@ export class StreamJunctionDirector {
         // deal with control input... pipe to handlers
         this.control_source_input_new_words_subscription = control_source_input_router.$.pipe(
             map((it: any) => {
-                // console.log("control_source_input_new_words_subscription", it);
+                // console2.log("control_source_input_new_words_subscription", it);
                 return it;
             })
         ).subscribe((input: any) => this.handle_control_input(input));
@@ -103,7 +104,7 @@ export class StreamJunctionDirector {
     }
 
     async ready() {
-        console.log("INFO Director is starting up...");
+        console2.info("INFO Director is starting up...");
         // make sure the input output devices are ready for input/outputting
         await Promise.all(this.input_output_devices.map((input_output_device: any) => input_output_device.ready()));
         // make sure the output router and output sinks are ready
@@ -112,7 +113,7 @@ export class StreamJunctionDirector {
         await this.control_source_input_router.ready();
         // print ready status for configured words
         this.control_word_handlers.forEach((word) => {
-            console.log(`INFO Control word: ${ControlWords[word.name]} attached.`);
+            console2.info(`INFO Control word: ${ControlWords[word.name]} attached.`);
         });
         return "INFO Director ready! You can now start sending words via one of the configured input control sources.";
     }

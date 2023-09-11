@@ -1,3 +1,4 @@
+import { console2 } from "../../utils/log";
 import { OutputSinkBase } from "../model";
 import { DeviceOutputSinks } from "../sinks";
 import UDP from "dgram";
@@ -14,7 +15,7 @@ export class NetworkOutputSink extends OutputSinkBase {
     client: UDP.Socket | undefined;
 
     async ready() {
-        console.info("INFO OutputSink: NetworkOutputSink ready.");
+        console2.success("INFO OutputSink: NetworkOutputSink ready.");
     }
 
     output_handler(output: any) {
@@ -23,8 +24,7 @@ export class NetworkOutputSink extends OutputSinkBase {
             const client = this.client as UDP.Socket;
             client.send(packet, this.options.port, this.options.host, (err) => {
                 
-                if (err) return console.error('Failed to send UPD packet in NetworkOutputSink: ', err);
-                // console.log("sent packet");
+                if (err) return console2.error('Failed to send UPD packet in NetworkOutputSink: ', err);
             });
         }
     }
@@ -39,7 +39,7 @@ export class NetworkOutputSink extends OutputSinkBase {
             !protocol ||
             !["udp", "tcp"].includes(protocol)
         ) {
-            console.warn(`WARNING bad NetworkControlWordSinkOptions parameters ${JSON.stringify(arguments)}. No control words will be outputted to this sink.`);
+            console2.warn(`WARNING bad NetworkControlWordSinkOptions parameters ${JSON.stringify(arguments)}. No control words will be outputted to this sink.`);
         }
         port = parseFloat(port as string);
         this.options = {host, port, protocol};
@@ -48,10 +48,10 @@ export class NetworkOutputSink extends OutputSinkBase {
         }
         else if (this.options.protocol === "tcp") {
             // this.server = TCP.createServer();
-            console.warn("WARNING unsupported protocol tcp: NOT IMPLEMENTED YET");
+            console2.warn("WARNING unsupported protocol tcp: NOT IMPLEMENTED YET");
         }
         else {
-            console.warn(`WARNING NetworkControlWordSinkOptions unknown network protocol: ${this.options.protocol}, expected "upd" or "tcp". No control words will be outputted to this sink."`);
+            console2.warn(`WARNING NetworkControlWordSinkOptions unknown network protocol: ${this.options.protocol}, expected "upd" or "tcp". No control words will be outputted to this sink."`);
         }
     }
 

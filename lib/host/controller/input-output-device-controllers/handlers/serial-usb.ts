@@ -1,13 +1,10 @@
 import { InputOutputDeviceControllerBase } from "../model";
 import { SerialPort, ReadlineParser } from "serialport";
-// import * as _Struct from "typed-struct";
 import Struct from "typed-struct";
 import { Subject } from "rxjs";
 import { ControlWordEvent } from "../../control-words/model";
+import { console2 } from "../../utils/log";
 
-// _Struct.default
-
-//console.log("Struct", Struct);
 // hack Struct
 const _Struct = ((Struct as any).default) as any;
 
@@ -56,7 +53,7 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
 
         // bind events
         this.serialport.on("close", () => {
-            console.log("Serial port closed");
+            console2.info("Serial port closed.");
             process.exit();
         });
 
@@ -65,7 +62,7 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
             (this.device_output_subject as Subject<any>).next(line);
         });
 
-        console.info("INFO InputOutputDeviceController: SerialUSBDeviceController ready.");
+        console2.success("INFO InputOutputDeviceController: SerialUSBDeviceController ready.");
     }
 
     SingleWordStruct = new _Struct("solo-word").UInt8("word").compile();
@@ -102,7 +99,6 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
             bytes = wordStruct.$raw;
         }
         if (bytes !== null) {
-            // console.log("wrote bytes!", bytes);
             (this.serialport as SerialPort).write(bytes);
         }
     }

@@ -3,6 +3,7 @@ import UDP from "dgram";
 import TCP from "net";
 import { ControlWordEvent } from "../../control-words/model";
 import { ControlWordDataTypes } from "../../control-words/words";
+import { console2 } from "../../utils/log";
 interface NetworkControlWordSinkOptions {
     host: string,
     port: number,
@@ -14,7 +15,7 @@ export class NetworkControlWordSink extends InputOutputDeviceControllerBase {
     client: UDP.Socket | undefined;
 
     async ready(): Promise<void> {
-        console.info("INFO InputOutputDeviceController: NetworkControlWordSink ready.");
+        console2.success("INFO InputOutputDeviceController: NetworkControlWordSink ready.");
     }
 
     handle_input_control_word(event: ControlWordEvent): void {
@@ -30,11 +31,11 @@ export class NetworkControlWordSink extends InputOutputDeviceControllerBase {
             }
             const packet_bytes = Buffer.from(packet);            
             client.send(packet_bytes, this.options.port, this.options.host, (err) => {
-                if (err) console.warn("NetworkControlWordSink failed to transmit to host");
+                if (err) console2.warn("NetworkControlWordSink failed to transmit to host");
             })
         }
         else {
-            console.warn("NetworkControlWordSink to handle_input_control_word unknown protocol");
+            console2.warn("NetworkControlWordSink to handle_input_control_word unknown protocol");
         }
     }
 
@@ -48,7 +49,7 @@ export class NetworkControlWordSink extends InputOutputDeviceControllerBase {
             protocol === undefined ||
             !["udp", "tcp"].includes(protocol)
         ) {
-            console.warn(`WARNING bad NetworkControlWordSinkOptions parameters ${JSON.stringify(arguments)}. No control words will be outputted to this sink.`);
+            console2.warn(`WARNING bad NetworkControlWordSinkOptions parameters ${JSON.stringify(arguments)}. No control words will be outputted to this sink.`);
         }
         port = parseFloat(port as string);
         this.options = {
@@ -59,10 +60,10 @@ export class NetworkControlWordSink extends InputOutputDeviceControllerBase {
         }
         else if (this.options.protocol === "tcp") {
             // this.server = TCP.createServer();
-            console.warn("WARNING unsupported protocol tcp: NOT IMPLEMENTED YET");
+            console2.warn("WARNING unsupported protocol tcp: NOT IMPLEMENTED YET");
         }
         else {
-            console.warn(`WARNING NetworkControlWordSinkOptions unknown network protocol: ${this.options.protocol}, expected "upd" or "tcp". No control words will be outputted to this sink."`);
+            console2.warn(`WARNING NetworkControlWordSinkOptions unknown network protocol: ${this.options.protocol}, expected "upd" or "tcp". No control words will be outputted to this sink."`);
         }
 
     }
