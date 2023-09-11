@@ -53,7 +53,7 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
 
         // bind events
         this.serialport.on("close", () => {
-            console2.info("Serial port closed.");
+            console2.error("Serial port closed.");
             process.exit();
         });
 
