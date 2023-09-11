@@ -11,7 +11,8 @@ enum ControlWords {
     Phase1F32 = 9,
     Phase2F32 = 10,
     Offset1F32 = 11,
-    Offset2F32 = 12
+    Offset2F32 = 12,
+    SetPointF32 = 13,
 };
 
 enum ControlWordDataTypes {

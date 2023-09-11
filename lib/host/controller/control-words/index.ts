@@ -12,6 +12,7 @@ import { ControlWordHandlerBase } from "./model"
 import { Phase2F32WordHandler } from "./handlers/phase2F32"
 import { Offset1F32WordHandler } from "./handlers/offset1F32"
 import { Offset2F32WordHandler } from "./handlers/offset2F32"
+import { SetPointF32WordHandler } from "./handlers/setpointF32"
 
 const exports: {[key: string]: (typeof ControlWordHandlerBase)} = {
    "directionui8": DirectionUI8ControlWordHandler,
@@ -26,7 +27,8 @@ const exports: {[key: string]: (typeof ControlWordHandlerBase)} = {
    "phase1f32": Phase1F32WordHandler,
    "phase2f32": Phase2F32WordHandler,
    "offset1f32": Offset1F32WordHandler,
-   "offset2f32": Offset2F32WordHandler
+   "offset2f32": Offset2F32WordHandler,
+   "setpointf32": SetPointF32WordHandler
 };
 
 export default exports;
