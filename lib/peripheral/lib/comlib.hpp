@@ -29,6 +29,10 @@ namespace kaepek
             ProportionalF32 = 6,
             IntegralF32 = 7,
             DerivativeF32 = 8,
+            Phase1F32 = 9,
+            Phase2F32 = 10,
+            Offset1F32 = 11,
+            Offset2F32 = 12
         } Type;
     };
 
@@ -44,8 +48,15 @@ namespace kaepek
          * 3: Reset - No data
          * 4: Direction1UI8 - Unsigned Int 8 bit
          * 5: Thrust1UI16 - Unsigned Int 16 bit
+         * 6: ProportionalF32 - Float32
+         * 7: IntegralF32 - Float32
+         * 8: DerivativeF32 - Float32
+         * 9: Phase1F32 - Float32
+         * 10: Phase2F32 - Float32
+         * 11: Offset1F32 - Float32
+         * 12: Offset2F32 - Float32
          */
-        uint32_t serial_input_command_word_buffer_size[9] = {
+        uint32_t serial_input_command_word_buffer_size[13] = {
             0, // Null
             0, // Start
             0, // Stop
@@ -55,6 +66,10 @@ namespace kaepek
             4, // ProportionalF32
             4, // IntegralF32
             4, // DerivativeF32
+            4, // Phase1F32
+            4, // Phase2F32
+            4, // Offset1F32
+            4, // Offset2F32
         };
         // The current data buffer's index.
         uint32_t buffer_idx = 0;

@@ -8,6 +8,10 @@ enum ControlWords {
     ProportionalF32 = 6,
     IntegralF32 = 7,
     DerivativeF32 = 8,
+    Phase1F32 = 9,
+    Phase2F32 = 10,
+    Offset1F32 = 11,
+    Offset2F32 = 12
 };
 
 enum ControlWordDataTypes {
