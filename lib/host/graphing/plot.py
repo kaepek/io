@@ -1,4 +1,4 @@
-from bokeh.models import CheckboxGroup, ColumnDataSource
+from bokeh.models import CheckboxGroup, ColumnDataSource, LinearAxis, Range1d
 from bokeh.layouts import column, row
 from bokeh.plotting import curdoc, figure
 import json
@@ -98,10 +98,20 @@ for plot in config_json['plots']:
             scatter = dependant_column["scatter"]
         y_axis = dependant_column["name"]
         color = dependant_column["color"]
-        if line:
-            fig.line(source=plot_data, x=x_axis, y=y_axis, color=color, legend_label=y_axis)
-        if scatter:
-            fig.scatter(source=plot_data, x=x_axis, y=y_axis, color=color, legend_label=y_axis)
+        if "axis" in dependant_column:
+            fig.extra_y_ranges = {}
+            fig.extra_y_ranges[y_axis] = Range1d(start=float(dependant_column["axis"]["min"]), end=float(dependant_column["axis"]["max"]))
+            fig.add_layout(LinearAxis(y_range_name=y_axis, axis_label=y_axis), dependant_column["axis"]["location"])
+            if line:
+                fig.line(source=plot_data, x=x_axis, y=y_axis, color=color, legend_label=y_axis, y_range_name=y_axis)
+            if scatter:
+                fig.scatter(source=plot_data, x=x_axis, y=y_axis, color=color, legend_label=y_axis, y_range_name=y_axis)
+        else:
+            if line:
+                fig.line(source=plot_data, x=x_axis, y=y_axis, color=color, legend_label=y_axis)
+            if scatter:
+                fig.scatter(source=plot_data, x=x_axis, y=y_axis, color=color, legend_label=y_axis)
+        ## y_range_name="angle"
     figs.append(fig)
 
 # todo enable disable plots via ui checkboxs
