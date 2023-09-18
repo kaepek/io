@@ -147,7 +147,7 @@ class NetworkAdaptor {
             console2.error(`WARNING NetworkAdaptor unsupported outgoing network protocol: ${outgoing_protocol}, expected "upd. No input will come from this source."`);
             process.exit(1);
         }
-        else if (outgoing_protocol === null) {
+        else if (outgoing_protocol === undefined) {
             console2.error(`WARNING NetworkAdaptor outgoing network socket undefined. No input will come from this source."`);
         }
         else {
