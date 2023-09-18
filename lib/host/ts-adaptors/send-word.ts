@@ -67,7 +67,7 @@ export class SendWord {
     outgoing_protocol;
 
     constructor(outgoing_address: string, outgoing_port: number, outgoing_protocol: string) {
-        if (outgoing_address === "udp") {
+        if (outgoing_protocol === "udp") {
             this.client = UDP.createSocket("udp4");
         }
         else {

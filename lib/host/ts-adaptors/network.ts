@@ -110,14 +110,12 @@ class NetworkAdaptor {
         this.outgoing_protocol = outgoing_protocol || null;
         this.data_delimeter = data_delimeter || ",";
 
-        console.log("arguments", arguments);
-
         const cwd = process.cwd();
         const full_incoming_data_config_path = `${cwd}/${incoming_data_config_path}`;
         const file_exists = fs.existsSync(full_incoming_data_config_path);
 
         if (!file_exists) {
-            console2.error(`WARNING NetworkAdaptor incoming_data_config_path does not specify a real file ${full_incoming_data_config_path}`, arguments);
+            console2.error(`WARNING NetworkAdaptor incoming_data_config_path does not specify a real file ${full_incoming_data_config_path}`);
             process.exit(1);
         }
 
@@ -125,7 +123,7 @@ class NetworkAdaptor {
         const file_json = JSON.parse(file_data.toString());
 
         if (!file_json.hasOwnProperty || !file_json.hasOwnProperty("inputs")) {
-            console2.error(`WARNING NetworkAdaptor incoming_data_config_path file does not have an 'inputs' member`, arguments);
+            console2.error(`WARNING NetworkAdaptor incoming_data_config_path file does not have an 'inputs' member`);
             process.exit(1);
         }
         this.incoming_data_config = file_json.inputs;
@@ -134,11 +132,11 @@ class NetworkAdaptor {
             this.server = UDP.createSocket("udp4");
         }
         else if (incoming_protocol === "tcp") {
-            console2.error(`WARNING NetworkAdaptor unsupported incoming network protocol: ${incoming_protocol}, expected "upd". No input will come from this source."`, arguments);
+            console2.error(`WARNING NetworkAdaptor unsupported incoming network protocol: ${incoming_protocol}, expected "upd". No input will come from this source."`);
             process.exit(1);
         }
         else {
-            console2.error(`WARNING NetworkAdaptor unknown incoming network protocol: ${incoming_protocol}, expected "upd" or "tcp". No input will come from this source."`, arguments);
+            console2.error(`WARNING NetworkAdaptor unknown incoming network protocol: ${incoming_protocol}, expected "upd" or "tcp". No input will come from this source."`);
             process.exit(1);
         }
 
@@ -146,14 +144,14 @@ class NetworkAdaptor {
             this.client = UDP.createSocket("udp4");
         }
         else if (outgoing_protocol === "tcp") {
-            console2.error(`WARNING NetworkAdaptor unsupported outgoing network protocol: ${outgoing_protocol}, expected "upd. No input will come from this source."`, arguments);
+            console2.error(`WARNING NetworkAdaptor unsupported outgoing network protocol: ${outgoing_protocol}, expected "upd. No input will come from this source."`);
             process.exit(1);
         }
         else if (outgoing_protocol === null) {
-            console2.error(`WARNING NetworkAdaptor outgoing network socket undefined. No input will come from this source."`, arguments);
+            console2.error(`WARNING NetworkAdaptor outgoing network socket undefined. No input will come from this source."`);
         }
         else {
-            console2.error(`WARNING NetworkAdaptor unknown outgoing network protocol: ${outgoing_protocol}, expected "upd" or "tcp". No input will come from this source."`, arguments);
+            console2.error(`WARNING NetworkAdaptor unknown outgoing network protocol: ${outgoing_protocol}, expected "upd" or "tcp". No input will come from this source."`);
             process.exit(1);
         }
 
