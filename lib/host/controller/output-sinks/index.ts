@@ -1,6 +1,6 @@
-import { ConsoleOutputSink } from "./handlers/console"
-import { FileOutputSink } from "./handlers/file"
-import { NetworkOutputSink } from "./handlers/network"
+import { ConsoleOutputSink } from "./handlers/console.js"
+import { FileOutputSink } from "./handlers/file.js"
+import { NetworkOutputSink } from "./handlers/network.js"
 
 export default {
     "console": ConsoleOutputSink,

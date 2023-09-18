@@ -1,7 +1,7 @@
 import { ControlInputSources } from "../../control-input-sources/sources";
-import { ControlWordDataTypes, ControlWords } from "../words";
-import { ControlWordHandlerBase } from "../model";
-import { console2 } from "../../utils/log";
+import { ControlWordDataTypes, ControlWords } from "../words.js";
+import { ControlWordHandlerBase } from "../model.js";
+import { console2 } from "../../utils/log.js";
 
 export class Direction1UI8ControlWordHandler extends ControlWordHandlerBase {
     name = ControlWords.Direction1UI8;

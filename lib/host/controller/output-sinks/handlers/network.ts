@@ -1,6 +1,6 @@
-import { console2 } from "../../utils/log";
-import { OutputSinkBase } from "../model";
-import { DeviceOutputSinks } from "../sinks";
+import { console2 } from "../../utils/log.js";
+import { OutputSinkBase } from "../model.js";
+import { DeviceOutputSinks } from "../sinks.js";
 import UDP from "dgram";
 
 interface NetworkOptions {

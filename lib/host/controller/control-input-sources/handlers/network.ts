@@ -1,9 +1,9 @@
-import { ControlInputSourceHandler } from "../model";
+import { ControlInputSourceHandler } from "../model.js";
 import UDP from "dgram";
 import TCP from "net";
-import { ControlWords } from "../../control-words/words";
-import { ControlInputSources } from "../sources";
-import { console2 } from "../../utils/log";
+import { ControlWords } from "../../control-words/words.js";
+import { ControlInputSources } from "../sources.js";
+import { console2 } from "../../utils/log.js";
 
 interface NetworkControlWordSourceHandlerOptions {
     address: string,

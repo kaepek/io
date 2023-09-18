@@ -1,20 +1,20 @@
 #!/bin/bash
 ":" //# https://sambal.org/?p=1014; NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 exec /usr/bin/env node --experimental-loader=$(which kaepek-io-INTERNALS-extensionless.js) "$0" "$@"
     ;
-import ControlInputSources from "../control-input-sources/index";
-import { ControlInputSourceHandler } from "../control-input-sources/model";
-import { ControlSourceInputRouter } from "../control-input-sources/router";
-import ControlWords from "../control-words/index";
-import { ControlWordHandlerBase } from "../control-words/model";
-import InputOutputDevices from "../input-output-device-controllers/index";
-import { InputOutputDeviceControllerBase } from "../input-output-device-controllers/model";
-import DeviceOuputSinks from "../output-sinks/index"
-import { OutputSinkBase } from "../output-sinks/model";
-import { DeviceOutputRouter } from "../output-sinks/router";
+import ControlInputSources from "../control-input-sources/index.js";
+import { ControlInputSourceHandler } from "../control-input-sources/model.js";
+import { ControlSourceInputRouter } from "../control-input-sources/router.js";
+import ControlWords from "../control-words/index.js";
+import { ControlWordHandlerBase } from "../control-words/model.js";
+import InputOutputDevices from "../input-output-device-controllers/index.js";
+import { InputOutputDeviceControllerBase } from "../input-output-device-controllers/model.js";
+import DeviceOuputSinks from "../output-sinks/index.js"
+import { OutputSinkBase } from "../output-sinks/model.js";
+import { DeviceOutputRouter } from "../output-sinks/router.js";
 import { ParseArgsConfig, parseArgs } from "node:util";
-import { StreamJunctionDirector } from "../stream-junction-director";
-import { DelimitedASCIILine } from "../device-output-models/handlers/delimited-ascii-line";
-import { console2 } from "../utils/log";
+import { StreamJunctionDirector } from "../stream-junction-director.js";
+import { DelimitedASCIILine } from "../device-output-models/handlers/delimited-ascii-line.js";
+import { console2 } from "../utils/log.js";
 
 const parse_options: ParseArgsConfig = {
     options: {

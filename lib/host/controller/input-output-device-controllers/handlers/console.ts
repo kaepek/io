@@ -1,7 +1,7 @@
-import { ControlWordEvent } from "../../control-words/model";
-import { ControlWords } from "../../control-words/words";
-import { console2 } from "../../utils/log";
-import { InputOutputDeviceControllerBase } from "../model";
+import { ControlWordEvent } from "../../control-words/model.js";
+import { ControlWords } from "../../control-words/words.js";
+import { console2 } from "../../utils/log.js";
+import { InputOutputDeviceControllerBase } from "../model.js";
 
 export class ConsoleDeviceController extends InputOutputDeviceControllerBase {
 

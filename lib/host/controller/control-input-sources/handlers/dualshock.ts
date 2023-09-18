@@ -1,6 +1,6 @@
-import { console2 } from "../../utils/log";
-import { ControlInputSourceHandler } from "../model";
-import { ControlInputSources } from "../sources";
+import { console2 } from "../../utils/log.js";
+import { ControlInputSourceHandler } from "../model.js";
+import { ControlInputSources } from "../sources.js";
 
 // @ts-ignore
 import * as dualshock from "dualshock";

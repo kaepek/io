@@ -1,5 +1,5 @@
 import { Subject } from "rxjs";
-import { ControlWordEvent } from "../control-words/model";
+import { ControlWordEvent } from "../control-words/model.js";
 
 export class InputOutputDeviceControllerBase {
 

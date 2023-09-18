@@ -1,7 +1,7 @@
-import { ControlInputSources } from "../../control-input-sources/sources";
-import { nmod } from "../../utils/mod";
-import { ControlWordDataTypes, ControlWords } from "../words";
-import { ControlWordHandlerBase } from "../model";
+import { ControlInputSources } from "../../control-input-sources/sources.js";
+import { nmod } from "../../utils/mod.js";
+import { ControlWordDataTypes, ControlWords } from "../words.js";
+import { ControlWordHandlerBase } from "../model.js";
 
 export class Thrust1UI16ControlWordHandler extends ControlWordHandlerBase {
     name = ControlWords.Thrust1UI16;

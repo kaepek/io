@@ -1,5 +1,5 @@
-import { ControlWordDataTypes, ControlWords } from "../words";
-import { ControlWordHandlerBase } from "../model";
+import { ControlWordDataTypes, ControlWords } from "../words.js";
+import { ControlWordHandlerBase } from "../model.js";
 
 export class Phase2F32WordHandler extends ControlWordHandlerBase {
     name = ControlWords.Phase2F32;

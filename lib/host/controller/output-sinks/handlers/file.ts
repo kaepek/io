@@ -1,5 +1,5 @@
-import { OutputSinkBase } from "../model";
-import { DeviceOutputSinks } from "../sinks";
+import { OutputSinkBase } from "../model.js";
+import { DeviceOutputSinks } from "../sinks.js";
 
 export class FileOutputSink extends OutputSinkBase {
     type = DeviceOutputSinks.File;

@@ -1,9 +1,9 @@
-import { InputOutputDeviceControllerBase } from "../model";
+import { InputOutputDeviceControllerBase } from "../model.js";
 import UDP from "dgram";
 import TCP from "net";
-import { ControlWordEvent } from "../../control-words/model";
-import { ControlWordDataTypes } from "../../control-words/words";
-import { console2 } from "../../utils/log";
+import { ControlWordEvent } from "../../control-words/model.js";
+import { ControlWordDataTypes } from "../../control-words/words.js";
+import { console2 } from "../../utils/log.js";
 interface NetworkControlWordSinkOptions {
     host: string,
     port: number,

@@ -1,5 +1,5 @@
-import { ControlWordDataTypes, ControlWords } from "../words";
-import { ControlWordHandlerBase } from "../model";
+import { ControlWordDataTypes, ControlWords } from "../words.js";
+import { ControlWordHandlerBase } from "../model.js";
 
 export class ProportionalF32WordHandler extends ControlWordHandlerBase {
     name = ControlWords.ProportionalF32;

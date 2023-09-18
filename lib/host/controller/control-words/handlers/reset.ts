@@ -1,6 +1,6 @@
-import { ControlInputSources } from "../../control-input-sources/sources";
-import { ControlWords } from "../words";
-import { ControlWordHandlerBase } from "../model";
+import { ControlInputSources } from "../../control-input-sources/sources.js";
+import { ControlWords } from "../words.js";
+import { ControlWordHandlerBase } from "../model.js";
 
 export class ResetControlWordHandler extends ControlWordHandlerBase {
     name = ControlWords.Reset;

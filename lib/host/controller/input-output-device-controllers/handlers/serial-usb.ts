@@ -1,9 +1,9 @@
-import { InputOutputDeviceControllerBase } from "../model";
+import { InputOutputDeviceControllerBase } from "../model.js";
 import { SerialPort, ReadlineParser } from "serialport";
 import Struct from "typed-struct";
 import { Subject } from "rxjs";
-import { ControlWordEvent } from "../../control-words/model";
-import { console2 } from "../../utils/log";
+import { ControlWordEvent } from "../../control-words/model.js";
+import { console2 } from "../../utils/log.js";
 
 // hack Struct
 const _Struct = ((Struct as any).default) as any;

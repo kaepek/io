@@ -1,12 +1,12 @@
 import { Subject, Subscription, merge, pipe } from "rxjs";
 import { filter, map } from "rxjs/operators";
-import { ControlSourceInputRouter } from "./control-input-sources/router";
-import { DeviceOutputRouter } from "./output-sinks/router";
-import { ControlWordHandlerBase } from "./control-words/model";
-import { InputOutputDeviceControllerBase } from "./input-output-device-controllers/model";
-import { DeviceOutputModelBase } from "./device-output-models/model";
-import { ControlWords } from "./control-words/words";
-import { console2 } from "./utils/log";
+import { ControlSourceInputRouter } from "./control-input-sources/router.js";
+import { DeviceOutputRouter } from "./output-sinks/router.js";
+import { ControlWordHandlerBase } from "./control-words/model.js";
+import { InputOutputDeviceControllerBase } from "./input-output-device-controllers/model.js";
+import { DeviceOutputModelBase } from "./device-output-models/model.js";
+import { ControlWords } from "./control-words/words.js";
+import { console2 } from "./utils/log.js";
 
 export class StreamJunctionDirector {
 

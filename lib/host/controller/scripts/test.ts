@@ -1,20 +1,20 @@
-import { DualShockControlInputSourceHandler } from "../control-input-sources/handlers/dualshock";
-import { KeyboardInputSourceHandler } from "../control-input-sources/handlers/keyboard";
-import { ControlSourceInputRouter } from "../control-input-sources/router";
-import { Direction1UI8ControlWordHandler } from "../control-words/handlers/directionUI8";
-import { NullControlWordHandler } from "../control-words/handlers/null";
-import { ResetControlWordHandler } from "../control-words/handlers/reset";
-import { StartControlWordHandler } from "../control-words/handlers/start";
-import { StopControlWordHandler } from "../control-words/handlers/stop";
-import { Thrust1UI16ControlWordHandler } from "../control-words/handlers/thrustUI16";
-import { DelimitedASCIILine } from "../device-output-models/handlers/delimited-ascii-line";
-import { ConsoleDeviceController } from "../input-output-device-controllers/handlers/console";
-import { SerialUSBDeviceController } from "../input-output-device-controllers/handlers/serial-usb";
-import { ConsoleOutputSink } from "../output-sinks/handlers/console";
-import { DeviceOutputRouter } from "../output-sinks/router";
-import { NetworkOutputSink } from "../output-sinks/handlers/network";
-import { StreamJunctionDirector } from "../stream-junction-director";
-import { NetworkControlWordSink } from "../input-output-device-controllers/handlers/network-control-word-sink";
+import { DualShockControlInputSourceHandler } from "../control-input-sources/handlers/dualshock.js";
+import { KeyboardInputSourceHandler } from "../control-input-sources/handlers/keyboard.js";
+import { ControlSourceInputRouter } from "../control-input-sources/router.js";
+import { Direction1UI8ControlWordHandler } from "../control-words/handlers/directionUI8.js";
+import { NullControlWordHandler } from "../control-words/handlers/null.js";
+import { ResetControlWordHandler } from "../control-words/handlers/reset.js";
+import { StartControlWordHandler } from "../control-words/handlers/start.js";
+import { StopControlWordHandler } from "../control-words/handlers/stop.js";
+import { Thrust1UI16ControlWordHandler } from "../control-words/handlers/thrustUI16.js";
+import { DelimitedASCIILine } from "../device-output-models/handlers/delimited-ascii-line.js";
+import { ConsoleDeviceController } from "../input-output-device-controllers/handlers/console.js";
+import { SerialUSBDeviceController } from "../input-output-device-controllers/handlers/serial-usb.js";
+import { ConsoleOutputSink } from "../output-sinks/handlers/console.js";
+import { DeviceOutputRouter } from "../output-sinks/router.js";
+import { NetworkOutputSink } from "../output-sinks/handlers/network.js";
+import { StreamJunctionDirector } from "../stream-junction-director.js";
+import { NetworkControlWordSink } from "../input-output-device-controllers/handlers/network-control-word-sink.js";
 
 
 const dualshock = new DualShockControlInputSourceHandler();
