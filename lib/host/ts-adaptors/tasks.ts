@@ -14,7 +14,7 @@ export class Task {
         return this.return_promise;
     }
 
-    async run() {
+    async run(state?: any) {
         this.input_subscription = this.input$.subscribe((data) => this.tick(data));
     }
 
