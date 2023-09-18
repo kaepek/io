@@ -2,6 +2,7 @@ import UDP from "dgram";
 import TCP from "net";
 import fs from "fs";
 import { console2 } from "../controller/utils/log.js";
+import { Subject } from "rxjs";
 
 class NetworkAdaptor {
     server: UDP.Socket;
@@ -16,6 +17,9 @@ class NetworkAdaptor {
     incoming_data_config: Array<any>;
     outgoing_data_config: Array<any> = [];
     data_delimeter: string;
+
+    incoming_data_subject: Subject<any> = new Subject<any>;
+    public incoming_data$ = this.incoming_data_subject.asObservable();
 
     incoming_data_parser(incoming_data_str: any) {
         const message_str = incoming_data_str.toString();
@@ -60,7 +64,7 @@ class NetworkAdaptor {
     }
 
     incoming_data_callback(message_obj: any, info: any) {
-        throw "Error incoming_data_callback not implemented";
+        // throw "Error incoming_data_callback not implemented";
     }
 
     async ready() {
@@ -79,7 +83,9 @@ class NetworkAdaptor {
                 });
                 server.on("message", (message: any, info: any) => {
                     // decode message based on config
-                    this.incoming_data_callback(this.incoming_data_parser(message), info);
+                    const parsed_data = this.incoming_data_parser(message);
+                    this.incoming_data_subject.next({parsed_data, info});
+                    this.incoming_data_callback(parsed_data, info);
                 });
                 server.bind({ port: this.incoming_port, address: this.incoming_address });
             }
