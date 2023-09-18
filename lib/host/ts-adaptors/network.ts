@@ -97,9 +97,9 @@ class NetworkAdaptor {
         incoming_protocol: string,
         incoming_data_config_path: string,
         data_delimeter: string,
-        outgoing_address?: string,
-        outgoing_port?: number,
-        outgoing_protocol?: string,
+        outgoing_address?: string | null,
+        outgoing_port?: number | null,
+        outgoing_protocol?: string | null,
     ) {
 
         this.incoming_address = incoming_address;
