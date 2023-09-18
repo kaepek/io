@@ -18,6 +18,10 @@ export class Task {
         this.input_subscription = this.input$.subscribe((data) => this.tick(data));
     }
 
+    async done(ret: any) {
+
+    }
+
     return_promise: Promise<void> | null;
     input_subscription: Subscription | null = null;
 
@@ -30,6 +34,7 @@ export class Task {
             this.return_promise_rejector = reject;
         }).then((ret: any) => {
             if (this.input_subscription !== null) this.input_subscription.unsubscribe();
+            this.done(ret);
             return ret;
         }).catch((err: any) => {
             if (this.input_subscription !== null) this.input_subscription.unsubscribe();
