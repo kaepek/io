@@ -32,10 +32,9 @@ export class Task {
         this.return_promise = new Promise<void>((resolve, reject) => {
             this.return_promise_resolver = resolve;
             this.return_promise_rejector = reject;
-        }).then((ret: any) => {
+        }).then(async (ret: any) => {
             if (this.input_subscription !== null) this.input_subscription.unsubscribe();
-            this.done(ret);
-            return ret;
+            return this.done(ret);
         }).catch((err: any) => {
             if (this.input_subscription !== null) this.input_subscription.unsubscribe();
             return err;
