@@ -110,6 +110,8 @@ class NetworkAdaptor {
         this.outgoing_protocol = outgoing_protocol || null;
         this.data_delimeter = data_delimeter || ",";
 
+        console.log("arguments", arguments);
+
         const cwd = process.cwd();
         const full_incoming_data_config_path = `${cwd}/${incoming_data_config_path}`;
         const file_exists = fs.existsSync(full_incoming_data_config_path);
