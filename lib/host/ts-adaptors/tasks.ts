@@ -35,7 +35,7 @@ export class Task {
             return this.done(ret);
         }).catch((err: any) => {
             if (this.input_subscription !== null) this.input_subscription.unsubscribe();
-            return err;
+            throw err;
         });
     }
 }
