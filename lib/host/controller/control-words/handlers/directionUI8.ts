@@ -1,4 +1,4 @@
-import { ControlInputSources } from "../../control-input-sources/sources";
+import { ControlInputSources } from "../../control-input-sources/sources.js";
 import { ControlWordDataTypes, ControlWords } from "../words.js";
 import { ControlWordHandlerBase } from "../model.js";
 import { console2 } from "../../utils/log.js";
