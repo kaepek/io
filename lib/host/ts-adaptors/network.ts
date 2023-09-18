@@ -1,7 +1,7 @@
 import UDP from "dgram";
 import TCP from "net";
 import fs from "fs";
-import { console2 } from "../controller/utils/log";
+import { console2 } from "../controller/utils/log.js";
 
 class NetworkAdaptor {
     server: UDP.Socket;
