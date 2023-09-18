@@ -7,8 +7,8 @@ export class Task {
         throw "Not implemented yet";
     }
 
-    private return_promise_resolver: ((value: void | PromiseLike<void>) => void) | null = null;
-    private return_promise_rejector: ((reason?: any) => void) | null = null;
+    public return_promise_resolver: ((value: void | PromiseLike<void>) => void) | null = null;
+    public return_promise_rejector: ((reason?: any) => void) | null = null;
 
     async wait() {
         return this.return_promise;
