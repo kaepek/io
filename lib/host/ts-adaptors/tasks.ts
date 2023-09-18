@@ -10,7 +10,7 @@ export class Task {
     public return_promise_resolver: ((value: void | PromiseLike<void>) => void) = null as any;
     public return_promise_rejector: ((reason?: any) => void) = null as any;
 
-    async wait() {
+    async wait(): Promise<any> {
         return this.return_promise;
     }
 
@@ -18,18 +18,16 @@ export class Task {
         this.input_subscription = this.input$.subscribe((data) => this.tick(data));
     }
 
-    async done(ret: any) {
+    async done (ret: any): Promise<any> {};
 
-    }
-
-    return_promise: Promise<void> | null;
+    return_promise: Promise<any> | null;
     input_subscription: Subscription | null = null;
 
     input$: Observable<any>;
 
     constructor(input$: Observable<any>) {
         this.input$ = input$;
-        this.return_promise = new Promise<void>((resolve, reject) => {
+        this.return_promise = new Promise<any>((resolve, reject) => {
             this.return_promise_resolver = resolve;
             this.return_promise_rejector = reject;
         }).then(async (ret: any) => {
