@@ -6,14 +6,14 @@ import { Subject } from "rxjs";
 
 class NetworkAdaptor {
     server: UDP.Socket;
-    client: UDP.Socket;
+    client: UDP.Socket | null = null;
 
     incoming_address: string;
     incoming_port: number;
     incoming_protocol: string;
-    outgoing_address: string;
-    outgoing_port: number;
-    outgoing_protocol: string;
+    outgoing_address: string | null;
+    outgoing_port: number | null;
+    outgoing_protocol: string | null;
     incoming_data_config: Array<any>;
     outgoing_data_config: Array<any> = [];
     data_delimeter: string;
@@ -57,7 +57,7 @@ class NetworkAdaptor {
         if (this.outgoing_protocol === "udp") {
             const data_str = this.outgoing_data_serialiser(data_obj);
             const packet = Buffer.from(data_str.toString());
-            this.client.send(packet, this.outgoing_port, this.outgoing_address, (err) => {    
+            (this.client as UDP.Socket).send(packet, this.outgoing_port as any, this.outgoing_address as any, (err) => {    
                 if (err) return console2.error('Failed to send UPD packet in NetworkOutputSink: ', err);
             });
         }
@@ -95,19 +95,19 @@ class NetworkAdaptor {
     constructor(incoming_address: string,
         incoming_port: number,
         incoming_protocol: string,
-        outgoing_address: string,
-        outgoing_port: number,
-        outgoing_protocol: string,
         incoming_data_config_path: string,
-        data_delimeter: string
+        data_delimeter: string,
+        outgoing_address?: string,
+        outgoing_port?: number,
+        outgoing_protocol?: string,
     ) {
 
         this.incoming_address = incoming_address;
         this.incoming_port = incoming_port;
         this.incoming_protocol = incoming_protocol;
-        this.outgoing_address = outgoing_address;
-        this.outgoing_port = outgoing_port;
-        this.outgoing_protocol = outgoing_protocol;
+        this.outgoing_address = outgoing_address || null;
+        this.outgoing_port = outgoing_port || null;
+        this.outgoing_protocol = outgoing_protocol || null;
         this.data_delimeter = data_delimeter || ",";
 
         const cwd = process.cwd();
@@ -146,6 +146,9 @@ class NetworkAdaptor {
         else if (outgoing_protocol === "tcp") {
             console2.error(`WARNING NetworkAdaptor unsupported outgoing network protocol: ${outgoing_protocol}, expected "upd. No input will come from this source."`);
             process.exit(1);
+        }
+        else if (outgoing_protocol === null) {
+            console2.error(`WARNING NetworkAdaptor outgoing network socket undefined. No input will come from this source."`);
         }
         else {
             console2.error(`WARNING NetworkAdaptor unknown outgoing network protocol: ${outgoing_protocol}, expected "upd" or "tcp". No input will come from this source."`);
