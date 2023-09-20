@@ -302,7 +302,7 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
         const handler = inited_handlers[cli_arg.type];
         let value: any | Array<any> | true;
         try {
-            if (args_map[provided_arg_name].type === CliArgType.Boolean) {
+            if (args_map[provided_arg_name].type === CliArgType.Boolean) { // booleans really should not be allowed to have required field ... fix me
                 value = true;
             }
             else {
