@@ -1,0 +1,263 @@
+import { parseArgs } from "node:util";
+import { console2 } from "../controller/utils/log";
+import fs from "fs";
+
+const cwd = process.cwd();
+
+export enum CliArgType {
+    String = "String",
+    Number = "Number",
+    Boolean = "Boolean",
+    InputFilePath = "InputFilePath",
+    InputJSONFilePath = "InputJSONFilePath",
+    OutputFilePath = "OutputFilePath"
+}
+
+export interface CliArg {
+    name: string;
+    short: string;
+    type: CliArgType;
+    required: boolean;
+    help: string;
+    group: string | undefined;
+}
+
+export abstract class ArgumentHandler {
+    static type: CliArgType;
+    abstract handle (argument_data: string): any;
+}
+
+class StringArgumentHandler extends ArgumentHandler {
+    static type = CliArgType.String;
+    handle(argument_data: string) {
+        return argument_data;
+    };
+}
+
+class NumberArgumentHandler extends ArgumentHandler {
+    static type = CliArgType.String;
+    handle(argument_data: string) {
+        const possible_float = parseFloat(argument_data.toString());
+        if (isNaN(possible_float)) throw `Argument data ${argument_data} did not parse to a valid number.`;
+        return possible_float;
+    };
+}
+
+class BooleanArgumentHandler extends ArgumentHandler {
+    static type = CliArgType.Boolean;
+    handle(argument_data: string) {
+        if (argument_data === "true" || argument_data === "True") {
+            return true;
+        }
+        else if (argument_data === "false" || argument_data === "False") {
+            return false;
+        }
+        else {
+            throw `Argument data ${argument_data} did not conform to type boolean, expected 'true' or 'True' or 'false' or 'False'`;
+        }
+    }
+}
+
+class InputFilePathArgumentHandler extends ArgumentHandler {
+    static type = CliArgType.InputFilePath;
+    handle(argument_data: string) {
+        // file must already exist
+        // argument data is a releative path away from cwd
+        const full_path = `${cwd}/${argument_data}`;
+        if (fs.existsSync(full_path)) throw `Argument data ${argument_data} did not correspond to an existing file.`;
+        // read the data
+        try {
+            return fs.readFileSync(full_path);
+        }
+        catch (e: any) {
+            throw `Argument data ${full_path}, read file error ${e.message}`;
+        }
+    };
+}
+
+
+class InputJSONFilePathArgumentHandler extends ArgumentHandler {
+    static type = CliArgType.InputJSONFilePath;
+    handle(argument_data: string) {
+        // file must already exist
+        // argument data is a releative path away from cwd
+        const full_path = `${cwd}/${argument_data}`;
+        if (fs.existsSync(full_path)) throw `Argument data ${argument_data} did not correspond to an existing file.`;
+        // read the data
+        let data = null;
+        try {
+            data = fs.readFileSync(full_path);
+        }
+        catch (e: any) {
+            throw `Argument data ${full_path}, read file error ${e.message}`;
+        }
+        // parse the data
+        let json_data: any = null;
+        try {
+            json_data = JSON.parse(data);
+        }
+        catch (e: any) {
+            throw `Argument data ${full_path}, parse json error ${e.message}`;
+        }
+
+        return json_data;
+    };
+}
+
+class OutputFilePathArgumentHandler extends ArgumentHandler {
+    static type = CliArgType.OutputFilePath;
+    handle(argument_data: string) {
+        // file must not already exist
+        // argument data is a releative path away from cwd
+        const full_path = `${cwd}/${argument_data}`;
+        if (!fs.existsSync(full_path)) throw `Argument data ${argument_data} corresponded to an existing file.`;
+        return full_path;
+    };
+}
+
+type ArgumentHandlerConstructor = { new(...args: any): ArgumentHandler, type:CliArgType };
+const argument_handlers_arr: Array<ArgumentHandlerConstructor> = [StringArgumentHandler, NumberArgumentHandler, BooleanArgumentHandler, InputFilePathArgumentHandler, InputJSONFilePathArgumentHandler, OutputFilePathArgumentHandler];
+export const ArgumentHandlers: {[argument_handler_name: string]: ArgumentHandlerConstructor} = argument_handlers_arr.reduce((acc: any, handler: ArgumentHandlerConstructor ) => {
+    acc[handler.type] = handler;
+    return acc;
+}, {});
+
+export function parse_args(program_name: string, args: Array<CliArg>, argument_handlers: {[argument_handler_name: string]: ArgumentHandlerConstructor} = ArgumentHandlers, mutually_exclusive_groups? : Array<Array<string>>) {
+    const required_args = args.filter((arg) => arg.required === true);
+    const optional_args = args.filter((arg) => arg.required === false);
+    const args_map: {[arg_name: string]: CliArg} = args.reduce((acc: any, cli_arg) => {
+        if (acc.hasOwnProperty(cli_arg.name)) {
+            console2.error(`Error ${program_name}: duplicate definition for argument ${cli_arg.name}`);
+            process.exit(1);
+        }
+        acc[cli_arg.name] = cli_arg;
+        return acc;
+    }, {});
+
+    const parse_args_config = args.reduce((acc: any, arg) => {
+        acc[arg.name] = {
+            type: "string",
+            short: arg.short
+        };
+        return acc;
+    }, {options: {}});
+
+    // parse the arguments
+    let parsed_args: any = null;
+    try {
+        parsed_args = parseArgs(parse_args_config);
+    }
+    catch(e: any) {
+        console2.error(`Error ${program_name}: argument parser error ${e.message}`);
+        process.exit(1);
+    }
+
+    // find if we have any required arguments that are missing.
+    const missing_required_arguments = args.reduce((acc: Array<string>, arg) => {
+        if (arg.required === true && parsed_args.values.hasOwnProperty(arg.name)) { // has own property might not work
+            acc.push(arg.name);
+        }
+        return acc;
+    }, []);
+
+    if (missing_required_arguments.length !== 0) {
+        console2.error(`${program_name}: Missing the following arguments ${missing_required_arguments.map(arg_str => {
+            const option = (parse_args_config.options)[arg_str];
+            return `--${arg_str} or -${option.short}`
+        }).join(", ")}`);
+        process.exit(1);
+    }
+
+    /* Next check for common groups.
+     A group is a collection of arguments where if one of these are provided by the user it necessitates that the other
+     arguments are now required to also exist. 
+     */
+    // collect groups
+    const arg_groups: {[group: string]: Array<CliArg>} = args.reduce((acc: any, arg) => {
+        if (arg.group === undefined) return;
+        if (acc.hasOwnProperty(arg.group)) {
+            acc[arg.group].push(arg);
+        }
+        else {
+            acc[arg.group] = [arg];
+        }
+        return acc;
+    }, {});
+
+    const group_errors = Object.keys(arg_groups).reduce((acc: any, group_name) => {
+        const group_members = arg_groups[group_name];
+        const group_member_argument_defined = group_members.some((arg) => parsed_args.values.hasOwnProperty(arg.name));
+        if (!group_member_argument_defined) return; // no group members defined group is skipped.
+        // Collect missing group members and print their help messages.
+        const group_member_argument_present = group_members.filter((arg) => parsed_args.values.hasOwnProperty(arg.name));
+        const group_member_argument_missing = group_members.filter((arg) => !parsed_args.values.hasOwnProperty(arg.name));
+        acc.push(`${program_name}: Argument group ${group_name} error, the following group members were provided ${group_member_argument_present.map((gm) => gm.name)}, but inclusion of these arguments requires that additional arguments are set: \n ${group_member_argument_missing.map((ma) => ma.help)}`);
+        return acc;
+    }, []);
+
+    if (group_errors.length) {
+        group_errors.forEach((ge: string) => console2.error(ge));
+        process.exit(1);
+    }
+
+    if (mutually_exclusive_groups !== undefined) {
+        const group_exclusion_errors: Array<string> = [];
+        mutually_exclusive_groups.forEach((group_exclusion) => {
+            // group_exclusion like...
+            // ["group1", "group2", "group3"]
+            // if two or more are in the keys of arg_groups
+            const counts = group_exclusion.reduce((acc:number, group_name) => {
+                if (arg_groups.hasOwnProperty(group_name)) acc++;
+                return acc;
+            },0)
+
+            if (counts > 1) {
+                group_exclusion_errors.push(`Group exclusion violated [${group_exclusion.join(", ")}]:`);
+                group_exclusion.forEach((ge) => {
+                    group_exclusion_errors.push(`Group ${ge}:`);
+                    arg_groups[ge].forEach((cli_arg) => {
+                        group_exclusion_errors.push(cli_arg.help);
+                    });
+                });
+            }
+        });
+        if (group_exclusion_errors.length) {
+            group_exclusion_errors.forEach((ge: string) => console2.error(ge));
+            process.exit(1);
+        }
+    }
+
+    // Next parse the arguments using the argument handlers
+    // ArgumentHandlers
+    // parsed_args.values.hasOwnProperty
+    // argument_handlers
+    const inited_handlers: {[handler_name: string] : ArgumentHandler} = Object.keys(argument_handlers).reduce((acc: any, argument_handler_name)=>{
+        const arg_handler_constructor = argument_handlers[argument_handler_name];
+        acc[argument_handler_name] = new arg_handler_constructor();
+        return acc;
+    }, {});
+
+    const values_or_errors: Array<{value: any, name: string} | { error: any, name: string}> = Object.keys(parsed_args.values).map((provided_arg_name: string) => {
+        const cli_arg = args_map[provided_arg_name];
+        const handler = inited_handlers[cli_arg.type];
+        let value = null;
+        try {
+            value = handler.handle(parsed_args.values[provided_arg_name]);
+            return {value, name: provided_arg_name};
+        }
+        catch (e: any) {
+            return {error: e, name: provided_arg_name};
+        }        
+    });
+    
+    const errors = values_or_errors.filter((ve) => ve.hasOwnProperty("error")) as Array<{ error: any, name: string}>;
+    if (errors.length) {
+        errors.forEach((error) => {
+            console2.error(`Error with argument: ${error.name}`);
+            console2.error(error.error);
+            console2.error(args_map[error.name].help);
+        });
+        process.exit(1);
+    }
+
+}

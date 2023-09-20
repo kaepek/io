@@ -10,12 +10,12 @@ export class Task {
     public return_promise_resolver: ((value: void | PromiseLike<void>) => void) = null as any;
     public return_promise_rejector: ((reason?: any) => void) = null as any;
 
-    async wait(): Promise<any> {
+    async completed(): Promise<any> {
         return this.return_promise;
     }
 
     async run(state?: any) {
-        this.input_subscription = this.input$.subscribe((data) => this.tick(data));
+        this.input_subscription = this.input$.subscribe((data: any) => this.tick(data));
     }
 
     async done (ret: any): Promise<any> {};
