@@ -1,4 +1,4 @@
-import { parseArgs } from "node:util";
+import { parseArgs, ParseArgsConfig } from "node:util";
 import { console2 } from "../controller/utils/log.js";
 import fs from "fs";
 
@@ -18,8 +18,8 @@ export interface CliArg {
     short: string;
     type: CliArgType;
     required: boolean;
-    help: string | undefined;
-    group: string | undefined;
+    help?: string;
+    group?: string;
 }
 
 export abstract class ArgumentHandler {
@@ -141,7 +141,54 @@ function get_arg_help(cli_arg:CliArg, mutually_exclusive_groups? : Array<Array<s
     return help.join("\n");
 }
 
+function custom_parse_args(parse_options: ParseArgsConfig) {
+    const args = process.argv;
+    args.splice(0, 2);
+    const command_words_short: { [name: string]: any } = {};
+    const command_words_long: { [name: string]: any } = {};
+
+    if (parse_options.options) {
+        const options = parse_options.options as any;
+        Object.keys(options).forEach((option_name) => {
+            command_words_long[`--${option_name}`] = { ...options[option_name], option_name };
+            if (options[option_name].short) {
+                command_words_short[`-${options[option_name].short}`] = { ...options[option_name], option_name };
+            }
+        });
+    };
+
+    const parsed_args: { values: { [key: string]: Array<string> } } = { values: {} };
+    let current_arg_name: string | null = null;
+
+    args.forEach((arg_str_segment: string) => {
+        const possible_arg = command_words_short[arg_str_segment] || command_words_long[arg_str_segment];
+        if (possible_arg) {
+            const arg_name = possible_arg.option_name;
+            if (!parsed_args.values.hasOwnProperty(arg_name)) {
+                parsed_args.values[arg_name] = [];
+            }
+            current_arg_name = arg_name;
+        }
+        else {
+            if (parsed_args.values.hasOwnProperty(current_arg_name as string)) { // what happens for the boolean case
+                // we are already handling the word collect values
+                parsed_args.values[current_arg_name as string].push(arg_str_segment);
+            }
+        }
+    });
+
+    return parsed_args;
+}
+
 export function parse_args(program_name: string, args: Array<CliArg>, argument_handlers: {[argument_handler_name: string]: ArgumentHandlerConstructor} = ArgumentHandlers, mutually_exclusive_groups? : Array<Array<string>>) {
+    // args
+    args.unshift({
+        name: "help",
+        short: "h",
+        required: false,
+        type: CliArgType.Boolean,
+        help: `Shows the help information for program ${program_name}`
+    });
     const get_help = (cli_arg:CliArg) => get_arg_help(cli_arg, mutually_exclusive_groups);
     const required_args = args.filter((arg) => arg.required === true);
     const optional_args = args.filter((arg) => arg.required === false);
@@ -163,14 +210,7 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
     }, {options: {}});
 
     // parse the arguments
-    let parsed_args: any = null;
-    try {
-        parsed_args = parseArgs(parse_args_config);
-    }
-    catch(e: any) {
-        console2.error(`Error ${program_name}: argument parser error ${e.message}`);
-        process.exit(1);
-    }
+    let parsed_args = custom_parse_args(parse_args_config); // parseArgs(parse_args_config);
 
     // find if we have any required arguments that are missing.
     const missing_required_arguments = args.reduce((acc: Array<string>, arg) => {
@@ -257,12 +297,21 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
         return acc;
     }, {});
 
-    const values_or_errors: Array<{value: any, name: string} | { error: any, name: string}> = Object.keys(parsed_args.values).map((provided_arg_name: string) => {
+    const values_or_errors: Array<{value: any | Array<any>, name: string} | { error: any, name: string}> = Object.keys(parsed_args.values).map((provided_arg_name: string) => {
         const cli_arg = args_map[provided_arg_name];
         const handler = inited_handlers[cli_arg.type];
-        let value = null;
+        let value: any | Array<any> | true;
         try {
-            value = handler.handle(parsed_args.values[provided_arg_name]);
+            if (args_map[provided_arg_name].type === CliArgType.Boolean) {
+                value = true;
+            }
+            else {
+                value = parsed_args.values[provided_arg_name].map((pav) => handler.handle(pav)) as Array<any>;
+                if (value.length === 1) {
+                    value = value[0] as any;
+                }
+            }
+
             return {value, name: provided_arg_name};
         }
         catch (e: any) {
@@ -280,8 +329,8 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
         process.exit(1);
     }
 
-    return (values_or_errors as Array<{value: any, name: string}> ).reduce((acc: any, kn) => {
+    return (values_or_errors as Array<{value: any | Array<any>, name: string}> ).reduce((acc: any, kn) => {
         acc[kn.name] = kn.value;
         return acc;
-    }, {}) as {[attribute_name: string]: any};
+    }, {})  as {[attribute_name: string]: {value: any | Array<any>}};
 }
