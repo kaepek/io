@@ -1,5 +1,5 @@
 import NetworkAdaptor from "./network.js";
-import { Task } from "./tasks.js";
+import { Task } from "./task.js";
 
 export async function main(tasks: Array<Task>, adaptor: NetworkAdaptor) {
     let state = {};

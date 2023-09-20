@@ -1,5 +1,5 @@
 import { parseArgs } from "node:util";
-import { console2 } from "../controller/utils/log";
+import { console2 } from "../controller/utils/log.js";
 import fs from "fs";
 
 const cwd = process.cwd();
@@ -18,7 +18,7 @@ export interface CliArg {
     short: string;
     type: CliArgType;
     required: boolean;
-    help: string;
+    help: string | undefined;
     group: string | undefined;
 }
 
@@ -122,7 +122,27 @@ export const ArgumentHandlers: {[argument_handler_name: string]: ArgumentHandler
     return acc;
 }, {});
 
+function get_arg_help(cli_arg:CliArg, mutually_exclusive_groups? : Array<Array<string>>) {
+    const help = [
+        `-${cli_arg.short}, --${cli_arg.name}`,
+        `Type:${cli_arg.type}, ${cli_arg.required === true ? "Required!" : "Optional."}`
+    ];
+    if (cli_arg.group !== undefined) {
+        help.push(`Member of an attribute group ${cli_arg.group}.`); // help
+        // // mutually_exclusive_groups? : Array<Array<string>>
+        if (mutually_exclusive_groups?.length) {
+            const relevant_group_exclusions = mutually_exclusive_groups.filter((exclusion) => exclusion.includes(cli_arg.group as string));
+            help.push(`Group is part of a mutually exclusive set {${relevant_group_exclusions.join(",")}}`);
+        }
+    }
+    if (cli_arg.help !== undefined) {
+        help.push(cli_arg.help);
+    }
+    return help.join("\n");
+}
+
 export function parse_args(program_name: string, args: Array<CliArg>, argument_handlers: {[argument_handler_name: string]: ArgumentHandlerConstructor} = ArgumentHandlers, mutually_exclusive_groups? : Array<Array<string>>) {
+    const get_help = (cli_arg:CliArg) => get_arg_help(cli_arg, mutually_exclusive_groups);
     const required_args = args.filter((arg) => arg.required === true);
     const optional_args = args.filter((arg) => arg.required === false);
     const args_map: {[arg_name: string]: CliArg} = args.reduce((acc: any, cli_arg) => {
@@ -191,7 +211,7 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
         // Collect missing group members and print their help messages.
         const group_member_argument_present = group_members.filter((arg) => parsed_args.values.hasOwnProperty(arg.name));
         const group_member_argument_missing = group_members.filter((arg) => !parsed_args.values.hasOwnProperty(arg.name));
-        acc.push(`${program_name}: Argument group ${group_name} error, the following group members were provided ${group_member_argument_present.map((gm) => gm.name)}, but inclusion of these arguments requires that additional arguments are set: \n ${group_member_argument_missing.map((ma) => ma.help)}`);
+        acc.push(`${program_name}: Argument group ${group_name} error, the following group members were provided ${group_member_argument_present.map((gm) => gm.name)}, but inclusion of these arguments requires that additional arguments are set: \n ${group_member_argument_missing.map((ma) => get_help(ma))}`);
         return acc;
     }, []);
 
@@ -216,7 +236,7 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
                 group_exclusion.forEach((ge) => {
                     group_exclusion_errors.push(`Group ${ge}:`);
                     arg_groups[ge].forEach((cli_arg) => {
-                        group_exclusion_errors.push(cli_arg.help);
+                        group_exclusion_errors.push(get_help(cli_arg));
                     });
                 });
             }
@@ -255,9 +275,13 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
         errors.forEach((error) => {
             console2.error(`Error with argument: ${error.name}`);
             console2.error(error.error);
-            console2.error(args_map[error.name].help);
+            console2.error(get_help(args_map[error.name]));
         });
         process.exit(1);
     }
 
+    return (values_or_errors as Array<{value: any, name: string}> ).reduce((acc: any, kn) => {
+        acc[kn.name] = kn.value;
+        return acc;
+    }, {}) as {[attribute_name: string]: any};
 }
