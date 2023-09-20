@@ -132,7 +132,7 @@ function get_arg_help(cli_arg:CliArg, mutually_exclusive_groups? : Array<Array<s
         // // mutually_exclusive_groups? : Array<Array<string>>
         if (mutually_exclusive_groups?.length) {
             const relevant_group_exclusions = mutually_exclusive_groups.filter((exclusion) => exclusion.includes(cli_arg.group as string));
-            help.push(`Group is part of a mutually exclusive set {${relevant_group_exclusions.join(",")}}`);
+            help.push(`${cli_arg.group} is part of a mutually exclusive argument set {${relevant_group_exclusions.join(",")}}`);
         }
     }
     if (cli_arg.help !== undefined) {
@@ -189,15 +189,19 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
         type: CliArgType.Boolean,
         help: `Shows the help information for program ${program_name}`
     });
-    const get_help = (cli_arg:CliArg) => get_arg_help(cli_arg, mutually_exclusive_groups);
-    const required_args = args.filter((arg) => arg.required === true);
-    const optional_args = args.filter((arg) => arg.required === false);
+    const get_help = (cli_arg:CliArg) => get_arg_help(cli_arg, mutually_exclusive_groups);;
+    const args_map_short_name: {[arg_short_name: string]: CliArg} = {};
     const args_map: {[arg_name: string]: CliArg} = args.reduce((acc: any, cli_arg) => {
         if (acc.hasOwnProperty(cli_arg.name)) {
-            console2.error(`Error ${program_name}: duplicate definition for argument ${cli_arg.name}`);
+            console2.error(`${program_name} CliArg configuration error. Duplicate definition for argument name: ${cli_arg.name}`);
+            process.exit(1);
+        }
+        if (args_map_short_name.hasOwnProperty(cli_arg.short)) {
+            console2.error(`${program_name} CliArg configuration error. Duplicate definition for argument short name: ${cli_arg.short}`);
             process.exit(1);
         }
         acc[cli_arg.name] = cli_arg;
+        args_map_short_name[cli_arg.short] = cli_arg;
         return acc;
     }, {});
 
@@ -322,15 +326,26 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
     const errors = values_or_errors.filter((ve) => ve.hasOwnProperty("error")) as Array<{ error: any, name: string}>;
     if (errors.length) {
         errors.forEach((error) => {
-            console2.error(`Error with argument: ${error.name}`);
+            console2.error(`Error with argument ${error.name}:`);
             console2.error(error.error);
-            console2.error(get_help(args_map[error.name]));
+            console2.info("Usage:");
+            console2.info(get_help(args_map[error.name]));
         });
         process.exit(1);
     }
 
-    return (values_or_errors as Array<{value: any | Array<any>, name: string}> ).reduce((acc: any, kn) => {
+    const values = (values_or_errors as Array<{value: any | Array<any>, name: string}> ).reduce((acc: any, kn) => {
         acc[kn.name] = kn.value;
         return acc;
-    }, {})  as {[attribute_name: string]: {value: any | Array<any>}};
+    }, {})  as {[attribute_name: string]: {value: any | Array<any> | true}};
+
+    if (values.hasOwnProperty("help")) {
+        console2.info(`Help information for program: ${program_name}`);
+        Object.keys(args_map).forEach((arg_name) => {
+            console2.info(`Argument name: ${arg_name} -----`);
+            console2.info(get_help(args_map[arg_name]));
+        });
+        process.exit(1);
+    }
+    return values;
 }
