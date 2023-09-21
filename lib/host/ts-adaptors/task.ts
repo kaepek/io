@@ -1,9 +1,9 @@
 import { Observable, Subscription } from "rxjs";
 
 
-export class Task {
+export class Task<InputType> {
 
-    tick(incoming_data: any) {
+    tick(incoming_data: InputType) {
         throw "Not implemented yet";
     }
 
@@ -15,7 +15,7 @@ export class Task {
     }
 
     async run(state?: any) {
-        this.input_subscription = this.input$.subscribe((data: any) => this.tick(data));
+        this.input_subscription = this.input$.subscribe((data: InputType) => this.tick(data));
     }
 
     async done (ret: any): Promise<any> {};

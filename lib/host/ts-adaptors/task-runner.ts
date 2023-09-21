@@ -1,7 +1,7 @@
 import NetworkAdaptor from "./network.js";
 import { Task } from "./task.js";
 
-export async function run_tasks(tasks: Array<Task>, adaptor: NetworkAdaptor) {
+export async function run_tasks(tasks: Array<Task<any>>, adaptor: NetworkAdaptor) {
     let state = {};
 
     // should call run then call wait
