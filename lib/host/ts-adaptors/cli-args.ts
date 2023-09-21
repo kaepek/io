@@ -9,7 +9,7 @@ export enum CliArgType {
     Number = "Number",
     Boolean = "Boolean",
     InputFilePath = "InputFilePath",
-    InputJSONFilePath = "InputJSONFilePath",
+    InputJSONFile = "InputJSONFile",
     OutputFilePath = "OutputFilePath"
 }
 
@@ -67,7 +67,7 @@ class InputFilePathArgumentHandler extends ArgumentHandler {
         if (!fs.existsSync(full_path)) throw `Argument data ${argument_data} did not correspond to an existing file.`;
         // read the data
         try {
-            return fs.readFileSync(full_path, 'utf8');
+            return argument_data
         }
         catch (e: any) {
             throw `Argument data ${full_path}, read file error ${e.message}`;
@@ -76,8 +76,8 @@ class InputFilePathArgumentHandler extends ArgumentHandler {
 }
 
 
-class InputJSONFilePathArgumentHandler extends ArgumentHandler {
-    static type = CliArgType.InputJSONFilePath;
+class InputJSONFileArgumentHandler extends ArgumentHandler {
+    static type = CliArgType.InputJSONFile;
     handle(argument_data: string) {
         // file must already exist
         // argument data is a releative path away from cwd
@@ -116,7 +116,7 @@ class OutputFilePathArgumentHandler extends ArgumentHandler {
 }
 
 type ArgumentHandlerConstructor = { new(...args: any): ArgumentHandler, type:CliArgType };
-const argument_handlers_arr: Array<ArgumentHandlerConstructor> = [StringArgumentHandler, NumberArgumentHandler, BooleanArgumentHandler, InputFilePathArgumentHandler, InputJSONFilePathArgumentHandler, OutputFilePathArgumentHandler];
+const argument_handlers_arr: Array<ArgumentHandlerConstructor> = [StringArgumentHandler, NumberArgumentHandler, BooleanArgumentHandler, InputFilePathArgumentHandler, InputJSONFileArgumentHandler, OutputFilePathArgumentHandler];
 export const ArgumentHandlers: {[argument_handler_name: string]: ArgumentHandlerConstructor} = argument_handlers_arr.reduce((acc: any, handler: ArgumentHandlerConstructor ) => {
     acc[handler.type] = handler;
     return acc;
@@ -224,8 +224,6 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
         }
         return acc;
     }, []);
-
-    console.log("parsed_args", parsed_args);
 
     if (parsed_args.values.hasOwnProperty("help")) {
         console2.info(`Help information for program: ${program_name}`);
