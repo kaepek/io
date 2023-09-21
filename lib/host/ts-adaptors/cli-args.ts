@@ -64,7 +64,7 @@ class InputFilePathArgumentHandler extends ArgumentHandler {
         // file must already exist
         // argument data is a releative path away from cwd
         const full_path = `${cwd}/${argument_data}`;
-        if (fs.existsSync(full_path)) throw `Argument data ${argument_data} did not correspond to an existing file.`;
+        if (fs.existsSync(full_path), 'utf8') throw `Argument data ${argument_data} did not correspond to an existing file.`;
         // read the data
         try {
             return fs.readFileSync(full_path);
@@ -86,7 +86,7 @@ class InputJSONFilePathArgumentHandler extends ArgumentHandler {
         // read the data
         let data = null;
         try {
-            data = fs.readFileSync(full_path);
+            data = fs.readFileSync(full_path, 'utf8');
         }
         catch (e: any) {
             throw `Argument data ${full_path}, read file error ${e.message}`;
