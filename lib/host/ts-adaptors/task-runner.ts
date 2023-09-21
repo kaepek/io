@@ -13,7 +13,7 @@ export async function run_tasks(tasks: Array<Task>, adaptor: NetworkAdaptor) {
         resolver = resolver.then(async () => {
             const return_prom = task.completed().then((state_data_additions) => {
                 state = { ...state_data_additions, ...state };
-                return state_data_additions;
+                return state;
             });
             await task.run(state);
             return return_prom;
