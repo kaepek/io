@@ -238,7 +238,7 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
      */
     // collect groups
     const arg_groups: {[group: string]: Array<CliArg>} = args.reduce((acc: any, arg) => {
-        if (arg.group === undefined) return;
+        if (arg.group === undefined) return acc;
         if (acc.hasOwnProperty(arg.group)) {
             acc[arg.group].push(arg);
         }
@@ -251,7 +251,7 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
     const group_errors = Object.keys(arg_groups).reduce((acc: any, group_name) => {
         const group_members = arg_groups[group_name];
         const group_member_argument_defined = group_members.some((arg) => parsed_args.values.hasOwnProperty(arg.name));
-        if (!group_member_argument_defined) return; // no group members defined group is skipped.
+        if (!group_member_argument_defined) return acc; // no group members defined group is skipped.
         // Collect missing group members and print their help messages.
         const group_member_argument_present = group_members.filter((arg) => parsed_args.values.hasOwnProperty(arg.name));
         const group_member_argument_missing = group_members.filter((arg) => !parsed_args.values.hasOwnProperty(arg.name));
