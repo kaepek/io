@@ -9,7 +9,7 @@ export enum CliArgType {
     Number = "Number",
     Boolean = "Boolean",
     InputFilePath = "InputFilePath",
-    InputJSONFilePath = "InputJSONFilePath",
+    InputJSONFile = "InputJSONFile",
     OutputFilePath = "OutputFilePath"
 }
 
@@ -35,7 +35,7 @@ class StringArgumentHandler extends ArgumentHandler {
 }
 
 class NumberArgumentHandler extends ArgumentHandler {
-    static type = CliArgType.String;
+    static type = CliArgType.Number;
     handle(argument_data: string) {
         const possible_float = parseFloat(argument_data.toString());
         if (isNaN(possible_float)) throw `Argument data ${argument_data} did not parse to a valid number.`;
@@ -64,10 +64,10 @@ class InputFilePathArgumentHandler extends ArgumentHandler {
         // file must already exist
         // argument data is a releative path away from cwd
         const full_path = `${cwd}/${argument_data}`;
-        if (fs.existsSync(full_path), 'utf8') throw `Argument data ${argument_data} did not correspond to an existing file.`;
+        if (!fs.existsSync(full_path)) throw `Argument data ${argument_data} did not correspond to an existing file.`;
         // read the data
         try {
-            return fs.readFileSync(full_path);
+            return argument_data
         }
         catch (e: any) {
             throw `Argument data ${full_path}, read file error ${e.message}`;
@@ -76,13 +76,13 @@ class InputFilePathArgumentHandler extends ArgumentHandler {
 }
 
 
-class InputJSONFilePathArgumentHandler extends ArgumentHandler {
-    static type = CliArgType.InputJSONFilePath;
+class InputJSONFileArgumentHandler extends ArgumentHandler {
+    static type = CliArgType.InputJSONFile;
     handle(argument_data: string) {
         // file must already exist
         // argument data is a releative path away from cwd
         const full_path = `${cwd}/${argument_data}`;
-        if (fs.existsSync(full_path)) throw `Argument data ${argument_data} did not correspond to an existing file.`;
+        if (!fs.existsSync(full_path)) throw `Argument data ${full_path} did not correspond to an existing file.`;
         // read the data
         let data = null;
         try {
@@ -110,13 +110,13 @@ class OutputFilePathArgumentHandler extends ArgumentHandler {
         // file must not already exist
         // argument data is a releative path away from cwd
         const full_path = `${cwd}/${argument_data}`;
-        if (!fs.existsSync(full_path)) throw `Argument data ${argument_data} corresponded to an existing file.`;
+        if (fs.existsSync(full_path)) throw `Argument data ${argument_data} corresponded to an existing file.`;
         return full_path;
     };
 }
 
 type ArgumentHandlerConstructor = { new(...args: any): ArgumentHandler, type:CliArgType };
-const argument_handlers_arr: Array<ArgumentHandlerConstructor> = [StringArgumentHandler, NumberArgumentHandler, BooleanArgumentHandler, InputFilePathArgumentHandler, InputJSONFilePathArgumentHandler, OutputFilePathArgumentHandler];
+const argument_handlers_arr: Array<ArgumentHandlerConstructor> = [StringArgumentHandler, NumberArgumentHandler, BooleanArgumentHandler, InputFilePathArgumentHandler, InputJSONFileArgumentHandler, OutputFilePathArgumentHandler];
 export const ArgumentHandlers: {[argument_handler_name: string]: ArgumentHandlerConstructor} = argument_handlers_arr.reduce((acc: any, handler: ArgumentHandlerConstructor ) => {
     acc[handler.type] = handler;
     return acc;
@@ -128,7 +128,7 @@ function get_arg_help(cli_arg:CliArg, mutually_exclusive_groups? : Array<Array<s
         `Type:${cli_arg.type}, ${cli_arg.required === true ? "Required!" : "Optional."}`
     ];
     if (cli_arg.group !== undefined) {
-        help.push(`Member of an attribute group ${cli_arg.group}.`); // help
+        help.push(`Member of an attribute group '${cli_arg.group}'.`); // help
         // // mutually_exclusive_groups? : Array<Array<string>>
         if (mutually_exclusive_groups?.length) {
             const relevant_group_exclusions = mutually_exclusive_groups.filter((exclusion) => exclusion.includes(cli_arg.group as string));
@@ -144,6 +144,7 @@ function get_arg_help(cli_arg:CliArg, mutually_exclusive_groups? : Array<Array<s
 function custom_parse_args(parse_options: ParseArgsConfig) {
     const args = process.argv;
     args.splice(0, 2);
+
     const command_words_short: { [name: string]: any } = {};
     const command_words_long: { [name: string]: any } = {};
 
@@ -206,7 +207,7 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
     }, {});
 
     const parse_args_config = args.reduce((acc: any, arg) => {
-        acc[arg.name] = {
+        acc.options[arg.name] = {
             type: "string",
             short: arg.short
         };
@@ -218,11 +219,20 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
 
     // find if we have any required arguments that are missing.
     const missing_required_arguments = args.reduce((acc: Array<string>, arg) => {
-        if (arg.required === true && parsed_args.values.hasOwnProperty(arg.name)) { // has own property might not work
+        if (arg.required === true && !parsed_args.values.hasOwnProperty(arg.name)) { // has own property might not work
             acc.push(arg.name);
         }
         return acc;
     }, []);
+
+    if (parsed_args.values.hasOwnProperty("help")) {
+        console2.info(`Help information for program: ${program_name}`);
+        Object.keys(args_map).forEach((arg_name) => {
+            console2.info(`Argument name: ${arg_name} -----`);
+            console2.info(get_help(args_map[arg_name]));
+        });
+        process.exit(1);
+    }
 
     if (missing_required_arguments.length !== 0) {
         console2.error(`${program_name}: Missing the following arguments ${missing_required_arguments.map(arg_str => {
@@ -255,7 +265,10 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
         // Collect missing group members and print their help messages.
         const group_member_argument_present = group_members.filter((arg) => parsed_args.values.hasOwnProperty(arg.name));
         const group_member_argument_missing = group_members.filter((arg) => !parsed_args.values.hasOwnProperty(arg.name));
-        acc.push(`${program_name}: Argument group ${group_name} error, the following group members were provided ${group_member_argument_present.map((gm) => gm.name)}, but inclusion of these arguments requires that additional arguments are set: \n ${group_member_argument_missing.map((ma) => get_help(ma))}`);
+        if (group_member_argument_missing.length) {
+            acc.push(`${program_name}: Argument group ${group_name} error, the following group members were provided ${group_member_argument_present.map((gm) => gm.name)}, but inclusion of these arguments requires that additional arguments are set: \n ${group_member_argument_missing.map((ma) => get_help(ma))}`);
+    
+        }
         return acc;
     }, []);
 
@@ -315,7 +328,6 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
                     value = value[0] as any;
                 }
             }
-
             return {value, name: provided_arg_name};
         }
         catch (e: any) {
@@ -339,13 +351,5 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
         return acc;
     }, {})  as {[attribute_name: string]: {value: any | Array<any> | true}};
 
-    if (values.hasOwnProperty("help")) {
-        console2.info(`Help information for program: ${program_name}`);
-        Object.keys(args_map).forEach((arg_name) => {
-            console2.info(`Argument name: ${arg_name} -----`);
-            console2.info(get_help(args_map[arg_name]));
-        });
-        process.exit(1);
-    }
     return values;
 }
