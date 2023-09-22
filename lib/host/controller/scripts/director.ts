@@ -1,6 +1,4 @@
-#!/bin/bash
-":" //# https://sambal.org/?p=1014; NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 exec /usr/bin/env node --experimental-loader=$(which kaepek-io-INTERNALS-extensionless.js) "$0" "$@"
-    ;
+#!/usr/bin/env node
 import ControlInputSources from "../control-input-sources/index.js";
 import { ControlInputSourceHandler } from "../control-input-sources/model.js";
 import { ControlSourceInputRouter } from "../control-input-sources/router.js";
