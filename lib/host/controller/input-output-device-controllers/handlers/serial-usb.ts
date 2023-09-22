@@ -27,7 +27,13 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
 
         if (!successfulPortObj) {
             // the user provided one failed... attempt to find one
-            const relevantPorts = serialPorts.filter((it) => it.path.includes("/dev/ttyACM"));
+            // default unix
+            let relevantPorts = serialPorts.filter((it) => it.path.includes("/dev/ttyACM"));
+
+            if (!relevantPorts.length) { // windows
+                relevantPorts = serialPorts.filter((it) => it.path.includes("COM3"));
+            }
+
             if (!relevantPorts.length) throw "Could not find any serial ports to write too!";
             successfulPortObj = relevantPorts[0];
         }
