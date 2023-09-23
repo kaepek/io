@@ -1,6 +1,4 @@
-#!/bin/bash
-":" //# https://sambal.org/?p=1014; NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 exec /usr/bin/env node --experimental-loader=$(which kaepek-io-INTERNALS-extensionless.js) "$0" "$@"
-    ;
+#!/usr/bin/env node
 import { ParseArgsConfig, parseArgs } from "node:util";
 import UDP from "dgram";
 import { ControlWordDataTypes, ControlWords } from "../control-words/words.js";
