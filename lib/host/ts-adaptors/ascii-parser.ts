@@ -26,7 +26,7 @@ export class ASCIIParser {
             const name = output_description.name;
             const position = output_description.position;
             const value = outgoing_data_obj[name];
-            outgoing_obj[position] = value;
+            outgoing_obj[position] = value || 0.0;
         });
         const int_keys = Object.keys(outgoing_obj).map((key)=>parseFloat(key));
         const max_index = Math.max(...int_keys);
