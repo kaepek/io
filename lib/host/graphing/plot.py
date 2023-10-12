@@ -76,10 +76,15 @@ for input in config_json["inputs"]:
 plot_data = ColumnDataSource(inputs_dict)
 
 # get buffer length
-buffer_length = config_json["buffer_length"]
+buffer_length = None
+
+if "buffer_length" in config_json:
+    buffer_length = config_json["buffer_length"]
 
 if (args["buffer"]):
     buffer_length = int(args["buffer"])
+
+print("BUFFER LENGTH", buffer_length)
 
 # creating plots
 doc = curdoc()
@@ -157,7 +162,10 @@ if args["port"]:
             except Exception as error:
                 relevant_data = 0.0
             stream_obj[input_name] = [relevant_data]
-        plot_data.stream(stream_obj, rollover=buffer_length)
+        if buffer_length is not None:
+            plot_data.stream(stream_obj, rollover=buffer_length)
+        else:
+            plot_data.stream(stream_obj)
         doc.add_next_tick_callback(update)
 
     # add callback for first tick
