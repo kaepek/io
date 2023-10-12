@@ -1,5 +1,5 @@
 import { parseArgs, ParseArgsConfig } from "node:util";
-import { console2 } from "../controller/utils/log.js";
+import { console2 } from "./log.js";
 import fs from "fs";
 
 const cwd = process.cwd();

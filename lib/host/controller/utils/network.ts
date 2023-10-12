@@ -1,25 +1,30 @@
 import UDP from "dgram";
 import TCP from "net";
 import fs from "fs";
+import { console2 } from "./log.js";
+import { Subject } from "rxjs";
 
 class NetworkAdaptor {
-    server = null;
-    client = null;
+    server: UDP.Socket;
+    client: UDP.Socket | null = null;
 
-    incoming_address = null;
-    incoming_port = null;
-    incoming_protocol = null;
-    outgoing_address = null;
-    outgoing_port = null;
-    outgoing_protocol = null;
-    incoming_data_config = null;
-    outgoing_data_config = null;
-    data_delimeter = null;
+    incoming_address: string;
+    incoming_port: number;
+    incoming_protocol: string;
+    outgoing_address: string | null;
+    outgoing_port: number | null;
+    outgoing_protocol: string | null;
+    incoming_data_config: Array<any>;
+    outgoing_data_config: Array<any> = [];
+    data_delimeter: string;
 
-    incoming_data_parser(incoming_data_str) {
+    incoming_data_subject: Subject<any> = new Subject<any>;
+    public incoming_data$ = this.incoming_data_subject.asObservable();
+
+    incoming_data_parser(incoming_data_str: any) {
         const message_str = incoming_data_str.toString();
         const line_split = message_str.split(this.data_delimeter);
-        const parsed_data = {};
+        const parsed_data: any = {};
         this.incoming_data_config.forEach(input_description => {
             const name = input_description.name;
             const position = input_description.position;
@@ -34,8 +39,8 @@ class NetworkAdaptor {
         return parsed_data;
     }
 
-    outgoing_data_serialiser(outgoing_data_obj) {
-        const outgoing_obj = {};
+    outgoing_data_serialiser(outgoing_data_obj: any) {
+        const outgoing_obj: any = {};
         this.outgoing_data_config.forEach((output_description) => {
             const name = output_description.name;
             const position = output_description.position;
@@ -48,22 +53,22 @@ class NetworkAdaptor {
         return outgoing_array.join(this.data_delimeter);
     }
 
-    transmit_outgoing_data(data_obj) {
+    transmit_outgoing_data(data_obj: any) {
         if (this.outgoing_protocol === "udp") {
             const data_str = this.outgoing_data_serialiser(data_obj);
             const packet = Buffer.from(data_str.toString());
-            this.client.send(packet, this.outgoing_port, this.outgoing_address, (err) => {    
+            (this.client as UDP.Socket).send(packet, this.outgoing_port as any, this.outgoing_address as any, (err) => {    
                 if (err) return console2.error('Failed to send UPD packet in NetworkOutputSink: ', err);
             });
         }
     }
 
-    incoming_data_callback(message_obj, info) {
-        throw "Error incoming_data_callback not implemented";
+    incoming_data_callback(message_obj: any, info: any) {
+        // throw "Error incoming_data_callback not implemented";
     }
 
     async ready() {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
             if (this.incoming_protocol === "tcp") {
             }
             else if (this.incoming_protocol === "udp") {
@@ -72,35 +77,37 @@ class NetworkAdaptor {
                     console2.success(`INFO NetworkAdaptor ready. Listening to Address: ${this.incoming_address} Port: ${this.incoming_port}`);
                     resolve();
                 });
-                server.on("error", (err) => {
+                server.on("error", (err: any) => {
                     console2.error(`WARNING ${this.incoming_protocol} server error: ${JSON.stringify(err)}, ${JSON.stringify(err.stack)}. No input will come from this source.`);
                     server.close();
                 });
-                server.on("message", (message, info) => {
+                server.on("message", (message: any, info: any) => {
                     // decode message based on config
-                    this.incoming_data_callback(this.incoming_data_parser(message), info);
+                    const parsed_data = this.incoming_data_parser(message);
+                    this.incoming_data_subject.next({parsed_data, info});
+                    this.incoming_data_callback(parsed_data, info);
                 });
                 server.bind({ port: this.incoming_port, address: this.incoming_address });
             }
         });
     }
 
-    constructor(incoming_address,
-        incoming_port,
-        incoming_protocol,
-        outgoing_address,
-        outgoing_port,
-        outgoing_protocol,
-        incoming_data_config_path,
-        data_delimeter
+    constructor(incoming_address: string,
+        incoming_port: number,
+        incoming_protocol: string,
+        incoming_data_config_path: string,
+        data_delimeter: string,
+        outgoing_address?: string | null,
+        outgoing_port?: number | null,
+        outgoing_protocol?: string | null,
     ) {
 
         this.incoming_address = incoming_address;
         this.incoming_port = incoming_port;
         this.incoming_protocol = incoming_protocol;
-        this.outgoing_address = outgoing_address;
-        this.outgoing_port = outgoing_port;
-        this.outgoing_protocol = outgoing_protocol;
+        this.outgoing_address = outgoing_address || null;
+        this.outgoing_port = outgoing_port || null;
+        this.outgoing_protocol = outgoing_protocol || null;
         this.data_delimeter = data_delimeter || ",";
 
         const cwd = process.cwd();
@@ -113,7 +120,7 @@ class NetworkAdaptor {
         }
 
         const file_data = fs.readFileSync(full_incoming_data_config_path);
-        const file_json = JSON.parse(file_data);
+        const file_json = JSON.parse(file_data.toString());
 
         if (!file_json.hasOwnProperty || !file_json.hasOwnProperty("inputs")) {
             console2.error(`WARNING NetworkAdaptor incoming_data_config_path file does not have an 'inputs' member`);
@@ -139,6 +146,9 @@ class NetworkAdaptor {
         else if (outgoing_protocol === "tcp") {
             console2.error(`WARNING NetworkAdaptor unsupported outgoing network protocol: ${outgoing_protocol}, expected "upd. No input will come from this source."`);
             process.exit(1);
+        }
+        else if (outgoing_protocol === undefined) {
+            console2.error(`WARNING NetworkAdaptor outgoing network socket undefined. No input will come from this source."`);
         }
         else {
             console2.error(`WARNING NetworkAdaptor unknown outgoing network protocol: ${outgoing_protocol}, expected "upd" or "tcp". No input will come from this source."`);

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { ParseArgsConfig, parseArgs } from "node:util";
 import UDP from "dgram";
-import { ControlWordDataTypes, ControlWords } from "../control-words/words.js";
+import { ControlWordDataTypes } from "../control-words/words.js";
 import ControlWordsIndex from "../control-words/index.js";
 
 const parse_options: ParseArgsConfig = {

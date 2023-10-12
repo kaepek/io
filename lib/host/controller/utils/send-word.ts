@@ -1,8 +1,8 @@
 import UDP from "dgram";
 import TCP from "net";
-import ControlWordsIndex from "../controller/control-words/index.js";
-import { ControlWordDataTypes, ControlWords } from "../controller/control-words/words.js";
-import { console2 } from "../controller/utils/log.js";
+import ControlWordsIndex from "../control-words/index.js";
+import { ControlWordDataTypes, ControlWords } from "../control-words/words.js";
+import { console2 } from "../utils/log.js";
 
 export class SendWord {
     client: UDP.Socket;
