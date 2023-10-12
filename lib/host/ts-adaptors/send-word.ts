@@ -71,7 +71,7 @@ export class SendWord {
             this.client = UDP.createSocket("udp4");
         }
         else {
-            console2.error(`WARNING NetworkAdaptor unsupported incoming network protocol: ${outgoing_protocol}, expected "upd". No input will come from this source."`);
+            console2.error(`WARNING SendWord unsupported incoming network protocol: ${outgoing_protocol}, expected "upd". No input will come from this source."`);
             process.exit(1);
         }
 
