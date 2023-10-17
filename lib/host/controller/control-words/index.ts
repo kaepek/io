@@ -13,6 +13,10 @@ import { Phase2F32WordHandler } from "./handlers/phase2F32.js"
 import { Offset1F32WordHandler } from "./handlers/offset1F32.js"
 import { Offset2F32WordHandler } from "./handlers/offset2F32.js"
 import { SetPointF32WordHandler } from "./handlers/setpointF32.js"
+import { PowerLawRootCCWF32WordHandler } from "./handlers/powerlawrootccwF32.js"
+import { PowerLawRootCWF32WordHandler } from "./handlers/powerlawrootcwF32.js"
+import { PowerLawSetPointDivisorCCWF32WordHandler } from "./handlers/powerlawsetpointdivisorccwF32.js"
+import { PowerLawSetPointDivisorCWF32WordHandler } from "./handlers/powerlawsetpointdivisorcwF32.js"
 
 const exports: {[key: string]: (typeof ControlWordHandlerBase)} = {
    "directionui8": Direction1UI8ControlWordHandler,
@@ -28,7 +32,11 @@ const exports: {[key: string]: (typeof ControlWordHandlerBase)} = {
    "phase2f32": Phase2F32WordHandler,
    "offsetf32": Offset1F32WordHandler,
    "offset2f32": Offset2F32WordHandler,
-   "setpointf32": SetPointF32WordHandler
+   "setpointf32": SetPointF32WordHandler,
+   "powerlawrootccwf32": PowerLawRootCCWF32WordHandler,
+   "powerlawrootcwf32": PowerLawRootCWF32WordHandler,
+   "powerlawsetpointdivisorccwf32": PowerLawSetPointDivisorCCWF32WordHandler,
+   "powerlawsetpointdivisorcwf32": PowerLawSetPointDivisorCWF32WordHandler
 };
 
 export default exports;

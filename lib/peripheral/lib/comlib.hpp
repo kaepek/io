@@ -57,6 +57,10 @@ namespace kaepek
          * 11: Offset1F32 - Float32
          * 12: Offset2F32 - Float32
          * 13: SetPointF32 - Float32
+         * 14: PowerLawSetPointDivisorCWF32 - Float32
+         * 15: PowerLawRootCWF32 - Float32
+         * 16: PowerLawSetPointDivisorCCWF32 - Float32
+         * 17: PowerLawRootCCWF32 - Float32
          */
         uint32_t serial_input_command_word_buffer_size[14] = {
             0, // Null
@@ -73,6 +77,10 @@ namespace kaepek
             4, // Offset1F32
             4, // Offset2F32
             4, // SetPointF32
+            4, // PowerLawSetPointDivisorCWF32
+            4, // PowerLawRootCWF32
+            4, // PowerLawSetPointDivisorCCWF32
+            4, // PowerLawRootCCWF32
         };
         // The current data buffer's index.
         uint32_t buffer_idx = 0;

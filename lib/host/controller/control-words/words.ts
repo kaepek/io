@@ -13,6 +13,10 @@ enum ControlWords {
     Offset1F32 = 11,
     Offset2F32 = 12,
     SetPointF32 = 13,
+    PowerLawSetPointDivisorCWF32 = 14,
+    PowerLawRootCWF32 = 15,
+    PowerLawSetPointDivisorCCWF32 = 16,
+    PowerLawRootCCWF32 = 17,
 };
 
 enum ControlWordDataTypes {
