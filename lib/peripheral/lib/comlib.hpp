@@ -78,7 +78,7 @@ namespace kaepek
          * 16: PowerLawSetPointDivisorCCWF32 - Float32
          * 17: PowerLawRootCCWF32 - Float32
          */
-        uint32_t serial_input_command_word_buffer_size[14] = {
+        uint32_t serial_input_command_word_buffer_size[17] = {
             0, // Null
             0, // Start
             0, // Stop
