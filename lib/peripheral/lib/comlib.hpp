@@ -14,6 +14,18 @@ namespace kaepek
      * 3: Reset - resets the device after a fault
      * 4: Direction1UI8 - set the device direction
      * 5: Thrust1UI16 - sets the thrust level
+     * 6: ProportionalF32 - set the proportional pid coefficient
+     * 7: IntegralF32 - sets the integral pid coefficient
+     * 8: DerivativeF32 - sets the derivative pid coefficient
+     * 9: Phase1F32 - sets phase 1 value
+     * 10: Phase2F32 - sets phase 2 value
+     * 11: Offset1F32 - sets offset 1 value
+     * 12: Offset2F32 - sets offset 2 value
+     * 13: SetPointF32 - sets the setpoint target
+     * 14: PowerLawSetPointDivisorCWF32 - sets the power law bias setpoint divisor for the clockwise direction
+     * 15: PowerLawRootCWF32 - sets the power law bias root for the clockwise direction
+     * 16: PowerLawSetPointDivisorCCWF32 - sets the power law bias setpoint divisor for the counter clockwise direction
+     * 17: PowerLawRootCCWF32 - sets the power law bias root for the counter clockwise direction
      */
     class SerialInputCommandWord
     {
@@ -34,6 +46,10 @@ namespace kaepek
             Offset1F32 = 11,
             Offset2F32 = 12,
             SetPointF32 = 13,
+            PowerLawSetPointDivisorCWF32 = 14,
+            PowerLawRootCWF32 = 15,
+            PowerLawSetPointDivisorCCWF32 = 16,
+            PowerLawRootCCWF32 = 17,
         } Type;
     };
 
