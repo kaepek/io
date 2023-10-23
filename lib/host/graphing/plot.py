@@ -155,9 +155,6 @@ for plot in config_json['plots']:
         if "axis" in dependant_column:
             axis_min = None
             axis_max = None
-
-            print("dependant_column", dependant_column)
-
             if online_graphing is False:
                 # we can scan the data for the min and the max value
                 axis_min = plot_source_min[dependant_column["name"]]
