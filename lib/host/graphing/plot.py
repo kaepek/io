@@ -27,6 +27,7 @@ args = vars(parser.parse_args())
 # two modes either address/port or input_data_file
 
 exit_flag = False
+online_graphing = False
 
 if args["address"] != None or args["port"] != None:
     if args["address"] == None:
@@ -38,6 +39,7 @@ if args["address"] != None or args["port"] != None:
     if args["input_data_file"] != None:
         print("NetGraph: provided input_data_file and address / port arguments. Need to choose either input_data_file or address and port.")
         exit_flag = True
+    online_graphing = True
 
 # both args[port] and args[address] are both None make sure we have an input_data_file
 
@@ -86,6 +88,52 @@ if (args["buffer"]):
 
 print("BUFFER LENGTH", buffer_length)
 
+
+# get plot data if we are not in online graphing mode
+plot_source = {}
+plot_source_min = {}
+plot_source_max = {}
+
+if online_graphing is False:
+    full_input_path = cwd + "/" + args["input_data_file"]
+    full_output_path = cwd + "/" + args["input_data_file"] + ".html"
+    input_data_file = None
+    try:
+        with open(full_input_path, "r") as fin:
+            input_data_file = fin.read()
+    except Exception as error:
+        print("NetGraph: bad full_input_path --full_input_path or -i: " + full_input_path + ":" + error)
+        exit(1)
+    input_lines = input_data_file.splitlines()
+    for input_line in input_lines:
+        data_str_split = input_line.split(",")
+        for input in config_json["inputs"]:
+            input_name = input["name"]
+            input_position = input["position"]
+            try:
+                relevant_data = float(data_str_split[input_position])
+                if "scale" in input:
+                    relevant_data *= input["scale"]
+            except Exception as error:
+                relevant_data = 0.0
+            if input_name in plot_source:
+                plot_source[input_name].append(relevant_data)
+            else:
+                plot_source[input_name] = [relevant_data]
+            # find mins
+            if input_name in plot_source_min:
+                if relevant_data < plot_source_min[input_name]:
+                    plot_source_min[input_name] = relevant_data
+            else:
+                plot_source_min[input_name] = relevant_data
+            # find maxes
+            if input_name in plot_source_max:
+                if relevant_data > plot_source_max[input_name]:
+                    plot_source_max[input_name] = relevant_data
+            else:
+                plot_source_max[input_name] = relevant_data
+    print("plot_source", plot_source)
+
 # creating plots
 doc = curdoc()
 figs = []
@@ -105,8 +153,23 @@ for plot in config_json['plots']:
         y_axis = dependant_column["name"]
         color = dependant_column["color"]
         if "axis" in dependant_column:
-            
-            fig.extra_y_ranges[y_axis] = Range1d(start=float(dependant_column["axis"]["min"]), end=float(dependant_column["axis"]["max"]))
+            axis_min = None
+            axis_max = None
+
+            print("dependant_column", dependant_column)
+
+            if online_graphing is False:
+                # we can scan the data for the min and the max value
+                axis_min = plot_source_min[dependant_column["name"]]
+                axis_max = plot_source_max[dependant_column["name"]]
+
+            if "min" in dependant_column["axis"]:
+                axis_min = dependant_column["axis"]["min"]
+            if "max" in dependant_column["axis"]:
+                axis_max = dependant_column["axis"]["max"]
+
+
+            fig.extra_y_ranges[y_axis] = Range1d(start=float(axis_min), end=float(axis_max))
             fig.add_layout(LinearAxis(y_range_name=y_axis, axis_label=y_axis), dependant_column["axis"]["location"])
             if line:
                 fig.line(source=plot_data, x=x_axis, y=y_axis, color=color, legend_label=y_axis, y_range_name=y_axis)
@@ -172,44 +235,10 @@ if args["port"]:
     doc.add_next_tick_callback(update)
 
 else:
-    pass # we have an input file
-    full_input_path = cwd + "/" + args["input_data_file"]
-    full_output_path = cwd + "/" + args["input_data_file"] + ".html"
-    input_data_file = None
-    try:
-        with open(full_input_path, "r") as fin:
-            input_data_file = fin.read()
-    except Exception as error:
-        print("NetGraph: bad full_input_path --full_input_path or -i: " + full_input_path + ":" + error)
-        exit(1)
-    input_lines = input_data_file.splitlines()
-
-    plot_source = {}
-
-    for input_line in input_lines:
-        data_str_split = input_line.split(",")
-        for input in config_json["inputs"]:
-            input_name = input["name"]
-            input_position = input["position"]
-            try:
-                relevant_data = float(data_str_split[input_position])
-                if "scale" in input:
-                    relevant_data *= input["scale"]
-            except Exception as error:
-                relevant_data = 0.0
-            #stream_obj[input_name] = [relevant_data]
-            if input_name in plot_source:
-                plot_source[input_name].append(relevant_data)
-            else:
-                plot_source[input_name] = [relevant_data]
-    
-    print("plot_source", plot_source)
-    
+    # we have an input file data
     for input_name in plot_source:
         plot_data.data[input_name] = plot_source[input_name]
-
     print("plot_data", plot_data)
-
 
     output_file(filename=full_output_path, title=full_input_path)
     save(doc)
