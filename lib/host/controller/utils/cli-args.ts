@@ -325,6 +325,14 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
         return acc;
     }, {});
 
+    Object.keys(args_map).forEach((arg_name) => {
+        if (!parsed_args.values.hasOwnProperty(arg_name)) {
+            if (args_map[arg_name].hasOwnProperty("default")) {
+                parsed_args.values[arg_name] = [args_map[arg_name].default.toString()];
+            }
+        }
+    });
+
     const values_or_errors: Array<{value: any | Array<any>, name: string} | { error: any, name: string}> = Object.keys(parsed_args.values).map((provided_arg_name: string) => {
         const cli_arg = args_map[provided_arg_name];
         const handler = inited_handlers[cli_arg.type];
@@ -361,14 +369,6 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
         acc[kn.name] = kn.value;
         return acc;
     }, {})  as {[attribute_name: string]: {value: any | Array<any> | true}};
-
-    Object.keys(args_map).forEach((arg_name) => {
-        if (!values.hasOwnProperty(arg_name)) {
-            if (args_map[arg_name].hasOwnProperty("default")) {
-                values[arg_name] = args_map[arg_name].default;
-            }
-        }
-    });
 
     return values;
 }
