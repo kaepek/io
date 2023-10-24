@@ -240,7 +240,7 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
         console2.info(`Help information for program: ${program_name}`);
         Object.keys(args_map).forEach((arg_name) => {
             console2.info(`Argument name: ${arg_name} -----`);
-            console2.info(get_help(args_map[arg_name]));
+            console2.log(get_help(args_map[arg_name]));
         });
         process.exit(1);
     }
@@ -360,7 +360,7 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
             console2.error(`Error with argument ${error.name}:`);
             console2.error(error.error);
             console2.info("Usage:");
-            console2.info(get_help(args_map[error.name]));
+            console2.log(get_help(args_map[error.name]));
         });
         process.exit(1);
     }
