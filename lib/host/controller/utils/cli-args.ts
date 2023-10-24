@@ -149,6 +149,9 @@ function get_arg_help(cli_arg:CliArg, mutually_exclusive_groups? : Array<Array<s
     if (cli_arg.help !== undefined) {
         help.push(cli_arg.help);
     }
+    if (cli_arg.hasOwnProperty("default")) {
+        help.push(`Has a default value of ${cli_arg.default}.`);
+    }
     return help.join("\n");
 }
 
