@@ -26,6 +26,10 @@ namespace kaepek
      * 15: PowerLawRootCWF32 - sets the power law bias root for the clockwise direction
      * 16: PowerLawSetPointDivisorCCWF32 - sets the power law bias setpoint divisor for the counter clockwise direction
      * 17: PowerLawRootCCWF32 - sets the power law bias root for the counter clockwise direction
+     * 18: LinearSetpointCoefficientCWF32 - set the linear setpoint coefficient for the clockwise direction
+     * 19: LinearSetpointCoefficientCCWF32 - set the linear setpoint coefficient for the counter clockwise direction
+     * 20: LinearBiasCW - sets the linear bias for the clockwise direction
+     * 21: LinearBiasCCW - sets the linear bias for the counter clockwise direction
      */
     class SerialInputCommandWord
     {
@@ -50,6 +54,10 @@ namespace kaepek
             PowerLawRootCWF32 = 15,
             PowerLawSetPointDivisorCCWF32 = 16,
             PowerLawRootCCWF32 = 17,
+            LinearSetpointCoefficientCWF32 = 18,
+            LinearSetpointCoefficientCCWF32 = 19,
+            LinearBiasCW = 20,
+            LinearBiasCCW = 21
         } Type;
     };
 
@@ -77,8 +85,12 @@ namespace kaepek
          * 15: PowerLawRootCWF32 - Float32
          * 16: PowerLawSetPointDivisorCCWF32 - Float32
          * 17: PowerLawRootCCWF32 - Float32
+         * 18: LinearSetpointCoefficientCWF32 - Float32
+         * 19: LinearSetpointCoefficientCCWF32 - Float32
+         * 20: LinearBiasCW - Float32
+         * 21: LinearBiasCCW - Float32
          */
-        uint32_t serial_input_command_word_buffer_size[18] = {
+        uint32_t serial_input_command_word_buffer_size[22] = {
             0, // Null
             0, // Start
             0, // Stop
@@ -97,6 +109,10 @@ namespace kaepek
             4, // PowerLawRootCWF32
             4, // PowerLawSetPointDivisorCCWF32
             4, // PowerLawRootCCWF32
+            4, // LinearSetpointCoefficientCWF32
+            4, // LinearSetpointCoefficientCCWF32
+            4, // LinearBiasCW
+            4, // LinearBiasCCW
         };
         // The current data buffer's index.
         uint32_t buffer_idx = 0;

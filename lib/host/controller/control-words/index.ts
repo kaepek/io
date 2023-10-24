@@ -17,6 +17,10 @@ import { PowerLawRootCCWF32WordHandler } from "./handlers/powerlawrootccwF32.js"
 import { PowerLawRootCWF32WordHandler } from "./handlers/powerlawrootcwF32.js"
 import { PowerLawSetPointDivisorCCWF32WordHandler } from "./handlers/powerlawsetpointdivisorccwF32.js"
 import { PowerLawSetPointDivisorCWF32WordHandler } from "./handlers/powerlawsetpointdivisorcwF32.js"
+import { LinearBiasCWF32WordHandler } from "./handlers/linearsbiascwF32.js"
+import { LinearBiasCCWF32WordHandler } from "./handlers/linearsbiasccwF32.js"
+import { LinearSetPointCoefficientCCWF32WordHandler } from "./handlers/linearsetpointcoefficientccwF32.js"
+import { LinearSetPointCoefficientCWF32WordHandler } from "./handlers/linearsetpointcoefficientcwF32.js"
 
 const exports: {[key: string]: (typeof ControlWordHandlerBase)} = {
    "directionui8": Direction1UI8ControlWordHandler,
@@ -36,7 +40,11 @@ const exports: {[key: string]: (typeof ControlWordHandlerBase)} = {
    "powerlawrootccwf32": PowerLawRootCCWF32WordHandler,
    "powerlawrootcwf32": PowerLawRootCWF32WordHandler,
    "powerlawsetpointdivisorccwf32": PowerLawSetPointDivisorCCWF32WordHandler,
-   "powerlawsetpointdivisorcwf32": PowerLawSetPointDivisorCWF32WordHandler
+   "powerlawsetpointdivisorcwf32": PowerLawSetPointDivisorCWF32WordHandler,
+   "linearbiascwf32": LinearBiasCWF32WordHandler,
+   "linearbiasccwf32": LinearBiasCCWF32WordHandler,
+   "linearsetpointcoefficientcwF32": LinearSetPointCoefficientCWF32WordHandler,
+   "linearsetpointcoefficientccwF32": LinearSetPointCoefficientCCWF32WordHandler
 };
 
 export default exports;

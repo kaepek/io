@@ -17,6 +17,10 @@ enum ControlWords {
     PowerLawRootCWF32 = 15,
     PowerLawSetPointDivisorCCWF32 = 16,
     PowerLawRootCCWF32 = 17,
+    LinearSetpointCoefficientCWF32 = 18,
+    LinearSetpointCoefficientCCWF32 = 19,
+    LinearBiasCW = 20,
+    LinearBiasCCW = 21
 };
 
 enum ControlWordDataTypes {
