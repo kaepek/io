@@ -10,7 +10,8 @@ export enum CliArgType {
     Boolean = "Boolean",
     InputFilePath = "InputFilePath",
     InputJSONFile = "InputJSONFile",
-    OutputFilePath = "OutputFilePath"
+    OutputFilePath = "OutputFilePath",
+    StringOrNumber = "StringOrNumber",
 }
 
 export interface CliArg {
@@ -20,11 +21,21 @@ export interface CliArg {
     required: boolean;
     help?: string;
     group?: string;
+    default?: any;
 }
 
 export abstract class ArgumentHandler {
     static type: CliArgType;
     abstract handle (argument_data: string): any;
+}
+
+class StringOrNumberArgumentHandler extends ArgumentHandler {
+    static type = CliArgType.StringOrNumber;
+    handle(argument_data: string) {
+        const possible_float = parseFloat(argument_data.toString());
+        if (!isNaN(possible_float)) return possible_float;
+        else return argument_data;
+    }
 }
 
 class StringArgumentHandler extends ArgumentHandler {
@@ -116,7 +127,7 @@ class OutputFilePathArgumentHandler extends ArgumentHandler {
 }
 
 type ArgumentHandlerConstructor = { new(...args: any): ArgumentHandler, type:CliArgType };
-const argument_handlers_arr: Array<ArgumentHandlerConstructor> = [StringArgumentHandler, NumberArgumentHandler, BooleanArgumentHandler, InputFilePathArgumentHandler, InputJSONFileArgumentHandler, OutputFilePathArgumentHandler];
+const argument_handlers_arr: Array<ArgumentHandlerConstructor> = [StringArgumentHandler, NumberArgumentHandler, BooleanArgumentHandler, InputFilePathArgumentHandler, InputJSONFileArgumentHandler, OutputFilePathArgumentHandler, StringOrNumberArgumentHandler];
 export const ArgumentHandlers: {[argument_handler_name: string]: ArgumentHandlerConstructor} = argument_handlers_arr.reduce((acc: any, handler: ArgumentHandlerConstructor ) => {
     acc[handler.type] = handler;
     return acc;
@@ -323,7 +334,7 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
                 value = true;
             }
             else {
-                value = parsed_args.values[provided_arg_name].map((pav) => handler.handle(pav)) as Array<any>;
+                value = parsed_args.values[provided_arg_name].map((pav) => handler.handle(pav) || args_map[provided_arg_name].default) as Array<any>;
                 if (value.length === 1) {
                     value = value[0] as any;
                 }
