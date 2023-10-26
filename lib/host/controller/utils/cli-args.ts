@@ -331,7 +331,7 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
     Object.keys(args_map).forEach((arg_name) => {
         if (!parsed_args.values.hasOwnProperty(arg_name)) {
             if (args_map[arg_name].hasOwnProperty("default")) {
-                parsed_args.values[arg_name] = [args_map[arg_name].default.toString()];
+                parsed_args.values[arg_name] = [args_map[arg_name].default];
             }
         }
     });
@@ -345,7 +345,12 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
                 value = true;
             }
             else {
-                value = parsed_args.values[provided_arg_name].map((pav) => handler.handle(pav)) as Array<any>;
+                value = parsed_args.values[provided_arg_name].map((pav) => {
+                    if(pav === undefined && args_map[provided_arg_name].required === false) {
+                        return undefined;
+                    }
+                    return handler.handle(pav);
+                }) as Array<any>;
                 if (value.length === 1) {
                     value = value[0] as any;
                 }
