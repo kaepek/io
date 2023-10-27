@@ -20,7 +20,7 @@ function success(...args: Array<any>) {
 }
 
 function info(...args: Array<any>) {
-    const colored_args = args.map(arg=>chalk.blue(arg.toString()));
+    const colored_args = args.map(arg=>chalk.blueBright(arg.toString()));
     console.info(...colored_args); 
 }
 
