@@ -27,7 +27,7 @@ export class SendWord {
             }
             else {
                 if (data === undefined) {
-                    throw "SendWord: data required argument missing. Aborting.";
+                    throw "SendWord: data argument required argument missing. Aborting.";
                 }
                 else {
                     // we have data validate it
@@ -35,7 +35,7 @@ export class SendWord {
                     const max_value = wordHandlerInstance.max_value;
                     const min_value = wordHandlerInstance.min_value;
                     if (max_value === null || min_value === null) {
-                        throw `WordHandler for ${word_short_name} does not specify a min_value or a max_value cannot safely validate this control word. Aborting.`;
+                        throw `WordHandler for ${word_short_name} does not specify a min_value or a max_value for it required data cannot safely validate this control word. Aborting.`;
                     }
                     if (data_number > max_value) {
                         throw `Word handler validation for word ${word_short_name} with value ${data_number} exceeded max_value ${max_value}. Aborting.`;
@@ -52,7 +52,7 @@ export class SendWord {
             const packet = Buffer.from(data_str.toString());
 
             this.client.send(packet, this.outgoing_port, this.outgoing_address, (err) => {
-                if (err) return reject('Failed to send UPD packet in NetworkOutputSink: ' + err);
+                if (err) return reject('SendWord failed to send UPD packet: ' + err);
                 resolve();
             });
         });
