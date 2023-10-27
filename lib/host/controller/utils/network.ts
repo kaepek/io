@@ -74,7 +74,7 @@ class NetworkAdaptor {
             else if (this.incoming_protocol === "udp") {
                 const server = this.server;
                 server.on("listening", () => {
-                    console2.success(`INFO NetworkAdaptor ready. Listening to Address: ${this.incoming_address} Port: ${this.incoming_port}`);
+                    console2.success(`INFO NetworkAdaptor is now ready.`);
                     resolve();
                 });
                 server.on("error", (err: any) => {
@@ -129,32 +129,31 @@ class NetworkAdaptor {
         this.incoming_data_config = file_json.inputs;
 
         if (incoming_protocol === "udp") {
+            console2.success(`NetworkAdaptor successfully bound to incoming source, network protocol: ${incoming_protocol}, host: ${incoming_address}, port: ${incoming_port}`);
             this.server = UDP.createSocket("udp4");
         }
         else if (incoming_protocol === "tcp") {
-            console2.error(`WARNING NetworkAdaptor unsupported incoming network protocol: ${incoming_protocol}, expected "upd". No input will come from this source."`);
+            console2.error(`WARNING NetworkAdaptor fail to bind to incoming source, network protocol: ${incoming_protocol}, host: ${incoming_address}, port: ${incoming_port}. Unsupported incoming network protocol: ${incoming_protocol}, expected "upd". No input will come from this source.`);
             process.exit(1);
         }
         else {
-            console2.error(`WARNING NetworkAdaptor unknown incoming network protocol: ${incoming_protocol}, expected "upd" or "tcp". No input will come from this source."`);
+            console2.error(`WARNING NetworkAdaptor fail to bind to incoming source, network protocol: ${incoming_protocol}, host: ${incoming_address}, port: ${incoming_port}. Unsupported incoming network protocol: ${incoming_protocol}, expected "upd". No input will come from this source.`);
             process.exit(1);
         }
 
         if (outgoing_protocol === "udp") {
+            console2.success(`NetworkAdaptor successfully bound to outgoing sink, network protocol: ${outgoing_protocol}, host: ${outgoing_address}, port: ${outgoing_port}`);
             this.client = UDP.createSocket("udp4");
         }
         else if (outgoing_protocol === "tcp") {
-            console2.error(`WARNING NetworkAdaptor unsupported outgoing network protocol: ${outgoing_protocol}, expected "upd. No input will come from this source."`);
-            process.exit(1);
+            console2.warn(`WARNING NetworkAdaptor fail to bind to outgoing sink, network protocol: ${outgoing_protocol}, host: ${outgoing_address}, port: ${outgoing_port}. Unsupported outgoing network protocol: ${outgoing_protocol}, expected "upd". No output will be emitted to this sink.`);
         }
         else if (outgoing_protocol === undefined) {
-            console2.error(`WARNING NetworkAdaptor outgoing network socket undefined. No input will come from this source."`);
+            console2.warn(`WARNING NetworkAdaptor fail to bind to outgoing sink, network protocol: ${outgoing_protocol}, host: ${outgoing_address}, port: ${outgoing_port}. Unsupported outgoing network protocol: ${outgoing_protocol}, expected "upd". No output will be emitted to this sink.`);
         }
         else {
-            console2.error(`WARNING NetworkAdaptor unknown outgoing network protocol: ${outgoing_protocol}, expected "upd" or "tcp". No input will come from this source."`);
-            process.exit(1);
+            console2.warn(`WARNING NetworkAdaptor fail to bind to outgoing sink, network protocol: ${outgoing_protocol}, host: ${outgoing_address}, port: ${outgoing_port}. Unsupported outgoing network protocol: ${outgoing_protocol}, expected "upd". No output will be emitted to this sink.`);
         }
-
     }
 }
 
