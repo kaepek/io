@@ -117,9 +117,9 @@ or
 
 ### Configuration:
 
-- host ```-h``` or ```--host``` e.g. ```-h localhost```
-- port ```-p``` or ```--port``` e.g. ```-p 9000```
-- protocol ```-n``` or ```--protocol``` e.g. ```-n upd```
+- host ```-a``` or ```--host``` e.g. ```-h localhost``` (defaults to 'localhost')
+- port ```-p``` or ```--port``` e.g. ```-p 9000``` (defaults to '9000')
+- protocol ```-n``` or ```--protocol``` e.g. ```-n upd``` (defaults to 'upd')
 - word ```-w``` or ```---word``` e.g. ```thrustui16```
 - data (optional only for words which require data) ```-d``` or ```--data``` e.g. ```-d 2```
 
@@ -134,6 +134,8 @@ for this command to do anything the director must be run with a input source of 
 
 ## kaepek-io-graph command
 
+Performs realtime graphing from data coming from kaepek-io-direction (provided it has an output sink sending data to the program) given a config file which informs it how to read/plot the data.
+
 ### Install
 
 In order to use this command you must install bokeh globally via `pip install bokeh==2.4.3`.
@@ -141,18 +143,39 @@ In order to use this command you must install bokeh globally via `pip install bo
 ### Configuration:
 
 - address ```-a``` or ```--address``` e.g. ```-a localhost```
-- port ```-p``` or ```--port``` e.g. ```-p 9008```
+- port ```-p``` or ```--port``` e.g. ```-p 9002```
 - config ```-c``` or ```--config``` e.g. ```-c ./lib/host/graphing/config.json```
 
 ### Example usage
 
 ```
-kaepek-io-graph --address localhost --port 9008 --config ./lib/host/graphing/config.json
+kaepek-io-graph --address localhost --port 9002 --config ./lib/host/graphing/config.json
 ```
 
-This command will open the bokeh graph server, the server will listen on address `localhost`, port `9008` via a `udp` socket. Incoming network ASCII data row is delimited by `,` for each data column. The graph server then parses the data using the provided config.json via the `"inputs"` config attribute which unpacks the line and finally it plots the data based on the `"plots"` config attribute. [Config example.](./lib/host/graphing/config.json)
+This command will open the bokeh graph server, the server will listen on address `localhost`, port `9002` via a `udp` socket. Incoming network ASCII data row is delimited by `,` for each data column. The graph server then parses the data using the provided config.json via the `"inputs"` config attribute which unpacks the line and finally it plots the data based on the `"plots"` config attribute. [Config example.](./lib/host/graphing/config.json)
 
-Note that in order for this graph server to recieve any data then the director must have a network output sink to redirect peripheral output to the server. For the above example the following output sink should be added ```kaepek-io-director -o network=localhost,9008,udp <...other configs>```
+Note that in order for this graph server to recieve any data then the director must have a network output sink to redirect peripheral output to the server. For the above example the following output sink should be added ```kaepek-io-director -o network=localhost,9002,udp <...other configs>```
+
+## kaepek-io-graph-file command
+
+Program creates graphs from a csv file, given a config file which informs it how to read/plot the data and an output file where it will save the result.
+
+### Install
+
+In order to use this command you must install bokeh globally via `pip install bokeh==2.4.3`.
+
+### Configuration:
+
+- input data csv file location ```-i``` or ```--input_data_file``` e.g. ```./some-dir/some-file.csv```
+- config ```-c``` or ```--config``` e.g. ```-c ./lib/host/graphing/config.json```
+
+### Example usage
+
+```
+kaepek-io-graph-file -i ./some-dir/some-file.csv -c ./lib/host/graphing/config.json`
+```
+
+The outputed graph file for inspection would be `./some-dir/some-file.csv.html`
 
 # c++ lib
 
