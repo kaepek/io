@@ -26,7 +26,7 @@ export interface CliArg {
 
 export abstract class ArgumentHandler {
     static type: CliArgType;
-    abstract handle (argument_data: string): any;
+    abstract handle(argument_data: string): any;
 }
 
 class StringOrNumberArgumentHandler extends ArgumentHandler {
@@ -56,11 +56,11 @@ class NumberArgumentHandler extends ArgumentHandler {
 
 class BooleanArgumentHandler extends ArgumentHandler {
     static type = CliArgType.Boolean;
-    handle(argument_data: string) {
-        if (argument_data === "true" || argument_data === "True") {
+    handle(argument_data: any) {
+        if (argument_data === "true" || argument_data === "True" || argument_data === true) {
             return true;
         }
-        else if (argument_data === "false" || argument_data === "False") {
+        else if (argument_data === "false" || argument_data === "False" || argument_data === false) {
             return false;
         }
         else {
@@ -126,14 +126,14 @@ class OutputFilePathArgumentHandler extends ArgumentHandler {
     };
 }
 
-type ArgumentHandlerConstructor = { new(...args: any): ArgumentHandler, type:CliArgType };
+type ArgumentHandlerConstructor = { new(...args: any): ArgumentHandler, type: CliArgType };
 const argument_handlers_arr: Array<ArgumentHandlerConstructor> = [StringArgumentHandler, NumberArgumentHandler, BooleanArgumentHandler, InputFilePathArgumentHandler, InputJSONFileArgumentHandler, OutputFilePathArgumentHandler, StringOrNumberArgumentHandler];
-export const ArgumentHandlers: {[argument_handler_name: string]: ArgumentHandlerConstructor} = argument_handlers_arr.reduce((acc: any, handler: ArgumentHandlerConstructor ) => {
+export const ArgumentHandlers: { [argument_handler_name: string]: ArgumentHandlerConstructor } = argument_handlers_arr.reduce((acc: any, handler: ArgumentHandlerConstructor) => {
     acc[handler.type] = handler;
     return acc;
 }, {});
 
-function get_arg_help(cli_arg:CliArg, mutually_exclusive_groups? : Array<Array<string>>) {
+function get_arg_help(cli_arg: CliArg, mutually_exclusive_groups?: Array<Array<string>>) {
     const help = [
         `-${cli_arg.short}, --${cli_arg.name}`,
         `Type:${cli_arg.type}, ${cli_arg.required === true ? "Required!" : "Optional."}`
@@ -195,7 +195,7 @@ function custom_parse_args(parse_options: ParseArgsConfig) {
     return parsed_args;
 }
 
-export function parse_args(program_name: string, args: Array<CliArg>, argument_handlers: {[argument_handler_name: string]: ArgumentHandlerConstructor} = ArgumentHandlers, mutually_exclusive_groups? : Array<Array<string>>) {
+export function parse_args(program_name: string, args: Array<CliArg>, argument_handlers: { [argument_handler_name: string]: ArgumentHandlerConstructor } = ArgumentHandlers, mutually_exclusive_groups?: Array<Array<string>>) {
     // args
     args.unshift({
         name: "help",
@@ -204,9 +204,9 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
         type: CliArgType.Boolean,
         help: `Shows the help information for program ${program_name}`
     });
-    const get_help = (cli_arg:CliArg) => get_arg_help(cli_arg, mutually_exclusive_groups);;
-    const args_map_short_name: {[arg_short_name: string]: CliArg} = {};
-    const args_map: {[arg_name: string]: CliArg} = args.reduce((acc: any, cli_arg) => {
+    const get_help = (cli_arg: CliArg) => get_arg_help(cli_arg, mutually_exclusive_groups);;
+    const args_map_short_name: { [arg_short_name: string]: CliArg } = {};
+    const args_map: { [arg_name: string]: CliArg } = args.reduce((acc: any, cli_arg) => {
         if (acc.hasOwnProperty(cli_arg.name)) {
             console2.error(`${program_name} CliArg configuration error. Duplicate definition for argument name: ${cli_arg.name}`);
             process.exit(1);
@@ -226,7 +226,7 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
             short: arg.short
         };
         return acc;
-    }, {options: {}});
+    }, { options: {} });
 
     // parse the arguments
     let parsed_args = custom_parse_args(parse_args_config); // parseArgs(parse_args_config);
@@ -261,7 +261,7 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
      arguments are now required to also exist. 
      */
     // collect groups
-    const arg_groups: {[group: string]: Array<CliArg>} = args.reduce((acc: any, arg) => {
+    const arg_groups: { [group: string]: Array<CliArg> } = args.reduce((acc: any, arg) => {
         if (arg.group === undefined) return acc;
         if (acc.hasOwnProperty(arg.group)) {
             acc[arg.group].push(arg);
@@ -281,7 +281,7 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
         const group_member_argument_missing = group_members.filter((arg) => !parsed_args.values.hasOwnProperty(arg.name));
         if (group_member_argument_missing.length) {
             acc.push(`${program_name}: Argument group ${group_name} error, the following group members were provided ${group_member_argument_present.map((gm) => gm.name)}, but inclusion of these arguments requires that additional arguments are set: \n ${group_member_argument_missing.map((ma) => get_help(ma))}`);
-    
+
         }
         return acc;
     }, []);
@@ -297,10 +297,10 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
             // group_exclusion like...
             // ["group1", "group2", "group3"]
             // if two or more are in the keys of arg_groups
-            const counts = group_exclusion.reduce((acc:number, group_name) => {
+            const counts = group_exclusion.reduce((acc: number, group_name) => {
                 if (arg_groups.hasOwnProperty(group_name)) acc++;
                 return acc;
-            },0)
+            }, 0)
 
             if (counts > 1) {
                 group_exclusion_errors.push(`Group exclusion violated [${group_exclusion.join(", ")}]:`);
@@ -322,7 +322,7 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
     // ArgumentHandlers
     // parsed_args.values.hasOwnProperty
     // argument_handlers
-    const inited_handlers: {[handler_name: string] : ArgumentHandler} = Object.keys(argument_handlers).reduce((acc: any, argument_handler_name)=>{
+    const inited_handlers: { [handler_name: string]: ArgumentHandler } = Object.keys(argument_handlers).reduce((acc: any, argument_handler_name) => {
         const arg_handler_constructor = argument_handlers[argument_handler_name];
         acc[argument_handler_name] = new arg_handler_constructor();
         return acc;
@@ -336,33 +336,28 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
         }
     });
 
-    const values_or_errors: Array<{value: any | Array<any>, name: string} | { error: any, name: string}> = Object.keys(parsed_args.values).map((provided_arg_name: string) => {
+    const values_or_errors: Array<{ value: any | Array<any>, name: string } | { error: any, name: string }> = Object.keys(parsed_args.values).map((provided_arg_name: string) => {
         const cli_arg = args_map[provided_arg_name];
         const handler = inited_handlers[cli_arg.type];
         let value: any | Array<any> | true;
         try {
-            if (args_map[provided_arg_name].type === CliArgType.Boolean) { // booleans really should not be allowed to have required field ... fix me
-                value = true;
-            }
-            else {
-                value = parsed_args.values[provided_arg_name].map((pav) => {
-                    if(pav === undefined && args_map[provided_arg_name].required === false) {
-                        return undefined;
-                    }
-                    return handler.handle(pav);
-                }) as Array<any>;
-                if (value.length === 1) {
-                    value = value[0] as any;
+            value = parsed_args.values[provided_arg_name].map((pav) => {
+                if (pav === undefined && args_map[provided_arg_name].required === false) {
+                    return undefined;
                 }
+                return handler.handle(pav);
+            }) as Array<any>;
+            if (value.length === 1) {
+                value = value[0] as any;
             }
-            return {value, name: provided_arg_name};
+            return { value, name: provided_arg_name };
         }
         catch (e: any) {
-            return {error: e, name: provided_arg_name};
-        }        
+            return { error: e, name: provided_arg_name };
+        }
     });
-    
-    const errors = values_or_errors.filter((ve) => ve.hasOwnProperty("error")) as Array<{ error: any, name: string}>;
+
+    const errors = values_or_errors.filter((ve) => ve.hasOwnProperty("error")) as Array<{ error: any, name: string }>;
     if (errors.length) {
         errors.forEach((error) => {
             console2.error(`Error with argument ${error.name}:`);
@@ -373,10 +368,10 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
         process.exit(1);
     }
 
-    const values = (values_or_errors as Array<{value: any | Array<any>, name: string}> ).reduce((acc: any, kn) => {
+    const values = (values_or_errors as Array<{ value: any | Array<any>, name: string }>).reduce((acc: any, kn) => {
         acc[kn.name] = kn.value;
         return acc;
-    }, {})  as {[attribute_name: string]: {value: any | Array<any> | true}};
+    }, {}) as { [attribute_name: string]: { value: any | Array<any> | true } };
 
     return values;
 }
