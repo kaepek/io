@@ -123,6 +123,78 @@ namespace kaepek
         Serial.print("Word value: ");
         Serial.println(float_value);
         break;
+      case SerialInputCommandWord::PowerLawSetPointDivisorCWF32:
+        Serial.println("Recieved word PowerLawSetPointDivisorCWF32");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
+      case SerialInputCommandWord::PowerLawRootCWF32:
+        Serial.println("Recieved word PowerLawRootCWF32");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
+      case SerialInputCommandWord::PowerLawSetPointDivisorCCWF32:
+        Serial.println("Recieved word PowerLawSetPointDivisorCCWF32");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
+      case SerialInputCommandWord::PowerLawRootCCWF32:
+        Serial.println("Recieved word PowerLawRootCCWF32");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
+      case SerialInputCommandWord::LinearSetpointCoefficientCWF32:
+        Serial.println("Recieved word LinearSetpointCoefficientCWF32");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
+      case SerialInputCommandWord::LinearSetpointCoefficientCCWF32:
+        Serial.println("Recieved word LinearSetpointCoefficientCCWF32");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
+      case SerialInputCommandWord::LinearBiasCW:
+        Serial.println("Recieved word LinearBiasCW");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
+      case SerialInputCommandWord::LinearBiasCCW:
+        Serial.println("Recieved word LinearBiasCCW");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
       default:
         Serial.print("Recieved unknown word: ");
         Serial.println(control_word);

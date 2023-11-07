@@ -1,4 +1,4 @@
-# KAEPEK-IO V3.0.0
+# KAEPEK-IO V3.1.1
 
 Remote controller. Enabling IO to be piped from various inputs to different devices over network/serial communication ports.
 
@@ -307,6 +307,78 @@ namespace kaepek
         Serial.print("Word value: ");
         Serial.println(float_value);
         break;
+      case SerialInputCommandWord::PowerLawSetPointDivisorCWF32:
+        Serial.println("Recieved word PowerLawSetPointDivisorCWF32");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
+      case SerialInputCommandWord::PowerLawRootCWF32:
+        Serial.println("Recieved word PowerLawRootCWF32");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
+      case SerialInputCommandWord::PowerLawSetPointDivisorCCWF32:
+        Serial.println("Recieved word PowerLawSetPointDivisorCCWF32");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
+      case SerialInputCommandWord::PowerLawRootCCWF32:
+        Serial.println("Recieved word PowerLawRootCCWF32");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
+      case SerialInputCommandWord::LinearSetpointCoefficientCWF32:
+        Serial.println("Recieved word LinearSetpointCoefficientCWF32");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
+      case SerialInputCommandWord::LinearSetpointCoefficientCCWF32:
+        Serial.println("Recieved word LinearSetpointCoefficientCCWF32");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
+      case SerialInputCommandWord::LinearBiasCW:
+        Serial.println("Recieved word LinearBiasCW");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
+      case SerialInputCommandWord::LinearBiasCCW:
+        Serial.println("Recieved word LinearBiasCCW");
+        *((unsigned char *)&float_value + 0) = data_buffer[0];
+        *((unsigned char *)&float_value + 1) = data_buffer[1];
+        *((unsigned char *)&float_value + 2) = data_buffer[2];
+        *((unsigned char *)&float_value + 3) = data_buffer[3];
+        Serial.print("Word value: ");
+        Serial.println(float_value);
+        break;
       default:
         Serial.print("Recieved unknown word: ");
         Serial.println(control_word);
@@ -346,4 +418,28 @@ void loop()
 {
   device.run();
 }
+```
+
+# Troubleshooting
+
+If you get an installation error mentioning a build error for sbc/sbc.o along the lines of:
+
+```
+npm ERR! ../sbc/sbc.c:83:18: error: expected ‘(’ before ‘packed’
+npm ERR!    83 | } __attribute__ (packed);
+```
+
+Make sure to modify the package.json file to specify the correct dualshock controller library that matches your platform:
+
+For Windows:
+```
+  "dependencies": {
+    "dualshock": "github:jk89/dualshock",
+```
+
+For Linux:
+
+```
+  "dependencies": {
+    "dualshock": "github:jk89/dualshock-linux",
 ```

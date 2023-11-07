@@ -1,19 +1,13 @@
 {
   "name": "kaepek-io",
-  "version": "1.0.0",
+  "version": "3.1.1",
   "description": "",
   "main": "index.js",
   "type": "module",
   "node_version": "v18.12.1",
   "scripts": {
     "relink": "npm uninstall --global kaepek-io && npm link",
-    "test": "ts-node ./lib/host/controller/scripts/test.ts",
     "build": "tsc --project tsconfig.json",
-    "cli": "node --loader ts-node/esm ./dist/host/controller/scripts/director.js",
-    "cli2": "NODE_OPTIONS=--experimental-vm-modules NODE_NO_WARNINGS=1 node --experimental-loader=extensionless ./dist/host/controller/scripts/director.js",
-    "cli3": "npm run cli2 -- -i network=localhost,9090,udp -i keyboard -c start -c null -c stop -p serial-usb -p console -o console",
-    "cli-test": "ts-node lib/host/controller/scripts/cli.ts -i network=localhost,9090,udp -i keyboard -c start -c null -c stop -p serial-usb -p console -o console",
-    "graph": "bokeh serve --port 8033 --show lib/graphing/plot.py ",
     "bin-netsend-word": "kaepek-io-netsend-word -h localhost -p 2002 -n udp -w thrustui16 -d 2",
     "bin-director": "kaepek-io-director -i network=localhost,9090,udp keyboard -c start null stop -p serial-usb console -o console",
     "bin-graph": "kaepek-io-graph --address localhost --port 9001 --config ./lib/host/graphing/config.json"
@@ -21,9 +15,9 @@
   "author": "Jonathan Kelsey",
   "license": "AGPL3",
   "dependencies": {
+    "dualshock": "github:jk89/dualshock-linux",
     "chalk": "^5.3.0",
     "cross-env": "^7.0.3",
-    "dualshock": "github:jk89/dualshock",
     "extensionless": "^1.4.5",
     "readline": "^1.3.0",
     "rxjs": "^7.8.1",
