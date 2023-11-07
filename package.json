@@ -7,10 +7,7 @@
   "node_version": "v18.12.1",
   "scripts": {
     "relink": "npm uninstall --global kaepek-io && npm link",
-    "build": "tsc --project tsconfig.json",
-    "bin-netsend-word": "kaepek-io-netsend-word -h localhost -p 2002 -n udp -w thrustui16 -d 2",
-    "bin-director": "kaepek-io-director -i network=localhost,9090,udp keyboard -c start null stop -p serial-usb console -o console",
-    "bin-graph": "kaepek-io-graph --address localhost --port 9001 --config ./lib/host/graphing/config.json"
+    "build": "tsc --project tsconfig.json"
   },
   "author": "Jonathan Kelsey",
   "license": "AGPL3",
