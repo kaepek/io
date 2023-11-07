@@ -1,6 +1,6 @@
 # KAEPEK-IO V3.1.1
 
-Remote controller. Enabling IO to be piped from various inputs to different devices over network/serial communication ports.
+IO controller. Enabling IO to be piped from various inputs to different devices over network/serial communication ports.
 
 ## Install:
 
