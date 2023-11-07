@@ -1,4 +1,4 @@
-# KAEPEK-IO V2.0.0
+# KAEPEK-IO V3.0.0
 
 Remote controller. Enabling IO to be piped from various inputs to different devices over network/serial communication ports.
 
