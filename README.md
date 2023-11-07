@@ -443,3 +443,11 @@ For Linux:
   "dependencies": {
     "dualshock": "github:jk89/dualshock-linux",
 ```
+
+To disable it completely:
+
+```
+  "dependencies": {
+    "dualshock": "github.com/jk89/dualshock-disable",
+```
+
