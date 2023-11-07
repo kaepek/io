@@ -6,40 +6,49 @@ import ControlWords from "../control-words/index.js";
 import { ControlWordHandlerBase } from "../control-words/model.js";
 import InputOutputDevices from "../input-output-device-controllers/index.js";
 import { InputOutputDeviceControllerBase } from "../input-output-device-controllers/model.js";
-import DeviceOuputSinks from "../output-sinks/index.js"
+import DeviceOutputSinks from "../output-sinks/index.js"
 import { OutputSinkBase } from "../output-sinks/model.js";
 import { DeviceOutputRouter } from "../output-sinks/router.js";
-import { ParseArgsConfig, parseArgs } from "node:util";
 import { StreamJunctionDirector } from "../stream-junction-director.js";
 import { DelimitedASCIILine } from "../device-output-models/handlers/delimited-ascii-line.js";
 import { console2 } from "../utils/log.js";
+import { ArgumentHandlers, CliArg, CliArgType, parse_args } from "../utils/cli-args.js";
+import ControlWordsIndex from "../control-words/index.js";
 
-const parse_options: ParseArgsConfig = {
-    options: {
-        source: {
-            type: "string",
-            short: "i",
-            multiple: true
-        },
-        control_word: {
-            type: "string",
-            short: "c",
-            multiple: true
-        },
-        peripheral: {
-            type: "string",
-            short: "p",
-            multiple: true
-        },
-        sink: {
-            type: "string",
-            short: "o",
-            multiple: true
-        }
+const cli_args: Array<CliArg> = [
+    {
+        name: "source",
+        type: CliArgType.String,
+        short: "i",
+        help: `Input control sources (one or more). Choose from one of ${Object.keys(ControlInputSources).join(",")}. Provide one of these by itself <input_source>, space seperated if you want multiple of them, or use multiple flags. If the control source takes arguments then you may configure each like this <input_source>=args1,arg2,arg3 for example: -i network=localhost,9000,udp`,
+        required: true
+    },
+    {
+        name: "control_word",
+        type: CliArgType.String,
+        short: "c",
+        help: `Control words handlers (one or more). Defines which control words to detect from the input control sources and forward to the peripherals. Choose from the following: ${Object.keys(ControlWordsIndex).join(",")}.`,
+        required: true
+    },
+    {
+        name: "peripheral",
+        type: CliArgType.String,
+        short: "p",
+        help: `Peripheral devices (one or more) to send the detected control words to. Choose one of the following: ${Object.keys(InputOutputDevices).join(",")}.`,
+        required: true
+    },
+    {
+        name: "sink",
+        type: CliArgType.String,
+        short: "o",
+        help: `Output data sinks. Takes data emitted from the peripheral devices and forwards it to an output sink. Choose one of the following: ${Object.keys(DeviceOutputSinks).join(",")}. Provide one of these by itself <output_sink>, space seperated if you want multiple of them, or use multiple flags. If the output sink takes arguments then you may configure each like this <output_sink>=args1,arg2,arg3 for example: -o network=localhost,9000,udp`,
+        required: true
     }
-};
+];
 
-function parse_concept<T>(parsed_args_concept_values: Array<string>, concept_name: string, concept_index: any) {
+
+function parse_concept<T>(_parsed_args_concept_values: Array<string> | string, concept_name: string, concept_index: any) {
+    const parsed_args_concept_values: Array<string> = Array.isArray(_parsed_args_concept_values) ? _parsed_args_concept_values : [_parsed_args_concept_values];
     // parse control words
     const concept_items = [] as Array<T>;
     parsed_args_concept_values.forEach((source_str) => {
@@ -70,98 +79,27 @@ function parse_concept<T>(parsed_args_concept_values: Array<string>, concept_nam
     return concept_items;
 }
 
-function custom_parse_args() {
-    const args = process.argv;
-    args.splice(0, 2);
-    const command_words_short: { [name: string]: any } = {};
-    const command_words_long: { [name: string]: any } = {};
-
-    if (parse_options.options) {
-        const options = parse_options.options as any;
-        Object.keys(options).forEach((option_name) => {
-            command_words_long[`--${option_name}`] = { ...options[option_name], option_name };
-            if (options[option_name].short) {
-                command_words_short[`-${options[option_name].short}`] = { ...options[option_name], option_name };
-            }
-        });
-    };
-
-    const parsed_args: { values: { [key: string]: Array<string> } } = { values: {} };
-    let current_arg_name: string | null = null;
-
-    args.forEach((arg_str_segment) => {
-        const possible_arg = command_words_short[arg_str_segment] || command_words_long[arg_str_segment];
-        if (possible_arg) {
-            const arg_name = possible_arg.option_name;
-            if (!parsed_args.values.hasOwnProperty(arg_name)) {
-                parsed_args.values[arg_name] = [];
-            }
-            current_arg_name = arg_name;
-        }
-        else {
-            if (parsed_args.values.hasOwnProperty(current_arg_name as string)) {
-                // we are already handling the word collect values
-                parsed_args.values[current_arg_name as string].push(arg_str_segment);
-            }
-            else {
-                const missing_options: Array<string> = [];
-                Object.keys(parse_options.options as any).forEach((option_name) => {
-                    if (!parsed_args.values[option_name] && option_name !== "sink") {
-                        missing_options.push(option_name);
-                    }
-                });
-                throw `Director error: Unrecognised argument ${arg_str_segment}. Need the following ${missing_options.map(option_str => {
-                    const option = (parse_options.options as any)[option_str];
-                    return `--${option_str} or -${option.short}`
-                }).join(", ")}. --sink or -o argument is optional. No other arguments are expected.`;
-            }
-
-        }
-    });
-
-    return parsed_args;
-}
-
 
 async function start_cli() {
-    const parsed_args = custom_parse_args(); // parseArgs(parse_options) as any;
+    const parsed_args = parse_args("Director", cli_args, ArgumentHandlers) as any;
     // we need atleast a source, one control word and an IO device.
     // most we want is many sources, words, IOdevices and sinks. aka 4
-    if (
-        (parsed_args.values["source"] && parsed_args.values["source"].length) &&
-        (parsed_args.values["control_word"] && parsed_args.values["control_word"].length) &&
-        (parsed_args.values["peripheral"] && parsed_args.values["peripheral"].length)
-    ) {
-        // parse source handlers
-        const sources = parse_concept<ControlInputSourceHandler>(parsed_args.values["source"], "source", ControlInputSources);
-        // parse control words
-        const words = parse_concept<ControlWordHandlerBase>(parsed_args.values["control_word"], "control_word", ControlWords);
-        // parse io devices
-        const devices = parse_concept<InputOutputDeviceControllerBase>(parsed_args.values["peripheral"], "peripheral", InputOutputDevices);
-        // parse sinks
-        const sinks = parse_concept<OutputSinkBase>(parsed_args.values["sink"] || [], "sink", DeviceOuputSinks);
-        // fixed model atm
-        const model = new DelimitedASCIILine();
+    // parse source handlers
+    const sources = parse_concept<ControlInputSourceHandler>(parsed_args.source, "source", ControlInputSources);
+    // parse control words
+    const words = parse_concept<ControlWordHandlerBase>(parsed_args.control_word, "control_word", ControlWords);
+    // parse io devices
+    const devices = parse_concept<InputOutputDeviceControllerBase>(parsed_args.peripheral, "peripheral", InputOutputDevices);
+    // parse sinks
+    const sinks = parse_concept<OutputSinkBase>(parsed_args.sink || [], "sink", DeviceOutputSinks);
+    // fixed model atm
+    const model = new DelimitedASCIILine();
 
-        const inputSourceRouter = new ControlSourceInputRouter(sources);
-        const outputRouter = new DeviceOutputRouter(sinks);
-        const director_instance = new StreamJunctionDirector(inputSourceRouter, words, devices, model, outputRouter);
+    const inputSourceRouter = new ControlSourceInputRouter(sources);
+    const outputRouter = new DeviceOutputRouter(sinks);
+    const director_instance = new StreamJunctionDirector(inputSourceRouter, words, devices, model, outputRouter);
 
-        return director_instance.ready();
-    }
-    else {
-
-        const missing_options: Array<string> = [];
-        Object.keys(parse_options.options as any).forEach((option_name) => {
-            if (!parsed_args.values[option_name] && option_name !== "sink") {
-                missing_options.push(option_name);
-            }
-        });
-        throw `Director error: Missing the following arguments. Need the following ${missing_options.map(option_str => {
-            const option = (parse_options.options as any)[option_str];
-            return `--${option_str} or -${option.short}`
-        }).join(", ")}. --sink or -o argument is optional.`;
-    }
+    return director_instance.ready();
 }
 
 start_cli().then(console2.success).catch((err) => {

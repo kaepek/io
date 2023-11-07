@@ -47,6 +47,7 @@ const cli_args: Array<CliArg> = [
 ];
 
 const parsed_args = parse_args("NetSend", cli_args, ArgumentHandlers) as any;
+
 const word_sender = new SendWord(parsed_args.host, parsed_args.port, parsed_args.protocol);
 
 word_sender.ready().then(()=>word_sender.send_word(parsed_args.word, parsed_args.data)).then(()=>process.exit(0)).catch((e)=>{
