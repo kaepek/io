@@ -1,7 +1,7 @@
 {
   "name": "kaepek-io",
   "version": "3.1.1",
-  "description": "",
+  "description": "IO controller. Enabling IO to be piped from various inputs to different devices over network/serial communication ports.",
   "main": "index.js",
   "type": "module",
   "node_version": "v18.12.1",
