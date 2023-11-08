@@ -21,6 +21,8 @@ import { LinearBiasCWF32WordHandler } from "./handlers/linearsbiascwF32.js"
 import { LinearBiasCCWF32WordHandler } from "./handlers/linearsbiasccwF32.js"
 import { LinearSetPointCoefficientCCWF32WordHandler } from "./handlers/linearsetpointcoefficientccwF32.js"
 import { LinearSetPointCoefficientCWF32WordHandler } from "./handlers/linearsetpointcoefficientcwF32.js"
+import { Torque1UI16ControlWordHandler } from "./handlers/torqueUI16.js"
+import { Delay1UI16ControlWordHandler } from "./handlers/delayUI16.js"
 
 const exports: {[key: string]: (typeof ControlWordHandlerBase)} = {
    "directionui8": Direction1UI8ControlWordHandler,
@@ -44,7 +46,9 @@ const exports: {[key: string]: (typeof ControlWordHandlerBase)} = {
    "linearbiascwf32": LinearBiasCWF32WordHandler,
    "linearbiasccwf32": LinearBiasCCWF32WordHandler,
    "linearsetpointcoefficientcwF32": LinearSetPointCoefficientCWF32WordHandler,
-   "linearsetpointcoefficientccwF32": LinearSetPointCoefficientCCWF32WordHandler
+   "linearsetpointcoefficientccwF32": LinearSetPointCoefficientCCWF32WordHandler,
+   "torqueui16": Torque1UI16ControlWordHandler,
+   "delayui16": Delay1UI16ControlWordHandler
 };
 
 export default exports;

@@ -2,9 +2,9 @@ import { ControlInputSources } from "../../control-input-sources/sources.js";
 import { ControlWordDataTypes, ControlWords } from "../words.js";
 import { ControlWordHandlerBase } from "../model.js";
 
-export class Thrust1UI16ControlWordHandler extends ControlWordHandlerBase {
-    name = ControlWords.Thrust1UI16;
-    state_alias = "thrust1";
+export class Delay1UI16ControlWordHandler extends ControlWordHandlerBase {
+    name = ControlWords.Delay1UI16;
+    state_alias = "delay1";
     scale = 1.0;
     data_type = ControlWordDataTypes.UInt16LE;
     keyboard_key_held_timeout: {[key_name: string] :any} = {};
@@ -19,11 +19,11 @@ export class Thrust1UI16ControlWordHandler extends ControlWordHandlerBase {
         super.handle_input(input); // deal with NetworkControlWord sources automatically.
         if (input.source === ControlInputSources.DualShock) {
             if (input.type === "trigger" && input.label === "r2") {
-                this.subject.next({word:this, value: input.value * 257}); // 257 maps 255 -> 65,536
+                this.subject.next({word:this, value: (65536 - input.value) * 257}); // 257 maps 255 -> 65,536
             }
         }
         else if (input.source === ControlInputSources.Keyboard) {
-            if (input.label === "up" || input.label === "w") {
+            if (input.label === "down" || input.label === "s") {
                 if (input.value === "pressed") {
                     this.value_magnitude[input.label] = 1;
                     let new_state_value = (this.state + 1);
@@ -45,7 +45,7 @@ export class Thrust1UI16ControlWordHandler extends ControlWordHandlerBase {
                     }
                 }
             }
-            if (input.label === "down" || input.label === "s") {
+            if (input.label === "up" || input.label === "w") {
                if (input.value === "pressed") {
                     this.value_magnitude[input.label] = -1;
                     let new_state_value = this.state - 1;

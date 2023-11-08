@@ -30,6 +30,8 @@ namespace kaepek
      * 19: LinearSetpointCoefficientCCWF32 - set the linear setpoint coefficient for the counter clockwise direction
      * 20: LinearBiasCW - sets the linear bias for the clockwise direction
      * 21: LinearBiasCCW - sets the linear bias for the counter clockwise direction
+     * 22: Torque1UI16 - sets the torque level
+     * 23: Delay1UI16 - sets the delay in microseconds
      */
     class SerialInputCommandWord
     {
@@ -57,7 +59,9 @@ namespace kaepek
             LinearSetpointCoefficientCWF32 = 18,
             LinearSetpointCoefficientCCWF32 = 19,
             LinearBiasCW = 20,
-            LinearBiasCCW = 21
+            LinearBiasCCW = 21,
+            Torque1UI16 = 22,
+            Delay1UI16 = 23
         } Type;
     };
 
@@ -89,8 +93,10 @@ namespace kaepek
          * 19: LinearSetpointCoefficientCCWF32 - Float32
          * 20: LinearBiasCW - Float32
          * 21: LinearBiasCCW - Float32
+         * 22: Torque1UI16 - Unsigned Int 16 bit
+         * 23: Delay1UI16 - Unsigned Int 16 bit
          */
-        uint32_t serial_input_command_word_buffer_size[22] = {
+        uint32_t serial_input_command_word_buffer_size[24] = {
             0, // Null
             0, // Start
             0, // Stop
@@ -113,6 +119,8 @@ namespace kaepek
             4, // LinearSetpointCoefficientCCWF32
             4, // LinearBiasCW
             4, // LinearBiasCCW
+            2, // Torque1UI16
+            2, // Delay1UI16 // 24
         };
         // The current data buffer's index.
         uint32_t buffer_idx = 0;

@@ -20,7 +20,9 @@ enum ControlWords {
     LinearSetpointCoefficientCWF32 = 18,
     LinearSetpointCoefficientCCWF32 = 19,
     LinearBiasCW = 20,
-    LinearBiasCCW = 21
+    LinearBiasCCW = 21,
+    Torque1UI16 = 22,
+    Delay1UI16 = 23
 };
 
 enum ControlWordDataTypes {
