@@ -10,16 +10,20 @@ export class Delay1UI16ControlWordHandler extends ControlWordHandlerBase {
     keyboard_key_held_timeout: {[key_name: string] :any} = {};
     value_magnitude: {[key_name: string]: any} = {};
 
-    min_value = 0;
+    min_value = 1;
     max_value = 65536 - 1;
     increment_speed_milliseconds = 55;
     default_change_increment = 10;
+    default_value = this.max_value;
 
     handle_input(input: any) {
         super.handle_input(input); // deal with NetworkControlWord sources automatically.
+        if (this.state === null) {
+            this.state = this.default_value;
+        }
         if (input.source === ControlInputSources.DualShock) {
             if (input.type === "trigger" && input.label === "r2") {
-                this.subject.next({word:this, value: (65536 - input.value) * 257}); // 257 maps 255 -> 65,536
+                this.subject.next({word:this, value: (255 - input.value) * 257}); // 257 maps 255 -> 65,536
             }
         }
         else if (input.source === ControlInputSources.Keyboard) {
