@@ -139,7 +139,10 @@ doc = curdoc()
 figs = []
 for plot in config_json['plots']:
     print("Building plot", plot["name"])
-    fig = figure(title=plot["name"], plot_width=2000, output_backend="webgl") # , y_range=(0, 200)
+    if online_graphing is True:
+        fig = figure(title=plot["name"], plot_width=2000, output_backend="webgl") # , y_range=(0, 200)
+    else:
+        fig = figure(title=plot["name"], plot_width=2000)
     fig.extra_y_ranges = {}
     x_axis = plot["independant_column"]
     for dependant_column in plot["dependant_columns"]:
