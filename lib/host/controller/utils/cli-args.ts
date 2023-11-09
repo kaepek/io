@@ -195,7 +195,7 @@ function custom_parse_args(parse_options: ParseArgsConfig) {
     return parsed_args;
 }
 
-export function parse_args(program_name: string, args: Array<CliArg>, argument_handlers: { [argument_handler_name: string]: ArgumentHandlerConstructor } = ArgumentHandlers, mutually_exclusive_groups?: Array<Array<string>>) {
+export function parse_args(program_name: string, program_description: string, args: Array<CliArg>, argument_handlers: { [argument_handler_name: string]: ArgumentHandlerConstructor } = ArgumentHandlers, mutually_exclusive_groups?: Array<Array<string>>) {
     // args
     args.unshift({
         name: "help",
@@ -241,6 +241,7 @@ export function parse_args(program_name: string, args: Array<CliArg>, argument_h
 
     if (parsed_args.values.hasOwnProperty("help")) {
         console2.info(`Help information for program: ${program_name}`);
+        console2.info(`Program description: ${program_description}`);
         Object.keys(args_map).forEach((arg_name) => {
             console2.info(`Argument name: ${arg_name} -----`);
             console2.log(get_help(args_map[arg_name]));

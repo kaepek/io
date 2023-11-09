@@ -4,6 +4,8 @@ import { CliArg, CliArgType, parse_args, ArgumentHandlers } from "../utils/cli-a
 import { SendWord } from "../utils/send-word.js";
 import { console2 } from "../utils/log.js";
 
+const program_description = `A program to allow the transmitting of control word over the network which can control a director program via a configured network input source.`;
+
 const cli_args: Array<CliArg> = [
     {
         name: "host",
@@ -46,7 +48,7 @@ const cli_args: Array<CliArg> = [
     }
 ];
 
-const parsed_args = parse_args("NetSend", cli_args, ArgumentHandlers) as any;
+const parsed_args = parse_args("NetSend", program_description, cli_args, ArgumentHandlers) as any;
 
 const word_sender = new SendWord(parsed_args.host, parsed_args.port, parsed_args.protocol);
 

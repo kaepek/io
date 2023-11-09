@@ -15,6 +15,8 @@ import { console2 } from "../utils/log.js";
 import { ArgumentHandlers, CliArg, CliArgType, parse_args } from "../utils/cli-args.js";
 import ControlWordsIndex from "../control-words/index.js";
 
+const program_description = `A program to allow for controlling IO from various devices.`;
+
 const cli_args: Array<CliArg> = [
     {
         name: "source",
@@ -81,7 +83,7 @@ function parse_concept<T>(_parsed_args_concept_values: Array<string> | string, c
 
 
 async function start_cli() {
-    const parsed_args = parse_args("Director", cli_args, ArgumentHandlers) as any;
+    const parsed_args = parse_args("Director", program_description, cli_args, ArgumentHandlers) as any;
     // we need atleast a source, one control word and an IO device.
     // most we want is many sources, words, IOdevices and sinks. aka 4
     // parse source handlers
