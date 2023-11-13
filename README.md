@@ -451,3 +451,21 @@ To disable it completely:
     "dualshock": "github.com/jk89/dualshock-disable",
 ```
 
+# How to prepare the Teensy40 platform:
+- Install [Arduino IDE v1.8.19](https://www.arduino.cc/en/software)
+- Install [Teensyduino v2.1.0](https://www.pjrc.com/teensy/teensyduino.html)
+
+# General dependancies:
+
+- [Arduino.h](https://github.com/arduino/ArduinoCore-avr)
+- [imxrt.h](https://github.com/PaulStoffregen/cores/tree/master)
+- [Dualshock driver](https://github.com/pecacheu/dualshock)
+- [Serialport](https://github.com/serialport/node-serialport/blob/main/LICENSE)
+- [Bokeh](https://github.com/bokeh/bokeh/blob/branch-3.4/LICENSE.txt)
+- [Typed struct](https://github.com/sarakusha/typed-struct/blob/main/LICENSE)
+- [Readline](https://www.npmjs.com/package/readline)
+- [RxJs](https://github.com/ReactiveX/rxjs/blob/master/LICENSE.txt)
+- [TS-Node](https://github.com/TypeStrong/ts-node/blob/main/LICENSE)
+- [Chalk](https://github.com/chalk/chalk/blob/main/license)
+- [Extensionless](https://github.com/barhun/extensionless/blob/main/LICENSE)
+- [Cross env](https://github.com/kentcdodds/cross-env)
