@@ -34,6 +34,10 @@ export class SerialUSBDeviceController extends InputOutputDeviceControllerBase {
                 relevantPorts = serialPorts.filter((it) => it.path.includes("COM3"));
             }
 
+            if (!relevantPorts.length) { // mac
+                relevantPorts = serialPorts.filter((it) => it.path.includes("/dev/tty.usbmodem"));
+            }
+
             if (!relevantPorts.length) throw "Could not find any serial ports to write too!";
             successfulPortObj = relevantPorts[0];
         }
